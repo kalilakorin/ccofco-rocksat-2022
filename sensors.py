@@ -13,7 +13,9 @@ import logging
 
 import board
 import busio
+
 import adafruit_mpl115a2
+from adafruit_bme280 import basic as adafruit_bme280
 
 # Acquire the existing logger
 try:
@@ -32,14 +34,21 @@ def main():
         i2c = busio.I2C(board.SCL, board.SDA)
         logging.info('I2C interface ... OK')
     except: 
-        logging.error('Failed to enable i2c interface')
-
-    # Begin mpl
+        logging.critical('Failed to enable i2c interface, the sensor thread will now crash')
+        return
+    # Init mpl sensor
     try:
-        mpl = adafruit_mpl115a2.MPL115A2(i2c)
+        mpl115a2 = adafruit_mpl115a2.MPL115A2(i2c)
         logging.info('MPL115A2 (temperature, pressure) ... OK')
     except: 
+        mpl115a2 = None
         logging.error('Failed to enable MPL115A2 sensor')
+    # Init bme280
+    try
+        bme280 = adafruit_bme280.Adafruit_BME280_I2C(i2c)
+    except:
+        bme280 = None
+        logging.error('Failed to enable BME280 (temperature, pressure, humidity) sensor')
 
     logging.info('Sensors initialized')
 
@@ -48,11 +57,24 @@ def main():
     datafile = open(datafileName, 'w') 
     logging.info('Opened sensor data file for writing: ' + datafileName)
 
+    # CSV header line
+    csvheader = 'Time,'
+    if mpl115a2 != None: csvheader += ',MPL115A2 Temperature, MPL115A2 Pressure'
+    if bme280 != None: csvheader += ',BME280 Temperature, BME280 Pressure, BME280 Humidity'
+    datafile.write(csvheader + '\n')
+
     # Sensor sample and data write loop
     logging.info('Beginning sensor polling and writing (1000 samples/second)')
     while True:
-        csvline = f'{str(int(time.time() * 1000))},{str(mpl.pressure)},{str(mpl.temperature)}'
+        # Time axis
+        csvline = str(int(time.time() * 1000))
+        
+        # Add entries to the CSV line based on the presence of those particular sensors
+        if mpl115a2 != None: csvline != f',{mpl115a2.temperature},{mpl115a2.pressure}'
+        if bme280 != None: csvline != f',{bme280.temperature},{bme280.pressure},{bme280.relative_humidity}'
+        
         datafile.write(csvline + '\n')
+        # Print the CSV line to the console if the file is running standalone
         if logger == None: print(csvline)
         sleep(0.001)
 

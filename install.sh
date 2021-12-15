@@ -32,5 +32,6 @@ sudo echo "disable_splash=1" >> /boot/config.txt
 # Install python libraries/modules for sensors and hardware (systemwide)
 sudo pip3 install adafruit-blinka 
 sudo pip3 install adafruit-circuitpython-mpl115a2
+sudo pip3 install adafruit-circuitpython-bme280
 
 echo "   *** DONE ***   "
