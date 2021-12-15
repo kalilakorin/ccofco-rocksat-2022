@@ -1,8 +1,8 @@
 '''
-    This file hanles the polling and recording of sensor data.
+    This file handles the polling and recording of sensor data.
     Contributors:
-	    Jillian Frimml
-	    Skyler Puckett
+        Jillian Frimml
+        Skyler Puckett
         Konstantin Zaremski
 '''
 
@@ -44,7 +44,7 @@ def main():
         mpl115a2 = None
         logging.error('Failed to enable MPL115A2 sensor')
     # Init bme280
-    try
+    try:
         bme280 = adafruit_bme280.Adafruit_BME280_I2C(i2c)
     except:
         bme280 = None
@@ -62,6 +62,7 @@ def main():
     if mpl115a2 != None: csvheader += ',MPL115A2 Temperature, MPL115A2 Pressure'
     if bme280 != None: csvheader += ',BME280 Temperature, BME280 Pressure, BME280 Humidity'
     datafile.write(csvheader + '\n')
+    logging.info(f'Sensor file CSV columns are as follows: {csvheader}')
 
     # Sensor sample and data write loop
     logging.info('Beginning sensor polling and writing (1000 samples/second)')
