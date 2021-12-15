@@ -40,6 +40,7 @@ import sys
 
 # Import system modules
 import sensors
+import fram
 
 # Set up logging and log boot time
 boottime = int(time.time() * 1000)
@@ -73,19 +74,14 @@ if __name__ == '__main__':
         processQueue = multiprocessing.Queue()
         # Accept command line arguments
         #arguments = sys.argv
-
-        # Primary experiment (360 camera and arm)
-        #mainThread = Process(target=main(arguments))
-        #mainThread.start()
         
         # Secondary experiment (radiation RAM)
-        #framExperiment = Process(target=fram)
-        #framExperiment.start()
+        framExperimentThread = multiprocessing.Process(target=fram.main)
+        framExperimentThread.start()
 
         # Tertiary experiment (sensors)
         sensorThread = multiprocessing.Process(target=sensors.main)
         sensorThread.start()
-        time.sleep(2)
 
         # Prim
         #p2.join()
