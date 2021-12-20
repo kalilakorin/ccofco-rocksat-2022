@@ -58,7 +58,7 @@ def main():
     logging.info('Opened sensor data file for writing: ' + datafileName)
 
     # CSV header line
-    csvheader = 'Time,'
+    csvheader = 'Time'
     if mpl115a2 != None: csvheader += ',MPL115A2 Temperature, MPL115A2 Pressure'
     if bme280 != None: csvheader += ',BME280 Temperature, BME280 Pressure, BME280 Humidity'
     datafile.write(csvheader + '\n')
@@ -71,8 +71,8 @@ def main():
         csvline = str(int(time.time() * 1000))
         
         # Add entries to the CSV line based on the presence of those particular sensors
-        if mpl115a2 != None: csvline != f',{mpl115a2.temperature},{mpl115a2.pressure}'
-        if bme280 != None: csvline != f',{bme280.temperature},{bme280.pressure},{bme280.relative_humidity}'
+        if mpl115a2 != None: csvline += f',{mpl115a2.temperature},{mpl115a2.pressure}'
+        if bme280 != None: csvline += f',{bme280.temperature},{bme280.pressure},{bme280.relative_humidity}'
         
         datafile.write(csvline + '\n')
         # Print the CSV line to the console if the file is running standalone
