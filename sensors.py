@@ -16,6 +16,7 @@ import busio
 
 import adafruit_mpl115a2
 from adafruit_bme280 import basic as adafruit_bme280
+import adafruit_vl53l0x
 
 # Acquire the existing logger
 try:
@@ -50,6 +51,12 @@ def main():
         bme280 = None
         logging.error('Failed to enable BME280 (temperature, pressure, humidity) sensor')
 
+    try:
+        vl53l1x = adafruit_vl53l0x.VL53L0X(i2c)
+    except:
+        vl53l1x = None
+        logging.error('Failed to enable VL53L0X (distance) sensor')
+
     logging.info('Sensors initialized')
 
     # Start the sensor output file
@@ -61,6 +68,7 @@ def main():
     csvheader = 'Time'
     if mpl115a2 != None: csvheader += ',MPL115A2 Temperature, MPL115A2 Pressure'
     if bme280 != None: csvheader += ',BME280 Temperature, BME280 Pressure, BME280 Humidity'
+    if vl53l1x != None: csvheader += ',vl53l1x Distance'
     datafile.write(csvheader + '\n')
     logging.info(f'Sensor file CSV columns are as follows: {csvheader}')
 
@@ -73,6 +81,7 @@ def main():
         # Add entries to the CSV line based on the presence of those particular sensors
         if mpl115a2 != None: csvline += f',{mpl115a2.temperature},{mpl115a2.pressure}'
         if bme280 != None: csvline += f',{bme280.temperature},{bme280.pressure},{bme280.relative_humidity}'
+        if vl53l1x != None: csvline += f',{vl53l1x.get_distance}'
         
         datafile.write(csvline + '\n')
         # Print the CSV line to the console if the file is running standalone

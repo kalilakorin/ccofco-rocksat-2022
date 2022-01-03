@@ -34,5 +34,7 @@ sudo pip3 install adafruit-blinka
 sudo pip3 install adafruit-circuitpython-fram
 sudo pip3 install adafruit-circuitpython-mpl115a2
 sudo pip3 install adafruit-circuitpython-bme280
+sudo pip3 install adafruit-circuitpython-vl53l0x
+
 
 echo "   *** DONE ***   "
