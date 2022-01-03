@@ -57,7 +57,7 @@ def main():
         vl53l1x.start_ranging(1)
     except:
         vl53l1x = None
-        logging.error('Failed to enable VL53L0X (distance) sensor')
+        logging.error('Failed to enable VL53L1X (distance) sensor')
 
     logging.info('Sensors initialized')
 
