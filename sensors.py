@@ -53,6 +53,10 @@ def main():
 
     try:
         vl53l1x = adafruit_vl53l0x.VL53L0X(i2c)
+        # vl53l1x = adafruit_vl53l0x.VL53L0X(i2c_bus=1,i2c_address=0x29)
+        # vl53l1x.open()
+        # vl53l1x.start_ranging(adafruit_vl53l0x.Vl53l0xAccuracyMode.BETTER)
+
     except:
         vl53l1x = None
         logging.error('Failed to enable VL53L0X (distance) sensor')
