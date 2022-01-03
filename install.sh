@@ -34,7 +34,7 @@ sudo pip3 install adafruit-blinka
 sudo pip3 install adafruit-circuitpython-fram
 sudo pip3 install adafruit-circuitpython-mpl115a2
 sudo pip3 install adafruit-circuitpython-bme280
-sudo pip3 install adafruit-circuitpython-vl53l0x
+sudo pip3 install vl53l1x #sudo pip3 install smbus2 # will uncomment if we need it
 
 
 echo "   *** DONE ***   "

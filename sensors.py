@@ -16,7 +16,7 @@ import busio
 
 import adafruit_mpl115a2
 from adafruit_bme280 import basic as adafruit_bme280
-import adafruit_vl53l0x
+import vl53l0x
 
 # Acquire the existing logger
 try:
