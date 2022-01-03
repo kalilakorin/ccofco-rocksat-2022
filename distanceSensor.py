@@ -1,6 +1,6 @@
 ### Testings distance sensor
 
-import VL53l1X
+import VL53L1X
 import time
 from datetime import datetime
 
