@@ -26,12 +26,12 @@ import board
 i2c = board.I2C()
 
 distance = adafruit_vl53l1x.VL53L1X(i2c)
-distance.distance_mode = 1
+distance.distance_mode = 2
 distance.start_ranging()
 while True:
     if distance.data_ready:
-        print("{}".format(distance.distance))
-        time.sleep(1.0)
+        print(distance.distance)
+        time.sleep(0.1)
 
 
 
