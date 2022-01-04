@@ -10,6 +10,7 @@
 from time import sleep
 import time
 import logging
+import multiprocessing as multiprocessing
 
 import board
 import busio
@@ -61,29 +62,55 @@ def main():
             fram[boardNo] = None
             logging.error(f'FRAM{str(boardNo)} not detected')
 
+    # ** Define all sub methods used throughout experiment tirals
+    # Write the source image to the provided FRAM board object
+    def writeBoard(framBoard):
+        i = 0
+        for byte in sourceByteArray:
+            framBoard[i] = byte
+            i += 1
+
+    # Read back the contents of all FRAM boards and write to file
+    def readBoard(framBoard, boardNo, trialNo):
+        cooked = framBoard[0:len(sourceByteArray)]
+        resultFile = open(f'data-fram__trial{str(trialNo)}__board{str(boardNo)}.jpg', 'wb')
+        resultFile.write(bytes(cooked))
+        resultFile.close()
+
+    # Write all zeros to the FRAM boards present
+    def eraseBoard(framBoard):
+        framBoard[0:len(fram)] = [0] * len(fram)
+
+    experimentMultiThreadingQueue = multiprocessing.Queue()
     experimentTrial = 1
     while True:
         logging.info(f'Beginning FRAM experiment trial no. {str(experimentTrial)}')
-        # Write the source image each FRAM board present in the array
+            
+        # Create threads for writing source image
+        threads = []
         for framBoard in fram:
-            if framBoard != None: framBoard[0:len(sourceByteArray)] = sourceByteArray
+            if framBoard != None: threads.append(multiprocessing.Process(target=writeBoard, args=(framBoard)))
+        # Wait for all threads to close
+        for thread in threads:
+            thread.join()
         
-        sleep(FRAM_COOK_DURATION)
-
-        # Read back the contents of all FRAM boards
-        returned = [None] * 8
-        boardNo = 0
+        # Create threads for reading data
+        threads = []
+        i = 0
         for framBoard in fram:
-            if framBoard != None:
-                cooked = framBoard[0:len(sourceByteArray)]
-                returned[boardNo] = cooked
-            boardNo += 1
+            if framBoard != None: threads.append(multiprocessing.Process(target=readBoard, args=(framBoard, i, experimentTrial)))
+            i += 1
+        # Wait for all threads to close
+        for thread in threads:
+            thread.join()
 
-        print(returned)
-
-        # Write all zeros to the FRAM boards present
+        # Create threads for erasing all boards
+        threads = []
         for framBoard in fram:
-            if framBoard != None: framBoard[0:len(fram)] = [0] * len(fram)
+            if framBoard != None: threads.append(multiprocessing.Process(target=eraseBoard, args=(framBoard)))
+        # Wait for all threads to close
+        for thread in threads:
+            thread.join()
 
         experimentTrial += 1
 
