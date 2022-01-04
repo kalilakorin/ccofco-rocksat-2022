@@ -52,12 +52,12 @@ def main():
         logging.error('Failed to enable BME280 (temperature, pressure, humidity) sensor')
     # Init vl53l1x distance sensor
     try:
-        vl53l1x = VL53l1X.VL53L1X(i2c_bus=1, i2c_address=0x29)
+        vl53l1x = VL53L1X.VL53L1X(i2c_bus=1, i2c_address=0x29)
         vl53l1x.open()
         vl53l1x.start_ranging(1)
     except:
         vl53l1x = None
-        logging.error('Failed to enable VL53L0X (distance) sensor')
+        logging.error('Failed to enable VL53L1X (distance) sensor')
 
     logging.info('Sensors initialized')
 
