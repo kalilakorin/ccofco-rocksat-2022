@@ -24,14 +24,18 @@ except:
 def main():
     # Configure & initialize the motor hat and GPIO pins
     logging.info('Initializing motor hat')
+    # GPIO pin assignment
+    try:
+        GPIO.setmode(GPIO.BOARD)  # Pin# not GPIO#
+        GPIO.setup(13, GPIO.IN)  # TE-1 around +85 seconds
+        GPIO.setup(15, GPIO.IN)  # Extension Limit Switch
+        GPIO.setup(16, GPIO.IN)  # TE-2 around +220 seconds
+        GPIO.setup(18, GPIO.IN)  # Retraction Limit Switch
+        motor = MotorKit()
+    except:
+        logger.critical('Failed to initialize GPIO pins and motor hat ')
 
-    GPIO.setmode(GPIO.BOARD)  # Pin# not GPIO#
-    GPIO.setup(13, GPIO.IN)  # TE-1 around +85 seconds
-    GPIO.setup(15, GPIO.IN)  # Extension Limit Switch
-    GPIO.setup(16, GPIO.IN)  # TE-2 around +220 seconds
-    GPIO.setup(18, GPIO.IN)  # Retraction Limit Switch
 
-    motor = MotorKit()
 
     # wait for TE-1 signal
     while True:
