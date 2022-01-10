@@ -20,10 +20,15 @@ except:
     print('Unable to acquire the global logger object, assuming that armMotor.py is being run on its own')
 
 
+''' might need to enable i2c as well?  I am not sure.  I know the motor hat is
+ addressed in I2C but the git I was using did not have I2C enabled'''
+
+
 # Main motor hat program loop
 def main():
     # Configure & initialize the motor hat and GPIO pins
     logging.info('Initializing motor hat')
+
     # GPIO pin assignment
     try:
         GPIO.setmode(GPIO.BOARD)  # Pin# not GPIO#
@@ -34,6 +39,7 @@ def main():
         motor = MotorKit()
     except:
         logger.critical('Failed to initialize GPIO pins and motor hat ')
+        return
 
 
 
