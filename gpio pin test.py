@@ -37,21 +37,27 @@ while True :
     if GPIO.input (13) :
         break
 
+
 print ("TE-1 Detected...\n\n")
 # wait for extension limit switch activation
 while True :
     if GPIO.input (15) :
         break
+
 print ("Extension Stop Detected...\n\n")
 # wait for TE-2 signal
 while True :
     if GPIO.input (16) :
         break
+
 print ("TE-2 Detected...\n\n")
 # wait for retraction limit switch activation
 while True :
     if GPIO.input (18) :
         break
-print ("Retraction Stop Detected...\n\n")
+
+
 
 GPIO.cleanup ()
+
+print ("Retraction Stop Detected...\n\n")
