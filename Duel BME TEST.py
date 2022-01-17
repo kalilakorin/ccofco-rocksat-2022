@@ -14,5 +14,5 @@ bme280b.sea_level_pressure = 1013.25
 
 
 for i in range(50):
-    print(bme280a.temperature + ' a')
-    print(bme280b.temperature + ' b')
+    print(str(bme280a.temperature) + ' a')
+    print(str(bme280b.temperature) + ' b')
