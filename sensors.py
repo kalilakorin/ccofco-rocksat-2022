@@ -43,9 +43,17 @@ def main():
     except: 
         mpl115a2 = None
         logging.error('Failed to enable MPL115A2 sensor')
-    # Init bme280
+    # Init bme280 Outside
     try:
-        bme280 = adafruit_bme280.Adafruit_BME280_I2C(i2c)
+        bme280 = adafruit_bme280.Adafruit_BME280_I2C(0x77) #adress 0x77
+        bme280.sea_level_pressure = 1013.25  #https://forecast.weather.gov/data/obhistory/KWAL.html set to 'sea level (mb)'
+    except:
+        bme280 = None
+        logging.error('Failed to enable BME280 (temperature, pressure, humidity) sensor')
+
+    try:
+        bme280 = adafruit_bme280.Adafruit_BME280_I2C(0x76) #adress 0x77
+        bme280.sea_level_pressure = 1013.25  #https://forecast.weather.gov/data/obhistory/KWAL.html set to 'sea level (mb)'
     except:
         bme280 = None
         logging.error('Failed to enable BME280 (temperature, pressure, humidity) sensor')
