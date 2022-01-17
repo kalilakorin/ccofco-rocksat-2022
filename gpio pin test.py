@@ -9,8 +9,9 @@ GPIO.setup(16, GPIO.IN)  # TE-2 around +220 seconds
 GPIO.setup(18, GPIO.IN)  # Retraction Limit Switch
 
 while True:
-    if GPIO.input(13) != True:
-        print("TE-1 detected")
+    if GPIO.input(13):
+        print("TE-1: " + str(GPIO.input(13)))
+
     else:
         print("...")
 
@@ -27,4 +28,4 @@ while True:
         print("Retraction Limit Switch detected")
     else:
         print("...")
-    sleep(1)
+    sleep(3)
