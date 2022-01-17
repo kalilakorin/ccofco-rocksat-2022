@@ -4,10 +4,10 @@ import RPi.GPIO as GPIO
 
 
 GPIO.setmode(GPIO.BOARD)  # Pin# not GPIO#
-GPIO.setup(13, GPIO.IN)  # TE-1 around +85 seconds
+GPIO.setup(13, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-1 around +85 seconds
 GPIO.setup(15, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # Extension Limit Switch
-GPIO.setup(16, GPIO.IN)  # TE-2 around +220 seconds
-GPIO.setup(18, GPIO.IN)  # Retraction Limit Switch
+GPIO.setup(16, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-2 around +220 seconds
+GPIO.setup(18, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # Retraction Limit Switch
 
 
 
