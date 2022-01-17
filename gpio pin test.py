@@ -2,11 +2,15 @@
 from time import sleep
 import RPi.GPIO as GPIO
 
+
 GPIO.setmode(GPIO.BOARD)  # Pin# not GPIO#
 GPIO.setup(13, GPIO.IN)  # TE-1 around +85 seconds
 GPIO.setup(15, GPIO.IN)  # Extension Limit Switch
 GPIO.setup(16, GPIO.IN)  # TE-2 around +220 seconds
 GPIO.setup(18, GPIO.IN)  # Retraction Limit Switch
+
+
+
 
 while True:
     if GPIO.input(13):
