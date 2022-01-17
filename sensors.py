@@ -45,14 +45,14 @@ def main():
         logging.error('Failed to enable MPL115A2 sensor')
     # Init bme280 Outside
     try:
-        bme280a = adafruit_bme280.Adafruit_BME280_I2C(i2c) #adress 0x77 DEFAULT (outside)
+        bme280a = adafruit_bme280.Adafruit_BME280_I2C(i2c, 0x76) #adress 0x77 DEFAULT (outside)
         bme280a.sea_level_pressure = 1013.25
     except:
         bme280a = None
         logging.error('Failed to enable "outside" BME280 (temperature, pressure, humidity) sensor')
 
     try:
-        bme280b = adafruit_bme280.Adafruit_BME280_I2C(i2c, 0x76) #adress 0x76 ALTERNATIVE (inside EBox)
+        bme280b = adafruit_bme280.Adafruit_BME280_I2C(i2c, 0x77) #adress 0x76 ALTERNATIVE (inside EBox)
         bme280b.sea_level_pressure = 1013.25
     except:
         bme280b = None
