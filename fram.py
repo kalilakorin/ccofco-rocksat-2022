@@ -53,14 +53,15 @@ def main():
         return
 
     # Build an array of board classes dynamically
-    fram = [None] * 8
-    for boardNo in range(0, 8):
-        try:
-            fram[boardNo] = adafruit_fram.FRAM_I2C(i2c, 80 + boardNo) # 0x50 is 80 as int
-            logging.info(f'FRAM{str(boardNo)} size: {str(len(fram[boardNo]))} bytes')
-        except Exception as error:
-            fram[boardNo] = None
-            logging.error(f'FRAM{str(boardNo)} not detected')
+    fram = [None] * 24
+    for channelNo in range(0, 3):
+        for boardNo in range(0, 8):
+            try:
+                fram[boardNo] = adafruit_fram.FRAM_I2C(i2c, 80 + boardNo) # 0x50 is 80 as int
+                logging.info(f'FRAM{str(boardNo)} size: {str(len(fram[boardNo]))} bytes')
+            except Exception as error:
+                fram[boardNo] = None
+                logging.error(f'FRAM{str(boardNo)} not detected')
 
     # ** Define all sub methods used throughout experiment tirals
     # Write the source image to the provided FRAM board object
@@ -81,7 +82,6 @@ def main():
     def eraseBoard(framBoard):
         framBoard[0:len(fram)] = [0] * len(fram)
 
-    experimentMultiThreadingQueue = multiprocessing.Queue()
     experimentTrial = 1
     while True:
         logging.info(f'Beginning FRAM experiment trial no. {str(experimentTrial)}')
