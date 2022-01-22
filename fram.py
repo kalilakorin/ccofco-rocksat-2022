@@ -16,6 +16,7 @@ import board
 import busio
 
 import adafruit_fram
+import adafruit_tca9548a
 
 # Configuration
 FRAM_COOK_DURATION = 0
@@ -55,12 +56,21 @@ def main():
     # Build an array of board classes dynamically
     fram = [None] * 24
     for channelNo in range(0, 3):
+        try:
+            tca = adafruit_tca9548a.TCA9548A(i2c, 112 + channelNo)
+            logging.info(f'Initialized multiplexer no. {str(channelNo)}')
+        except:
+            # If we can not get the multiplexer to work move on because we will not be able to get any boards off of it
+            logging.info(f'Failed to initialize multiplexer no. {str(channelNo)}')
+            continue
+        # For each board that should be connected to the
         for boardNo in range(0, 8):
             try:
-                fram[boardNo] = adafruit_fram.FRAM_I2C(i2c, 80 + boardNo) # 0x50 is 80 as int
-                logging.info(f'FRAM{str(boardNo)} size: {str(len(fram[boardNo]))} bytes')
+                globalBoardNo = boardNo + (8 * channelNo)
+                fram[globalBoardNo] = adafruit_fram.FRAM_I2C(tca[boardNo], 80) # 0x50 is 80 as int
+                logging.info(f'FRAM{str(boardNo)} size: {str(len(fram[globalBoardNo]))} bytes')
             except Exception as error:
-                fram[boardNo] = None
+                fram[globalBoardNo] = None
                 logging.error(f'FRAM{str(boardNo)} not detected')
 
     # ** Define all sub methods used throughout experiment tirals
