@@ -16,6 +16,7 @@ import busio
 
 import adafruit_mpl115a2
 from adafruit_bme280 import basic as adafruit_bme280
+import adafruit_vl53l1x
 
 # Acquire the existing logger
 try:
@@ -46,17 +47,22 @@ def main():
     # Init bme280 Outside
     try:
         bme280a = adafruit_bme280.Adafruit_BME280_I2C(i2c) #adress 0x77 DEFAULT (outside)
-        
     except:
         bme280a = None
         logging.error('Failed to enable "outside" BME280 (temperature, pressure, humidity) sensor')
-
+    # Init bme280 Inside
     try:
         bme280b = adafruit_bme280.Adafruit_BME280_I2C(i2c, 0x76) #adress 0x76 ALTERNATIVE (inside EBox)
-
     except:
         bme280b = None
-        logging.error('Failed to enable "inside" BME280 (temperature, pressure, humidity) sensor')
+        logging.error('Failed to enable BME280 (temperature, pressure, humidity) sensor')
+    # Init vl53l1x distance sensor
+    try:
+        vl53l1x = adafruit_vl53l1x.VL53L1X(i2c)
+        vl53l1x.start_ranging()
+    except:
+        vl53l1x = None
+        logging.error('Failed to enable VL53L1X (distance) sensor')
 
     logging.info('Sensors initialized')
 
@@ -68,8 +74,10 @@ def main():
     # CSV header line
     csvheader = 'Time'
     if mpl115a2 != None: csvheader += ',MPL115A2 Temperature, MPL115A2 Pressure'
+    if vl53l1x != None: csvheader += ',vl53l1x Distance'
     if bme280a != None: csvheader += ',Outside BME280 Temperature, Outside BME280 Pressure, Outside BME280 Humidity'
     if bme280b != None : csvheader += ',Inside BME280 Temperature, Inside BME280 Pressure, Inside BME280 Humidity'
+
     datafile.write(csvheader + '\n')
     logging.info(f'Sensor file CSV columns are as follows: {csvheader}')
 
@@ -81,6 +89,7 @@ def main():
         
         # Add entries to the CSV line based on the presence of those particular sensors
         if mpl115a2 != None: csvline += f',{mpl115a2.temperature},{mpl115a2.pressure}'
+        if vl53l1x != None: csvline += f',{vl53l1x.distance}'
         if bme280a != None: csvline += f',{bme280a.temperature},{bme280a.pressure},{bme280a.relative_humidity}'
         if bme280b != None : csvline += f',{bme280b.temperature},{bme280b.pressure},{bme280b.relative_humidity}'
         
