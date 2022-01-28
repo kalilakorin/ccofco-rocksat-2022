@@ -42,8 +42,10 @@ import sys
 import sensors
 import fram
 
+# Create a log folder if it does not exist yet
+os.system('mkdir -p ./logs')
 # Set up logging and log boot time
-boottime = int(time.time() * 1000)
+boottime = int(time.time())
 rotatingFileHandler = RotatingFileHandler(
  	filename=f'logs/rocksat_payload_{str(boottime)}.log', 
   	mode='a',
@@ -73,18 +75,21 @@ if __name__ == '__main__':
         multiprocessing.set_start_method('fork')
         processQueue = multiprocessing.Queue()
         # Accept command line arguments
-        #arguments = sys.argv
+        # If no command line arguments are passed the script will assume that it is running in 
+        arguments = sys.argv
         
         # Secondary experiment (radiation RAM)
-        framExperimentThread = multiprocessing.Process(target=fram.main)
-        framExperimentThread.start()
+        if ('--fram' in arguments or len(arguments) == 1):
+            framExperimentThread = multiprocessing.Process(target=fram.main)
+            framExperimentThread.start()
 
         # Tertiary experiment (sensors)
-        sensorThread = multiprocessing.Process(target=sensors.main)
-        sensorThread.start()
+        if ('--sensors' in arguments or len(arguments) == 1):
+            sensorThread = multiprocessing.Process(target=sensors.main)
+            sensorThread.start()
 
         # Prim
-        #p2.join()
+        #if framExperimentThread: framExperimentThread.join()
         #p1.terminate()
     except KeyboardInterrupt:
         print ('Caught KeyboardInterrupt exiting')
