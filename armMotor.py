@@ -10,6 +10,7 @@
 
 # Import modules
 import time
+import logging
 import RPi.GPIO as GPIO
 from adafruit_motorkit import MotorKit
 
