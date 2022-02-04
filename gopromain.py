@@ -2,7 +2,7 @@ import argparse
 import asyncio
 import logging
 import signal
-import goprocommands
+import commands
 
 from bleak import BleakClient
 from bleak import discover
