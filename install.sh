@@ -40,6 +40,6 @@ sudo pip3 install adafruit-circuitpython-vl53l1x
 #Install the libraries/modules for the gopro connection
 sudo pip install open-gopro #open gopro so the pi and gopro can interact
 sudo pip install goprocam #gopro api
-sudo pipenv install gopro-ble-py-2 #ble control for gopro
+sudo pip install gopro-ble-py-2 #ble control for gopro
 
 echo "   *** DONE ***   "
