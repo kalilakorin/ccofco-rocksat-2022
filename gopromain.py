@@ -1,13 +1,14 @@
-import asyncio
-from bleak import discover
-from bleak import BleakClient, BleakScanner
-import logging
-import commands
-from termcolor import colored
 import argparse
+import asyncio
+import logging
 import signal
-from prettytable import PrettyTable
+import goprocommands
+
+from bleak import BleakClient
+from bleak import discover
 from goprocam import constants
+from prettytable import PrettyTable
+from termcolor import colored
 
 camera_info_chars = {"00002a00-0000-1000-8000-00805f9b34fb": {
     "name": "Camera ID"
