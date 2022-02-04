@@ -37,4 +37,9 @@ sudo pip3 install adafruit-circuitpython-bme280
 #sudo pip3 install vl53l1x #sudo pip3 install smbus2 # will uncomment if we need it
 sudo pip3 install adafruit-circuitpython-vl53l1x
 
+#Install the libraries/modules for the gopro connection
+sudo pip install open-gopro #open gopro so the pi and gopro can interact
+sudo pip install goprocam #gopro api
+sudo pipenv install gopro-ble-py-2 #ble control for gopro
+
 echo "   *** DONE ***   "
