@@ -46,7 +46,9 @@ while True :
     if GPIO.input (pin1) :
         break
 
-motor.motor1.throttle = .69
+motor.motor1.throttle = 1
+time.sleep(0.5)
+motor.motor1.throttle = .75
 print ("TE-1 Detected...\n\n")
 # wait for extension limit switch activation
 while True :
