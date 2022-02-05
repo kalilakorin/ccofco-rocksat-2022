@@ -49,8 +49,8 @@ while True :
         break
 
 motor.motor1.throttle = 1
-time.sleep(1)
-motor.motor1.throttle = .8
+#time.sleep(1)
+#motor.motor1.throttle = .8
 print ("TE-1 Detected...\n\n")
 # wait for extension limit switch activation
 while True :
