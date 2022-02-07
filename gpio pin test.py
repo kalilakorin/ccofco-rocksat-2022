@@ -28,6 +28,7 @@ while True :
 print ("TE-1 Detected...\n\n")
 # wait for extension limit switch activation
 while True:
+    print("...")
     if GPIO.input (pin2):
         break
 
