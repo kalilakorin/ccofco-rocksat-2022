@@ -10,6 +10,7 @@
 from time import sleep
 import time
 import logging
+import os
 
 import board
 import busio
@@ -66,6 +67,8 @@ def main():
 
     logging.info('Sensors initialized')
 
+    # Create the output directory if it does not exist yet
+    os.system('mkdir -p ./data-sensors')
     # Start the sensor output file
     datafileName = './data-sensors/sensors-' + str(int(time.time() * 1000)) + '.csv'
     datafile = open(datafileName, 'w') 
