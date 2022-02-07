@@ -17,10 +17,9 @@ GPIO.setup(pin1, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-1 around +85 seconds
 GPIO.setup(pin2, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # Extension Limit Switch   GPIO22 yellow
 GPIO.setup(pin3, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-2 around +220 seconds GPIO23 blue
 GPIO.setup(pin4, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # Retraction Limit Switch  GPIO24 yellow
-
+print("pin and motor initialized")
 # wait for TE-1 signal
-while True :
-    print("...")
+while True:
     if GPIO.input (pin1):
         break
 
@@ -28,7 +27,6 @@ while True :
 print ("TE-1 Detected...\n\n")
 # wait for extension limit switch activation
 while True:
-    print("...")
     if GPIO.input (pin2):
         break
 
