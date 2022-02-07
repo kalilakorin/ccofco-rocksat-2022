@@ -6,13 +6,13 @@ import time
 from adafruit_motorkit import MotorKit
 
 #motor = MotorKit()
-pin1 = 13
-pin2 = 15
-pin3 = 16
-pin4 = 18
+pin1 = 27
+pin2 = 22
+pin3 = 23
+pin4 = 24
 
 
-GPIO.setmode(GPIO.BOARD) # Pin# not GPIO#
+GPIO.setmode(GPIO.BCM) # Pin# not GPIO#
 GPIO.setup(pin1, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-1 around +85 seconds  GPIO27 blue
 GPIO.setup(pin2, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # Extension Limit Switch   GPIO22 yellow
 GPIO.setup(pin3, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-2 around +220 seconds GPIO23 blue

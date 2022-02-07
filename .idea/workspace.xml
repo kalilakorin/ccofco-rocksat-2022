@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ac40f08f-813b-4d8d-9532-0a9020db77e1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/GPIOtest.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gpio pin test.py" beforeDir="false" afterPath="$PROJECT_DIR$/gpio pin test.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
