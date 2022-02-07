@@ -29,7 +29,7 @@ print("Start...\n\n")
 # Main motor hat program loop
 def main():
     # Configure & initialize the motor hat and GPIO pins
-    logging.info('Initializing motor hat')
+    #logging.info('Initializing motor hat')
 
     te1 = 27 # TE-1
     lse = 22 # Limit Switch Extension
