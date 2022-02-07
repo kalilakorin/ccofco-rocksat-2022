@@ -14,11 +14,12 @@ import logging
 import RPi.GPIO as GPIO
 from adafruit_motorkit import MotorKit
 
-try:
-    logger = logging.getLogger(__name__)
-except:
-    logger = None
-    print('Unable to acquire the global logger object, assuming that armMotor.py is being run on its own')
+print("Start...\n\n")
+# try:
+#     logger = logging.getLogger(__name__)
+# except:
+#     logger = None
+#     print('Unable to acquire the global logger object, assuming that armMotor.py is being run on its own')
 
 
 ''' might need to enable i2c as well?  I am not sure.  I know the motor hat is
