@@ -54,9 +54,11 @@ def main():
     while True:
         if GPIO.input(te1):
             break
+
     #logger.info ('TE-1 detected: ' + str (int (time.time () * 1000)))
     # set throttle (extension)
     motor.motor1.throttle = 1.0
+    print ("TE-1 Detected...\n\n")
     # wait for extension limit switch activation
     while True:
         if GPIO.input(lse):
@@ -64,6 +66,7 @@ def main():
     #logger.info ('Extension stop detected: ' + str (int (time.time () * 1000)))
     # set throttle (stop)
     motor.motor1.throttle = 0
+    print ("Extension Stop Detected...\n\n")
     # wait for TE-2 signal
     while True:
         if GPIO.input(te2):
@@ -71,6 +74,7 @@ def main():
     #logger.info ('TE-2 detected: ' + str (int (time.time () * 1000)))
     # set throttle (retraction)
     motor.motor1.throttle = -1.0
+    print ("TE-2 Detected...\n\n")
     # wait for retraction limit switch activation
     while True:
         if GPIO.input(lsr):
@@ -78,8 +82,9 @@ def main():
     #logger.info ('Retraction stop detected: ' + str (int (time.time () * 1000)))
     # set throttle (stop)
     motor.motor1.throttle = 0
-
+    print ("Retraction Stop Detected...\n\n")
     GPIO.cleanup()
+
 
 
 if __name__ == '__main__':
