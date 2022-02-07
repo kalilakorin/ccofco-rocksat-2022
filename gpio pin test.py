@@ -23,28 +23,28 @@ while True:
     if GPIO.input (pin1):
         break
 
-#motor.motor1.throttle = 1.0
+motor.motor1.throttle = 1.0
 print ("TE-1 Detected...\n\n")
 # wait for extension limit switch activation
 while True:
     if GPIO.input (pin2):
         break
 
-#motor.motor1.throttle = 0
+motor.motor1.throttle = 0
 print ("Extension Stop Detected...\n\n")
 # wait for TE-2 signal
 while True :
     if GPIO.input (pin3):
         break
 
-#motor.motor1.throttle = -.75
+motor.motor1.throttle = -.75
 print ("TE-2 Detected...\n\n")
 # wait for retraction limit switch activation
 while True :
     if GPIO.input (pin4):
         break
 
-#motor.motor1.throttle = 0
+motor.motor1.throttle = 0
 print ("Retraction Stop Detected...\n\n")
 
 GPIO.cleanup ()
