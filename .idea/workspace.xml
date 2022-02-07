@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ac40f08f-813b-4d8d-9532-0a9020db77e1" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/armMotor.py" beforeDir="false" afterPath="$PROJECT_DIR$/armMotor.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
