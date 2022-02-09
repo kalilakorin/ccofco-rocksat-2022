@@ -78,13 +78,13 @@ def main():
             continue
         # For each board that should be connected to the
         for boardNo in range(0, 8):
+            globalBoardNo = boardNo + (8 * channelNo)
             try:
-                globalBoardNo = boardNo + (8 * channelNo)
-                fram[globalBoardNo] = adafruit_fram.FRAM_I2C(tca[boardNo]) # 0x50 is 80 as int
+                fram[globalBoardNo] = adafruit_fram.FRAM_I2C(tca[boardNo], 80)
                 logging.info(f'FRAM{str(globalBoardNo)} size: {str(len(fram[globalBoardNo]))} bytes')
             except Exception as error:
                 fram[globalBoardNo] = None
-                logging.error(f'FRAM{str(globalBoardNo)} not detected')
+                logging.error(f'FRAM{str(globalBoardNo)} not detected. {error}')
 
     # ** Define all sub methods used throughout experiment tirals
     # Write the source image to the provided FRAM board object
