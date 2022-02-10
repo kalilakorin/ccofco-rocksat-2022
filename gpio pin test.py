@@ -5,7 +5,7 @@ import RPi.GPIO as GPIO
 import time
 from adafruit_motorkit import MotorKit
 
-# motor = MotorKit()
+motor = MotorKit()
 pin1 = 27
 pin2 = 22
 pin3 = 23
