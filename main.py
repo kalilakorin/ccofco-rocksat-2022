@@ -41,6 +41,8 @@ import sys
 # Import system modules
 import sensors
 import fram
+import armMotor
+
 
 # Create a log folder if it does not exist yet
 os.system('mkdir -p ./logs')
@@ -75,6 +77,7 @@ if __name__ == '__main__':
         multiprocessing.set_start_method('fork')
         processQueue = multiprocessing.Queue()
         # Accept command line arguments
+        
         # If no command line arguments are passed the script will assume that it is running in 
         arguments = sys.argv
         
@@ -87,6 +90,11 @@ if __name__ == '__main__':
         if ('--sensors' in arguments or len(arguments) == 1):
             sensorThread = multiprocessing.Process(target=sensors.main)
             sensorThread.start()
+
+        # Arm Motor functions
+        if ('--motor' in arguments or len(arguments) == 1):
+            armMotor = multiprocessing.Process(target=armMotor.main)
+            armMotor.start()
 
         # Prim
         #if framExperimentThread: framExperimentThread.join()
