@@ -20,7 +20,7 @@ try:
     print("logger detected")
 except:
     logger = None
-    print('Unable to acquire the global logger object, assuming that armMotor.py is being run on its own')
+    print('Unable to acquire the global logger object, assuming that armmotor.py is being run on its own')
 
 
 # Main motor hat program loop

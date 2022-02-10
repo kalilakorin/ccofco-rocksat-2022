@@ -41,7 +41,7 @@ import sys
 # Import system modules
 import sensors
 import fram
-import armMotor
+import armmotor
 
 
 # Set up logging and log boot time
@@ -88,8 +88,8 @@ if __name__ == '__main__':
         sensorThread.start()
 
         # Arm Motor functions
-        armMotor = multiprocessing.Process (target=armMotor.main)
-        armMotor.start ()
+        armMotorThread = multiprocessing.Process (target=armmotor.main)
+        armmotor.start ()
 
 
         # Prim
