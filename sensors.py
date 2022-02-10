@@ -6,16 +6,21 @@
         Konstantin Zaremski
 '''
 
-# Import modules
+# Import system modules
 from time import sleep
 import time
 import logging
+import os
 
+# Adafruit circutpython
 import board
 import busio
 
+# Import sensor modules
 import adafruit_mpl115a2
 from adafruit_bme280 import basic as adafruit_bme280
+import adafruit_vl53l1x
+import adafruit_adxl34x
 
 # Acquire the existing logger
 try:
@@ -43,15 +48,36 @@ def main():
     except: 
         mpl115a2 = None
         logging.error('Failed to enable MPL115A2 sensor')
-    # Init bme280
+    # Init bme280 Outside
     try:
-        bme280 = adafruit_bme280.Adafruit_BME280_I2C(i2c)
+        bme280a = adafruit_bme280.Adafruit_BME280_I2C(i2c) #address 0x77 DEFAULT (outside)
     except:
-        bme280 = None
+        bme280a = None
+        logging.error('Failed to enable "outside" BME280 (temperature, pressure, humidity) sensor')
+    # Init bme280 Inside
+    try:
+        bme280b = adafruit_bme280.Adafruit_BME280_I2C(i2c, 0x76) #address 0x76 ALTERNATIVE (inside EBox)
+    except:
+        bme280b = None
         logging.error('Failed to enable BME280 (temperature, pressure, humidity) sensor')
+    # Init vl53l1x distance sensor
+    try:
+        vl53l1x = adafruit_vl53l1x.VL53L1X(i2c)
+        vl53l1x.start_ranging()
+    except:
+        vl53l1x = None
+        logging.error('Failed to enable VL53L1X (distance) sensor')
+    # ADXL34x accelerometer
+    try:
+        adxl34x = adafruit_adxl34x.ADXL345(i2c)
+    except:
+        adxl34x = None
+        logging.error('Failed to enable ADXL34X (accelerometer) sensor')
 
     logging.info('Sensors initialized')
 
+    # Create the output directory if it does not exist yet
+    os.system('mkdir -p ./data-sensors')
     # Start the sensor output file
     datafileName = './data-sensors/sensors-' + str(int(time.time() * 1000)) + '.csv'
     datafile = open(datafileName, 'w') 
@@ -60,7 +86,11 @@ def main():
     # CSV header line
     csvheader = 'Time'
     if mpl115a2 != None: csvheader += ',MPL115A2 Temperature, MPL115A2 Pressure'
-    if bme280 != None: csvheader += ',BME280 Temperature, BME280 Pressure, BME280 Humidity'
+    if vl53l1x != None: csvheader += ',vl53l1x Distance'
+    if bme280a != None: csvheader += ',Outside BME280 Temperature, Outside BME280 Pressure, Outside BME280 Humidity'
+    if bme280b != None : csvheader += ',Inside BME280 Temperature, Inside BME280 Pressure, Inside BME280 Humidity'
+    if adxl34x != None: csvheader += ',adxl34x Accelerometer X-axis, adxl34x Accelerometer Y-axis, adxl34x Accelerometer Z-axis'
+
     datafile.write(csvheader + '\n')
     logging.info(f'Sensor file CSV columns are as follows: {csvheader}')
 
@@ -72,7 +102,10 @@ def main():
         
         # Add entries to the CSV line based on the presence of those particular sensors
         if mpl115a2 != None: csvline += f',{mpl115a2.temperature},{mpl115a2.pressure}'
-        if bme280 != None: csvline += f',{bme280.temperature},{bme280.pressure},{bme280.relative_humidity}'
+        if vl53l1x != None: csvline += f',{vl53l1x.distance}'
+        if bme280a != None: csvline += f',{bme280a.temperature},{bme280a.pressure},{bme280a.relative_humidity}'
+        if bme280b != None : csvline += f',{bme280b.temperature},{bme280b.pressure},{bme280b.relative_humidity}'
+        if adxl34x != None : csvline += f',{adxl34x.acceleration[0]},{adxl34x.acceleration[1]},{adxl34x.acceleration[2]}'
         
         datafile.write(csvline + '\n')
         # Print the CSV line to the console if the file is running standalone
