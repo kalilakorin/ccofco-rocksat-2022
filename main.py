@@ -77,9 +77,7 @@ if __name__ == '__main__':
         # Accept command line arguments
         #arguments = sys.argv
 
-        # Arm Motor functions
-        armMotor = multiprocessing.Process(target=armMotor.main)
-        armMotor.start()
+
         
         # Secondary experiment (radiation RAM)
         framExperimentThread = multiprocessing.Process(target=fram.main)
@@ -89,6 +87,9 @@ if __name__ == '__main__':
         sensorThread = multiprocessing.Process(target=sensors.main)
         sensorThread.start()
 
+        # Arm Motor functions
+        armMotor = multiprocessing.Process (target=armMotor.main)
+        armMotor.start ()
 
 
         # Prim
