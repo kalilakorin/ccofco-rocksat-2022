@@ -10,11 +10,12 @@ import time
 gopro.is_verbose = True
 #set the address
 gopro.address = "D1:70:A4:FC:21:4F"
+print('address:', gopro.address)
 
 print(gopro.settings_supported.values())
 
-gopro.settings_supported.__getattribute__("resolution")
-gopro.settings_supported.__setattr__("resolution", "R5K")
+#gopro.settings_supported.__getattribute__("resolution")
+#gopro.settings_supported.__setattr__("resolution", "R5K")
 
 
 '''
