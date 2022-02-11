@@ -1,4 +1,4 @@
-from open_gopro import GoPro, Params
+from open-gopro import GoPro, Params
 
 gopro = GoPro()
 gopro.open()
