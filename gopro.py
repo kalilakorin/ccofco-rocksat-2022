@@ -1,6 +1,5 @@
-from open_gopro import GoPro, Params
+from open_gopro import GoPro
 
-gopro = GoPro()
-gopro.open()
-
-gopro.is_ble_connected
+with GoPro() as gopro:
+    print("Yay! I'm connected via BLE, Wifi, initialized, and ready to send / get data now!")
+    # Send some commands now
