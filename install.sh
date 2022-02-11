@@ -38,6 +38,7 @@ sudo pip3 install adafruit-circuitpython-bme280
 sudo pip3 install adafruit-circuitpython-vl53l1x
 
 #Install the libraries/modules for the gopro connection
+sudo pip3 install pybluez #bluetooth connection ble
 sudo pip3 install open-gopro #open gopro so the pi and gopro can interact
 sudo pip3 install goprocam #gopro api
 sudo pip3 install gopro-ble-py-2 #ble control for gopro
