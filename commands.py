@@ -39,7 +39,7 @@ class Commands:
         ON = bytearray(b'\x03\x17\x01\x01')
         OFF = bytearray(b'\x03\x17\x01\x00')
 
-    # OpenGoPro commands
+    # OpenGoPro commandsc
     class Presets:
         Activity = bytearray(b'\x06\x40\x04\x00\x00\x00\x01')
         BurstPhoto = bytearray(b'\x06\x40\x04\x00\x01\x00\x02')
