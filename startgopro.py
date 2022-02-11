@@ -12,6 +12,8 @@ gopro.is_verbose = True
 gopro.address = "D1:70:A4:FC:21:4F"
 print('address:', gopro.address)
 
+for key, value in gopro.settings_supported.items():
+    print('key:', key, '\tvalue:', value)
 print(gopro.settings_supported.values())
 
 #gopro.settings_supported.__getattribute__("resolution")
