@@ -5,7 +5,7 @@
 import gopromain as gopro
 import time
 
-#--verbose --address "D1:70:A4:FC:21:4F" --command "record start"
+gopromain.py --verbose --address "D1:70:A4:FC:21:4F" --command "record start"
 
 
 '''
