@@ -7,6 +7,8 @@ import time
 
 #--verbose --address "D1:70:A4:FC:21:4F" --command "record start"
 
+
+'''
 gopro.is_verbose = True
 #set the address
 gopro.address = "D1:70:A4:FC:21:4F"
@@ -16,11 +18,13 @@ for key, value in gopro.settings_supported.items():
     print('key:', key, '\tvalue:', value)
 print(gopro.settings_supported.values())
 
+gopro.settings_supported.values("video"="r5k")
+
 #gopro.settings_supported.__getattribute__("resolution")
 #gopro.settings_supported.__setattr__("resolution", "R5K")
 
 
-'''
+
 #try to activate and connect to the gopro
 goproIsOff = True
 if (goproIsOff):
