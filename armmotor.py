@@ -17,13 +17,10 @@ from adafruit_motorkit import MotorKit
 print("Start...\n\n")
 try:
     logger = logging.getLogger(__name__)
+    print("logger detected")
 except:
     logger = None
-    print('Unable to acquire the global logger object, assuming that armMotor.py is being run on its own')
-
-
-''' might need to enable i2c as well?  I am not sure.  I know the motor hat is
- addressed in I2C but the git I was using did not have I2C enabled'''
+    print('Unable to acquire the global logger object, assuming that armmotor.py is being run on its own')
 
 
 # Main motor hat program loop
@@ -49,43 +46,43 @@ def main():
         logger.critical('Failed to initialize GPIO pins and motor hat ')
         return
 
-
-
     # wait for TE-1 signal
     while True:
         if GPIO.input(te1):
             break
-
+    print ("TE-1 Detected...\n\n")
     logger.info ('TE-1 detected: ' + str (int (time.time () * 1000)))
     # set throttle (extension)
     motor.motor1.throttle = 1.0
-    print ("TE-1 Detected...\n\n")
+
     # wait for extension limit switch activation
     while True:
         if GPIO.input(lse):
             break
     logger.info ('Extension stop detected: ' + str (int (time.time () * 1000)))
+    print ("Extension Stop Detected...\n\n")
     # set throttle (stop)
     motor.motor1.throttle = 0
-    print ("Extension Stop Detected...\n\n")
+
     # wait for TE-2 signal
     while True:
         if GPIO.input(te2):
             break
     logger.info ('TE-2 detected: ' + str (int (time.time () * 1000)))
+    print ("TE-2 Detected...\n\n")
     # set throttle (retraction)
     motor.motor1.throttle = -1.0
-    print ("TE-2 Detected...\n\n")
+
     # wait for retraction limit switch activation
     while True:
         if GPIO.input(lsr):
             break
     logger.info ('Retraction stop detected: ' + str (int (time.time () * 1000)))
+    print ("Retraction Stop Detected...\n\n")
     # set throttle (stop)
     motor.motor1.throttle = 0
-    print ("Retraction Stop Detected...\n\n")
-    GPIO.cleanup()
 
+    GPIO.cleanup()
 
 
 if __name__ == '__main__':

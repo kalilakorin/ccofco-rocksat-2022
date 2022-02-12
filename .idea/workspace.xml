@@ -5,7 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ac40f08f-813b-4d8d-9532-0a9020db77e1" name="Changes" comment="">
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/armMotor.py" beforeDir="false" afterPath="$PROJECT_DIR$/armMotor.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/motor test.py" beforeDir="false" />
+>>>>>>> ef601b1440ddb273403a567ee8f60a0aacce421b
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,6 +60,5 @@
         </entry>
       </map>
     </option>
-    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>
