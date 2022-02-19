@@ -91,8 +91,8 @@ def main():
     def writeBoard(framBoard):
         try:
             framBoard[0:len(sourceByteArray)] = sourceByteArray[:]
-        except:
-            logging.error(f'Failed write to {str(framBoard)}')
+        except Exception as err:
+            logging.error(f'Failed write to {str(framBoard)}: "{str(err)}"')
 
     # Read back the contents of all FRAM boards and write to file
     def readBoard(framBoard, boardNo, trialNo):
@@ -125,7 +125,6 @@ def main():
 
     # Main experiment loop
     experimentTrial = 1
-    return
     while True:
         logging.info(f'Beginning FRAM experiment trial no. {str(experimentTrial)}')
             
