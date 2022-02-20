@@ -508,4 +508,4 @@ if __name__ == "__gopromain__":
     loop = asyncio.get_event_loop()
     loop.set_debug(False)
     tasks = asyncio.gather(*(run(add, command_to_run, is_verbose) for add in address))
-    loop.run_until_complete(taskffs)
+    loop.run_until_complete(tasks)
