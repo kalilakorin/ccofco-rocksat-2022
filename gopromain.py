@@ -446,8 +446,8 @@ async def run(address, command_to_run=None, is_verbose=True):
                               chr(int(eval(contents + "." + prefix + val)))
                     await client.write_gatt_char(commands.Characteristics.SettingCharacteristic,
                                                  bytearray(command.encode()))
-                except:
-                    log.error("Bad settings combination.")
+                except Exception as err:
+                    log.error("Bad settings combination. Error: " + str(err))
             else:
                 log.error("Unrecognized command %s" % cmd)
 
