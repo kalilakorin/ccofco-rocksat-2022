@@ -96,6 +96,10 @@ if __name__ == '__main__':
             armMotor = multiprocessing.Process(target=armMotor.main)
             armMotor.start()
 
+        if ('--auxcam' in arguments or len(arguments) == 1):
+            auxCam = multiprocessing.Process(target=auxcam.main)
+            auxCam.start()
+
         # Prim
         #if framExperimentThread: framExperimentThread.join()
         #p1.terminate()
