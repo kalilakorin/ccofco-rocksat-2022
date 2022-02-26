@@ -1,7 +1,7 @@
 import time
 import subprocess
 
-subprocess.call('mkdir -p pics')
+subprocess.call('mkdir -p pics', shell=True)
 # ffmpeg -f v4l2 -video_size 1280x720 -i /dev/video0 -frames 1 out.jpg
 for i in range(0,69):
 
