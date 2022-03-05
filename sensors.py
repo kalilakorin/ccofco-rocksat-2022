@@ -34,29 +34,29 @@ def main():
     # Sensor information and init functions
     sensors = {
         'MPL115A2': {
-            addr: 0x60
-            type: 'temperature, pressure'
-            init: adafruit_mpl115a2.MPL115A2
-        }
+            'addr': 0x60,
+            'type': 'temperature, pressure',
+            'init': adafruit_mpl115a2.MPL115A2
+        },
         'BME280A': {
-            addr: 0x77,
-            type: 'outside temperature, pressure, humidity'
-            init: adafruit_bme280.Adafruit_BME280_I2C
-        }
+            'addr': 0x77,
+            'type': 'outside temperature, pressure, humidity',
+            'init': adafruit_bme280.Adafruit_BME280_I2C
+        },
         'BME280B': {
-            addr: 0x76,
-            type: 'inside temperature, pressure, humidity'
-            init: adafruit_bme280.Adafruit_BME280_I2C
-        }
+            'addr': 0x76,
+            'type': 'inside temperature, pressure, humidity',
+            'init': adafruit_bme280.Adafruit_BME280_I2C
+        },
         'VL53L1X': {
-            addr: 0x29
-            type: 'distance',
-            init: adafruit_vl53l1x.VL53L1X
-        }
+            'addr': 0x29,
+            'type': 'distance',
+            'init': adafruit_vl53l1x.VL53L1X
+        },
         'ADXL34X': {
-            addr: 0x53,
-            type: 'acceleration',
-            init: adafruit_adxl34x.ADXL345
+            'addr': 0x53,
+            'type': 'acceleration',
+            'init': adafruit_adxl34x.ADXL345
         }
     }
 
