@@ -11,6 +11,7 @@ from time import sleep
 import time
 import logging
 import os
+import sys
 import multiprocessing as multiprocessing
 
 import board
@@ -88,8 +89,9 @@ def main():
     i2c['devices2'] = i2c['bus3'].scan()
 
     # Build an array of board classes dynamically
+    busCount = 1 if '--single-fram-bus' in sys.argv else 3
     fram = [None] * 24
-    for busNo in range(0, 3):
+    for busNo in range(0, busCount):
         # For each board that should be connected to the
         for boardNo in range(0, 8):
             globalBoardNo = boardNo + (8 * busNo)
