@@ -82,7 +82,8 @@ def main():
     adxl34x = None
 
     # For each sensor that we have defined
-    for name, sensor in sensors:
+    for name in sensors:
+        sensor = sensors[name]
         # If the address of the sensor is not in the i2c bus, we can skip it
         if sensor.addr not in i2cDevices:
             logging.info(f'{name} ({sensor.type}) was not detected on the i2c bus')
