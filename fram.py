@@ -50,12 +50,12 @@ def main():
     os.system('mkdir -p ./data-fram')
 
     # Configure the I2C busses
-    SDA1 = board.SCL  # I2C bus 0
-    SCL1 = board.SDA
-    SDA2 = board.Dxxx # I2C bus 1
-    SCL2 = board.Dxxx
-    SDA3 = board.Dxxx # I2C bus 2
-    SCL3 = board.Dxxx
+    SDA1 = board.SCL  # I2C bus 0 (SCL 3)
+    SCL1 = board.SDA  #           (SDA 3)
+    SDA2 = board.CE0  # I2C bus 1 (SDA 4)
+    SCL2 = board.MISO #           (SDA 4)
+    SDA3 = board.SCLK # I2C bus 2 (SCL 5)
+    SCL3 = board.MOSI #           (SDA 5)
     i2c = {}
     try:
         i2c['bus0'] = busio.I2C(SCL1, SDA1)
