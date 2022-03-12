@@ -85,16 +85,16 @@ def main():
     for name in sensors:
         sensor = sensors[name]
         # If the address of the sensor is not in the i2c bus, we can skip it
-        if sensor.addr not in i2cDevices:
-            logging.info(f'{name} ({sensor.type}) was not detected on the i2c bus')
+        if sensor['addr'] not in i2cDevices:
+            logging.info(f'{name} ({sensor["type"]}) was not detected on the i2c bus')
             continue
         # Attempt to initialize the sensor
         try:
             # Dynamic assignment to the sensor's variable using the init function defined in the sensors object
-            globals()[name.lower()] = sensor.init(i2c, sensor.addr)
-            logging.info(f'{name} ({sensor.type}) ... OK')
+            globals()[name.lower()] = sensor['init'](i2c, sensor['addr'])
+            logging.info(f'{name} ({sensor["type"]}) ... OK')
         except: 
-            logging.error(f'Failed to enable {name} ({sensor.type}) sensor')
+            logging.error(f'Failed to enable {name} ({sensor["type"]}) sensor')
 
     logging.info('Sensor initialization complete')
 

@@ -83,9 +83,9 @@ def main():
         return
 
     # Find all i2c devices
-    i2c['devices0'] = i2c.bus1.scan()
-    i2c['devices1'] = i2c.bus2.scan()
-    i2c['devices2'] = i2c.bus3.scan()
+    i2c['devices0'] = i2c['bus1'].scan()
+    i2c['devices1'] = i2c['bus2'].scan()
+    i2c['devices2'] = i2c['bus3'].scan()
 
     # Build an array of board classes dynamically
     fram = [None] * 24
