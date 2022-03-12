@@ -17,7 +17,7 @@ import board
 import busio
 
 import adafruit_fram
-import adafruit_tca9548a
+# import adafruit_tca9548a
 
 # Configuration
 FRAM_COOK_DURATION = 0
@@ -49,38 +49,36 @@ def main():
     # Create the output directory if it does not exist yet
     os.system('mkdir -p ./data-fram')
 
-    # Begin i2c
+    # Configure the I2C busses
+    SDA1 = board.SCL  # I2C bus 0
+    SCL1 = board.SDA
+    SDA2 = board.Dxxx # I2C bus 1
+    SCL2 = board.Dxxx
+    SDA3 = board.Dxxx # I2C bus 2
+    SCL3 = board.Dxxx
+    i2c = {}
     try:
-        i2c = busio.I2C(board.SCL, board.SDA)
+        i2c['bus0'] = busio.I2C(SCL1, SDA1)
+        i2c['bus1'] = busio.I2C(SCL2, SDA2)
+        i2c['bus2'] = busio.I2C(SCL3, SDA3)
         logging.info('I2C interface ... OK')
     except: 
         logging.critical('Failed to enable i2c interface, the sensor thread will now crash')
         return
 
     # Find all i2c devices
-    i2cDevices = i2c.scan()
+    i2c['devices0'] = i2c.bus1.scan()
+    i2c['devices1'] = i2c.bus2.scan()
+    i2c['devices2'] = i2c.bus3.scan()
 
     # Build an array of board classes dynamically
     fram = [None] * 24
-    for channelNo in range(0, 3):
-        address = 112 + channelNo
-        # If there is no i2c device at the intended address, we can assume that there is not a multiplexer there
-        if (address not in i2cDevices):
-            logging.error(f'Multiplexer {str(channelNo)} was not detected, skipping')
-            continue
-        # Initialize the multiplexer
-        try:
-            tca = adafruit_tca9548a.TCA9548A(i2c, address)
-            logging.info(f'Initialized multiplexer {str(channelNo)}')
-        except:
-            # If we can not get the multiplexer to work move on because we will not be able to get any boards off of it
-            logging.error(f'Failed to initialize multiplexer {str(channelNo)}')
-            continue
+    for busNo in range(0, 3):
         # For each board that should be connected to the
         for boardNo in range(0, 8):
-            globalBoardNo = boardNo + (8 * channelNo)
+            globalBoardNo = boardNo + (8 * busNo)
             try:
-                fram[globalBoardNo] = adafruit_fram.FRAM_I2C(tca[boardNo], 80)
+                fram[globalBoardNo] = adafruit_fram.FRAM_I2C(i2c['bus' + str(busNo)], 0x50 + hex(boardNo))
                 logging.info(f'FRAM{str(globalBoardNo)} size: {str(len(fram[globalBoardNo]))} bytes')
             except Exception as error:
                 fram[globalBoardNo] = None
