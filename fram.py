@@ -57,13 +57,29 @@ def main():
     SDA3 = board.SCLK # I2C bus 2 (SCL 5)
     SCL3 = board.MOSI #           (SDA 5)
     i2c = {}
+    # I2C interface A
     try:
         i2c['bus0'] = busio.I2C(SCL1, SDA1)
+        logging.info('I2C interface A ... OK')
+    except Exception as error:
+        logging.critical('Failed to enable i2c interface A, the FRAM experiment thread will now crash')
+        logging.critical('Error: ' + str(error))
+        return
+    # I2C interface B
+    try:
         i2c['bus1'] = busio.I2C(SCL2, SDA2)
+        logging.info('I2C interface B ... OK')
+    except Exception as error:
+        logging.critical('Failed to enable i2c interface B, the FRAM experiment thread will now crash')
+        logging.critical('Error: ' + str(error))
+        return
+    # I2C interface C
+    try:
         i2c['bus2'] = busio.I2C(SCL3, SDA3)
-        logging.info('I2C interface ... OK')
-    except: 
-        logging.critical('Failed to enable i2c interface, the sensor thread will now crash')
+        logging.info('I2C interface C ... OK')
+    except Exception as error:
+        logging.critical('Failed to enable i2c interface C, the FRAM experiment thread will now crash')
+        logging.critical('Error: ' + str(error))
         return
 
     # Find all i2c devices
