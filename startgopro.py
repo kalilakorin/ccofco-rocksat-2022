@@ -4,6 +4,7 @@
 
 import gopromain as gopro
 import time
+import subprocess
 
 
 gopro.is_verbose = True
@@ -11,10 +12,11 @@ gopro.is_verbose = True
 gopro.address = "D1:70:A4:FC:21:4F"
 print('address:', gopro.address)
 
+'''
 for key, value in gopro.settings_supported.items():
     print('key:', key, '\tvalue:', value, '\n')
 print(gopro.settings_supported.values(), '\n')
-
+'''
 
 
 #gopro.settings_supported.__getattribute__('video.resolution')
@@ -45,8 +47,11 @@ gopro.commands_supported = "record start"
 #resolution "r5" is 5k360 for the max
 print('Setting default video')
 gopro.settings_supported.setdefault("r5")
-print(gopro.settings_supported.setdefault)
-#gopro.settings_supported.setdefault(resolution)
+
+subprocess.call(f'python3 gopromain.py --verbose --address "D1:70:A4:FC:21:4F" --command "preset maxvideo" --command "record start"', shell=True)
+
+time.sleep(5)
+subprocess.call(f'python3 gopromain.py --verbose --address "D1:70:A4:FC:21:4F" --command "preset maxvideo" --command "record stop"', shell=True)
 
 '''
 from goprocam import GoProCamera, constants
