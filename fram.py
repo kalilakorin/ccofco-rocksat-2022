@@ -51,12 +51,12 @@ def main():
     os.system('mkdir -p ./data-fram')
 
     # Configure the I2C busses
-    SDA1 = board.SCL  # I2C bus 0 (SCL 3)
-    SCL1 = board.SDA  #           (SDA 3)
-    SDA2 = board.CE0  # I2C bus 1 (SDA 4)
-    SCL2 = board.MISO #           (SDA 4)
-    SDA3 = board.SCLK # I2C bus 2 (SCL 5)
-    SCL3 = board.MOSI #           (SDA 5)
+    SCL1 = board.SCL  # I2C bus 0 (SDA 3)
+    SDA1 = board.SDA  #           (SCL 3)
+    SCL2 = board.MISO # I2C bus 1 (SDA 4)
+    SDA2 = board.CE0  #           (SDA 4)
+    SCL3 = board.MOSI # I2C bus 2 (SDA 5)
+    SDA3 = board.SCLK #           (SCL 5)
     i2c = {}
     # I2C interface A
     try:
@@ -84,16 +84,22 @@ def main():
         return
 
     # Find all i2c devices
-    i2c['devices0'] = i2c['bus1'].scan()
-    i2c['devices1'] = i2c['bus2'].scan()
-    i2c['devices2'] = i2c['bus3'].scan()
+    i2c['devices0'] = i2c['bus0'].scan()
+    i2c['devices1'] = i2c['bus1'].scan()
+    i2c['devices2'] = i2c['bus2'].scan()
 
     # Build an array of board classes dynamically
+    # Only configure bus0 if --single-fram-bus argument is supplied
     busCount = 1 if '--single-fram-bus' in sys.argv else 3
     fram = [None] * 24
+    # For each i2c bus that was configured
     for busNo in range(0, busCount):
-        # For each board that should be connected to the
+        # For each board that should be connected to the i2c bus
         for boardNo in range(0, 8):
+            # Global board no based on the position in the loops eg.
+            # bus0 contains fram0   thru  fram7
+            # bus1 contains fram8   thru  fram16
+            # bus2 contains fram16  thru  fram21
             globalBoardNo = boardNo + (8 * busNo)
             try:
                 fram[globalBoardNo] = adafruit_fram.FRAM_I2C(i2c['bus' + str(busNo)], 0x50 + hex(boardNo))
