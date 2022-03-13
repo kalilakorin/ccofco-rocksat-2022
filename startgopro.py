@@ -17,7 +17,7 @@ print(gopro.settings_supported.values())
 
 
 
-gopro.settings_supported.__getattribute__('Video.RESOLUTION')
+gopro.settings_supported.__getattribute__('video.resolution')
 #gopro.settings_supported.__setattr__("resolution", "R5K")
 
 
