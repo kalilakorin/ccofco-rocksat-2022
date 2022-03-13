@@ -41,6 +41,7 @@ import sys
 # Import system modules
 import sensors
 import fram
+import gopro
 
 # Set up logging and log boot time
 boottime = int(time.time() * 1000)
@@ -75,7 +76,7 @@ if __name__ == '__main__':
         # Accept command line arguments
         #arguments = sys.argv
 
-        # Secondary experiment (radiation RAM)
+        # gopro recording start
         goproThread = multiprocessing.Process(target=gopro.main)
         goproThread.start()
 
