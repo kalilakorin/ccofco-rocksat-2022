@@ -13,7 +13,7 @@ print('address:', gopro.address)
 
 for key, value in gopro.settings_supported.items():
     print('key:', key, '\tvalue:', value, '\n')
-print(gopro.settings_supported.values())
+print(gopro.settings_supported.values(), '\n')
 
 
 
