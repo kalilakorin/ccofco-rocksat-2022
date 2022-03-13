@@ -108,12 +108,15 @@ def main():
 
     # Read back the contents of all FRAM boards and write to file
     def readBoard(framBoard, boardNo, trialNo):
-        cooked = bytearray()
-        for byteIndex in range(0, len(sourceByteArray)):
-            cooked += framBoard[byteIndex]
-        resultFile = open(f'./data-fram/data-fram__trial{str(trialNo)}__board{str(boardNo)}__{str(int(time.time()))}.jpg', 'wb')
-        resultFile.write(cooked)
-        resultFile.close()
+        try:
+            cooked = bytearray()
+            for byteIndex in range(0, len(sourceByteArray)):
+                cooked += framBoard[byteIndex]
+            resultFile = open(f'./data-fram/data-fram__trial{str(trialNo)}__board{str(boardNo)}__{str(int(time.time()))}.jpg', 'wb')
+            resultFile.write(cooked)
+            resultFile.close()
+        except Exception as err:
+            logging.error(f'Failed read from FRAM board {str(framBoardIndex)} in experiment trial {str(trialNo)}. Error: "{str(err)}"')
 
     # Write all zeros to the FRAM boards present
     # -- this function is no longer used
