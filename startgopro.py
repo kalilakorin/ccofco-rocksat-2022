@@ -7,6 +7,11 @@ import time
 import subprocess
 from open_gopro import GoPro
 
+with GoPro() as gopro:
+    print("Yay! I'm connected via BLE, Wifi, initialized, and ready to send / get data now!")
+    #gopro.ble_command.get_camera_statuses()
+    #gopro.ble_setting.resolution.get_value()
+    # Send some commands now
 
 #gopro.is_verbose = True
 #set the address
@@ -64,8 +69,3 @@ goproCamera = GoProCamera.GoPro()
 
 goproCamera.shoot_video(10)
 '''
-
-with GoPro() as gopro:
-    print("Yay! I'm connected via BLE, Wifi, initialized, and ready to send / get data now!")
-    gopro.ble_setting.resolution.get_value()
-    # Send some commands now
