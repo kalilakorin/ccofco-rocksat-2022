@@ -16,12 +16,12 @@ for key, value in gopro.settings_supported.items():
 print(gopro.settings_supported.values())
 
 
-'''
-#gopro.settings_supported.__getattribute__("resolution")
+
+gopro.settings_supported.__getattribute__("resolution")
 #gopro.settings_supported.__setattr__("resolution", "R5K")
 
 
-
+'''
 #try to activate and connect to the gopro
 goproIsOff = True
 if (goproIsOff):
