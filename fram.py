@@ -14,11 +14,8 @@ import os
 import sys
 import multiprocessing as multiprocessing
 
-import board
-import busio
-
+from adafruit_extended_bus import ExtendedI2C as I2C
 import adafruit_fram
-# import adafruit_tca9548a
 
 # Configuration
 FRAM_COOK_DURATION = 0
@@ -51,16 +48,10 @@ def main():
     os.system('mkdir -p ./data-fram')
 
     # Configure the I2C busses
-    SCL0 = board.SCL  # I2C bus 0 (SDA 3)
-    SDA0 = board.SDA  #           (SCL 3)
-    SCL1 = board.MISO_1 # I2C bus 1 (SDA 4)
-    SDA1 = board.CE0  #           (SDA 4)
-    SCL2 = board.MOSI_1 # I2C bus 2 (SDA 5)
-    SDA2 = board.SCLK_1 #           (SCL 5)
     i2c = {}
     # I2C interface A
     try:
-        i2c['bus0'] = busio.I2C(SCL0, SDA0)
+        i2c['bus0'] = I2C(1)
         logging.info('I2C interface A ... OK')
     except Exception as error:
         logging.critical('Failed to enable i2c interface A')
@@ -69,7 +60,7 @@ def main():
         i2c['bus0'] = None
     # I2C interface B
     try:
-        i2c['bus1'] = busio.I2C(SCL1, SDA1)
+        i2c['bus1'] = I2C(4)
         logging.info('I2C interface B ... OK')
     except Exception as error:
         logging.critical('Failed to enable i2c interface B')
@@ -78,7 +69,7 @@ def main():
         i2c['bus1'] = None
     # I2C interface C
     try:
-        i2c['bus2'] = busio.I2C(SCL2, SDA2)
+        i2c['bus2'] = I2C(5)
         logging.info('I2C interface C ... OK')
     except Exception as error:
         logging.critical('Failed to enable i2c interface C')
