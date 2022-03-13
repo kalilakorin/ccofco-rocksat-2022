@@ -43,7 +43,9 @@ gopro.commands_supported = "record start"
 '''
 
 #resolution "r5" is 5k360 for the max
+print('Setting default video')
 gopro.settings_supported.setdefault("r5")
+print(gopro.settings_supported.setdefault)
 #gopro.settings_supported.setdefault(resolution)
 
 '''
