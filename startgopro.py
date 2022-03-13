@@ -2,17 +2,18 @@
 #https://gopro.github.io/labs/control/settings/
 #resolution "r5" is 5k360 for the max r5K or "24"
 
-#import gopromain as gopro
+import gopromain as gopro
 import time
 import subprocess
+
+
+''' not currently working
 import open_gopro
-
-
 gopro = GoPro()
 gopro.open()
 gopro.is_ble_connected
 
-''' not currently working
+
 with GoPro() as gopro:
     print("Yay! I'm connected via BLE, Wifi, initialized, and ready to send / get data now!")
     #gopro.ble_command.get_camera_statuses()
@@ -58,7 +59,7 @@ if (goproIsOff):
 gopro.commands_supported = "record start"
 '''
 
-'''
+
 #resolution "r5" is 5k360 for the max
 print('Setting default video')
 gopro.settings_supported.setdefault("r5")
@@ -67,7 +68,7 @@ subprocess.call(f'python3 gopromain.py --verbose --address "D1:70:A4:FC:21:4F" -
 subprocess.call(f'python3 gopromain.py --verbose --address "D1:70:A4:FC:21:4F" --command "record start"', shell=True)
 time.sleep(5)
 subprocess.call(f'python3 gopromain.py --verbose --address "D1:70:A4:FC:21:4F" --command "record stop"', shell=True)
-'''
+
 
 '''
 from goprocam import GoProCamera, constants

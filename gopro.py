@@ -4,7 +4,7 @@ import gopromain as gopro
 import time
 import subprocess
 
-subprocess.call(f'python3 gopromain.py --verbose --address "D1:70:A4:FC:21:4F" --command "preset maxvideo" --command "record start"', shell=True)
+subprocess.call(f'python3 gopromain.py --verbose -a "D1:70:A4:FC:21:4F" -c "preset maxvideo" -c "record start"', shell=True)
 
 
 #with GoPro() as gopro:
