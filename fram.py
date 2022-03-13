@@ -51,49 +51,54 @@ def main():
     os.system('mkdir -p ./data-fram')
 
     # Configure the I2C busses
-    SCL1 = board.SCL  # I2C bus 0 (SDA 3)
-    SDA1 = board.SDA  #           (SCL 3)
-    SCL2 = board.MISO # I2C bus 1 (SDA 4)
-    SDA2 = board.CE0  #           (SDA 4)
-    SCL3 = board.MOSI # I2C bus 2 (SDA 5)
-    SDA3 = board.SCLK #           (SCL 5)
+    SCL0 = board.SCL  # I2C bus 0 (SDA 3)
+    SDA0 = board.SDA  #           (SCL 3)
+    SCL1 = board.CE1  # I2C bus 1 (SDA 4)
+    SDA1 = board.CE0  #           (SDA 4)
+    SCL2 = board.MOSI # I2C bus 2 (SDA 5)
+    SDA2 = board.SCLK #           (SCL 5)
     i2c = {}
     # I2C interface A
     try:
-        i2c['bus0'] = busio.I2C(SCL1, SDA1)
+        i2c['bus0'] = busio.I2C(SCL0, SDA0)
         logging.info('I2C interface A ... OK')
     except Exception as error:
-        logging.critical('Failed to enable i2c interface A, the FRAM experiment thread will now crash')
+        logging.critical('Failed to enable i2c interface A')
         logging.critical('Error: ' + str(error))
-        return
+        # Set the interface as None to indicate that it is not working
+        i2c['bus0'] = None
     # I2C interface B
     try:
-        i2c['bus1'] = busio.I2C(SCL2, SDA2)
+        i2c['bus1'] = busio.I2C(SCL1, SDA1)
         logging.info('I2C interface B ... OK')
     except Exception as error:
-        logging.critical('Failed to enable i2c interface B, the FRAM experiment thread will now crash')
+        logging.critical('Failed to enable i2c interface B')
         logging.critical('Error: ' + str(error))
-        return
+        # Set the interface as None to indicate that it is not working
+        i2c['bus1'] = None
     # I2C interface C
     try:
-        i2c['bus2'] = busio.I2C(SCL3, SDA3)
+        i2c['bus2'] = busio.I2C(SCL2, SDA2)
         logging.info('I2C interface C ... OK')
     except Exception as error:
-        logging.critical('Failed to enable i2c interface C, the FRAM experiment thread will now crash')
+        logging.critical('Failed to enable i2c interface C')
         logging.critical('Error: ' + str(error))
-        return
+        # Set the interface as None to indicate that it is not working
+        i2c['bus2'] = None
 
-    # Find all i2c devices
-    i2c['devices0'] = i2c['bus0'].scan()
-    i2c['devices1'] = i2c['bus1'].scan()
-    i2c['devices2'] = i2c['bus2'].scan()
+    # Find all i2c devices on the busses that are connected
+    if i2c['bus0'] != None: i2c['devices0'] = i2c['bus0'].scan()
+    if i2c['bus1'] != None: i2c['devices1'] = i2c['bus1'].scan()
+    if i2c['bus2'] != None: i2c['devices2'] = i2c['bus2'].scan()
 
     # Build an array of board classes dynamically
     # Only configure bus0 if --single-fram-bus argument is supplied
     busCount = 1 if '--single-fram-bus' in sys.argv else 3
     fram = [None] * 24
-    # For each i2c bus that was configured
+    # For each i2c bus
     for busNo in range(0, busCount):
+        # If the i2c bus was not configured, do nothing and move on to the next bus
+        if i2c['bus' + str(busNo)] == None: continue
         # For each board that should be connected to the i2c bus
         for boardNo in range(0, 8):
             # Global board no based on the position in the loops eg.
@@ -107,6 +112,10 @@ def main():
             except Exception as error:
                 fram[globalBoardNo] = None
                 logging.error(f'FRAM{str(globalBoardNo)} not detected. {error}')
+
+    # Debug exit
+    logging.info('DEBUG CODE MODIFICATIONS, exiting... ~KZ')
+    return
 
     # ** Define all sub methods used throughout experiment tirals
     # Write the source image to the provided FRAM board object
