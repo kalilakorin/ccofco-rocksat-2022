@@ -12,7 +12,7 @@ gopro.address = "D1:70:A4:FC:21:4F"
 print('address:', gopro.address)
 
 for key, value in gopro.settings_supported.items():
-    print('key:', key, '\tvalue:', value)
+    print('key:', key, '\tvalue:', value, '\n')
 print(gopro.settings_supported.values())
 
 
