@@ -48,8 +48,8 @@ gopro.commands_supported = "record start"
 print('Setting default video')
 gopro.settings_supported.setdefault("r5")
 
-subprocess.call(f'python3 gopromain.py --verbose --address "D1:70:A4:FC:21:4F" --command "mode video" --command "record start"', shell=True)
-
+subprocess.call(f'python3 gopromain.py --verbose --address "D1:70:A4:FC:21:4F" --command "mode video"', shell=True)
+subprocess.call(f'python3 gopromain.py --verbose --address "D1:70:A4:FC:21:4F" --command "record start"', shell=True)
 time.sleep(5)
 subprocess.call(f'python3 gopromain.py --verbose --address "D1:70:A4:FC:21:4F" --command "record stop"', shell=True)
 
