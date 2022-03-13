@@ -1,14 +1,13 @@
-import argparse
 import asyncio
-import logging
-import signal
-import commands
-
-from bleak import BleakClient
 from bleak import discover
-from goprocam import constants
-from prettytable import PrettyTable
+from bleak import BleakClient, BleakScanner
+import logging
+import commands
 from termcolor import colored
+import argparse
+import signal
+from prettytable import PrettyTable
+from goprocam import constants
 
 camera_info_chars = {"00002a00-0000-1000-8000-00805f9b34fb": {
     "name": "Camera ID"
@@ -446,13 +445,13 @@ async def run(address, command_to_run=None, is_verbose=True):
                               chr(int(eval(contents + "." + prefix + val)))
                     await client.write_gatt_char(commands.Characteristics.SettingCharacteristic,
                                                  bytearray(command.encode()))
-                except Exception as err:
-                    log.error("Bad settings combination. Error: " + str(err))
+                except:
+                    log.error("Bad settings combination.")
             else:
                 log.error("Unrecognized command %s" % cmd)
 
 
-if __name__ == "__gopromain__":
+if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--interactive', "-i", help="Interactive control shell",
                         required=False, type=bool, default=True)
