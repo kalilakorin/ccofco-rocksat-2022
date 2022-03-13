@@ -53,10 +53,10 @@ def main():
     # Configure the I2C busses
     SCL0 = board.SCL  # I2C bus 0 (SDA 3)
     SDA0 = board.SDA  #           (SCL 3)
-    SCL1 = board.CE1  # I2C bus 1 (SDA 4)
+    SCL1 = board.MISO_1 # I2C bus 1 (SDA 4)
     SDA1 = board.CE0  #           (SDA 4)
-    SCL2 = board.MOSI # I2C bus 2 (SDA 5)
-    SDA2 = board.SCLK #           (SCL 5)
+    SCL2 = board.MOSI_1 # I2C bus 2 (SDA 5)
+    SDA2 = board.SCLK_1 #           (SCL 5)
     i2c = {}
     # I2C interface A
     try:
@@ -107,7 +107,7 @@ def main():
             # bus2 contains fram16  thru  fram21
             globalBoardNo = boardNo + (8 * busNo)
             try:
-                fram[globalBoardNo] = adafruit_fram.FRAM_I2C(i2c['bus' + str(busNo)], 0x50 + hex(boardNo))
+                fram[globalBoardNo] = adafruit_fram.FRAM_I2C(i2c['bus' + str(busNo)], 0x50 + boardNo)
                 logging.info(f'FRAM{str(globalBoardNo)} size: {str(len(fram[globalBoardNo]))} bytes')
             except Exception as error:
                 fram[globalBoardNo] = None
