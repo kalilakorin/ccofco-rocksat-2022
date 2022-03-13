@@ -32,13 +32,10 @@ def main():
     logging.info(f'Initializing FRAM experiment')
 
     # Creating an array of the bytes that make up monalisa.jpg
-    sourceByteArray = []
+    sourceByteArray = bytearray()
     try:
         with open('monalisa.jpg', 'rb') as sourceFile:
-            byte = sourceFile.read(1)
-            while byte:
-                byte = sourceFile.read(1)
-                sourceByteArray.append(int.from_bytes(byte, 'big'))
+            sourceByteArray = sourceFile.read()
         logging.info(f'Finished building array from input file, {str(len(sourceByteArray))} bytes')
     except IOError:
         logging.critical('Unable to read in source image (monalisa.jpg)')
@@ -111,9 +108,11 @@ def main():
 
     # Read back the contents of all FRAM boards and write to file
     def readBoard(framBoard, boardNo, trialNo):
-        cooked = framBoard[0:len(sourceByteArray)]
-        resultFile = open(f'data-fram__trial{str(trialNo)}__board{str(boardNo)}__{str(int(time.time()))}.jpg', 'wb')
-        resultFile.write(bytes(cooked))
+        cooked = bytearray()
+        for byteIndex in range(0, len(sourceByteArray)):
+            cooked += framBoard[byteIndex]
+        resultFile = open(f'./data-fram/data-fram__trial{str(trialNo)}__board{str(boardNo)}__{str(int(time.time()))}.jpg', 'wb')
+        resultFile.write(cooked)
         resultFile.close()
 
     # Write all zeros to the FRAM boards present
