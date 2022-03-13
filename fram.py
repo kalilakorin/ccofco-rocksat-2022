@@ -11,7 +11,6 @@ from time import sleep
 import time
 import logging
 import os
-import sys
 import multiprocessing as multiprocessing
 
 from adafruit_extended_bus import ExtendedI2C as I2C
@@ -55,7 +54,7 @@ def main():
         logging.info('I2C interface A ... OK')
     except Exception as error:
         logging.critical('Failed to enable i2c interface A')
-        logging.critical('Error: ' + str(error))
+        logging.critical('  ' + str(error))
         # Set the interface as None to indicate that it is not working
         i2c['bus0'] = None
     # I2C interface B
@@ -64,7 +63,7 @@ def main():
         logging.info('I2C interface B ... OK')
     except Exception as error:
         logging.critical('Failed to enable i2c interface B')
-        logging.critical('Error: ' + str(error))
+        logging.critical('  ' + str(error))
         # Set the interface as None to indicate that it is not working
         i2c['bus1'] = None
     # I2C interface C
@@ -73,7 +72,7 @@ def main():
         logging.info('I2C interface C ... OK')
     except Exception as error:
         logging.critical('Failed to enable i2c interface C')
-        logging.critical('Error: ' + str(error))
+        logging.critical('  ' + str(error))
         # Set the interface as None to indicate that it is not working
         i2c['bus2'] = None
 
@@ -83,11 +82,9 @@ def main():
     if i2c['bus2'] != None: i2c['devices2'] = i2c['bus2'].scan()
 
     # Build an array of board classes dynamically
-    # Only configure bus0 if --single-fram-bus argument is supplied
-    busCount = 1 if '--single-fram-bus' in sys.argv else 3
     fram = [None] * 24
     # For each i2c bus
-    for busNo in range(0, busCount):
+    for busNo in range(0, 3):
         # If the i2c bus was not configured, do nothing and move on to the next bus
         if i2c['bus' + str(busNo)] == None: continue
         # For each board that should be connected to the i2c bus
@@ -108,7 +105,7 @@ def main():
     # Write the source image to the provided FRAM board object
     def writeBoard(framBoard):
         try:
-            framBoard[0:len(sourceByteArray)] = sourceByteArray[:]
+            framBoard[0:len(sourceByteArray)] = sourceByteArray[0:len(sourceByteArray)]
         except Exception as err:
             logging.error(f'Failed write to {str(framBoard)}: "{str(err)}"')
 
