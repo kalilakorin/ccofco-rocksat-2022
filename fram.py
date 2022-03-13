@@ -116,7 +116,7 @@ def main():
             resultFile.write(cooked)
             resultFile.close()
         except Exception as err:
-            logging.error(f'Failed read from FRAM board {str(framBoardIndex)} in experiment trial {str(trialNo)}. Error: "{str(err)}"')
+            logging.error(f'Failed read from FRAM board {str(boardNo)} in experiment trial {str(trialNo)}. Error: "{str(err)}"')
 
     # Write all zeros to the FRAM boards present
     # -- this function is no longer used
