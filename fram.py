@@ -100,11 +100,11 @@ def main():
 
     # ** Define all sub methods used throughout experiment tirals
     # Write the source image to the provided FRAM board object
-    def writeBoard(framBoard):
+    def writeBoard(framBoard, framBoardIndex):
         try:
             framBoard[0:len(sourceByteArray)] = sourceByteArray[0:len(sourceByteArray)]
         except Exception as err:
-            logging.error(f'Failed write to {str(framBoard)}: "{str(err)}"')
+            logging.error(f'Failed write to FRAM board {str(framBoardIndex)}. Error: "{str(err)}"')
 
     # Read back the contents of all FRAM boards and write to file
     def readBoard(framBoard, boardNo, trialNo):
@@ -126,9 +126,10 @@ def main():
     startWriteTime = time.time()
     logger.info(f'Beginning write of source image to FRAM boards at {str(int(startWriteTime))}')
     threads = []
-    for framBoard in fram:
+    for framBoardIndex in range(0, len(fram)):
+        framBoard = fram[framBoardIndex]
         if framBoard != None:
-            framWriteThread = multiprocessing.Process(target=writeBoard, args=(framBoard,))
+            framWriteThread = multiprocessing.Process(target=writeBoard, args=(framBoard,framBoardIndex))
             framWriteThread.start()
             threads.append(framWriteThread)
     # Wait for all threads to close
