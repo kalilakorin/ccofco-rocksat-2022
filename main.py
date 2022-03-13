@@ -74,7 +74,11 @@ if __name__ == '__main__':
         processQueue = multiprocessing.Queue()
         # Accept command line arguments
         #arguments = sys.argv
-        
+
+        # Secondary experiment (radiation RAM)
+        goproThread = multiprocessing.Process(target=gopro.main)
+        goproThread.start()
+
         # Secondary experiment (radiation RAM)
         framExperimentThread = multiprocessing.Process(target=fram.main)
         framExperimentThread.start()
