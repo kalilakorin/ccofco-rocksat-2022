@@ -104,10 +104,6 @@ def main():
                 fram[globalBoardNo] = None
                 logging.error(f'FRAM{str(globalBoardNo)} not detected. {error}')
 
-    # Debug exit
-    logging.info('DEBUG CODE MODIFICATIONS, exiting... ~KZ')
-    return
-
     # ** Define all sub methods used throughout experiment tirals
     # Write the source image to the provided FRAM board object
     def writeBoard(framBoard):
