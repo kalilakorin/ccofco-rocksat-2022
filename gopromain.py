@@ -451,7 +451,7 @@ async def run(address, command_to_run=None, is_verbose=True):
                 log.error("Unrecognized command %s" % cmd)
 
 
-if __name__ == "__main__":
+if __name__ == "__gopromain__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--interactive', "-i", help="Interactive control shell",
                         required=False, type=bool, default=True)
