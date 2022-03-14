@@ -139,7 +139,7 @@ def main () :
             # if bme280a != None : serial_string += f',{bme280a.temperature},{bme280a.pressure},{bme280a.relative_humidity}'
             # if bme280b != None : serial_string += f',{bme280b.temperature},{bme280b.pressure},{bme280b.relative_humidity}'
             # if adxl34x != None : serial_string += f',{adxl34x.acceleration[0]},{adxl34x.acceleration[1]},{adxl34x.acceleration[2]}'
-            if True : serial_string += ",TEST: " + str(int(count/1000)) + '\n'
+            serial_string += ",TEST: " + str(int(count/1000)) + '\n'
             ser.write(serial_string.encode('utf-8'))
             print (serial_string)
         count += 1
