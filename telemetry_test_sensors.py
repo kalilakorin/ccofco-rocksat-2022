@@ -129,7 +129,7 @@ def main () :
         sleep (0.001)
 
         if count % 10000 == 0:
-            serial_string = ""
+            serial_string = str (int (time.time () * 1000))
             if mpl115a2 != None :  serial_string += f',{mpl115a2.temperature},{mpl115a2.pressure}'
             if vl53l1x != None : serial_string += f',{vl53l1x.distance}'
             if bme280a != None : serial_string += f',{bme280a.temperature},{bme280a.pressure},{bme280a.relative_humidity}'
