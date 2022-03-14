@@ -148,3 +148,10 @@ def main () :
 
 if __name__ == '__main__' :
     main ()
+
+
+#NOTES:  Currently can not run on mulitple theads.  Should work on just sensor thread.  I am sure there is a way around this?
+# Must set up ser = serial.Serial in file currently.
+# Want to test if I can run this in multiple files without it crashing
+# want to figure out a way to pass the argument around.
+# might be able to do a .pass info to serial class each time we need to send data???  have this class inizilze a new port use each time? 
