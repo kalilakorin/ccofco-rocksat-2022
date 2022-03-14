@@ -18,9 +18,11 @@ ser = serial.Serial(
         timeout=1
 )
 counter = 0
+print("serial initialed")
 
 while 1:
         ser.write("Write counter: %d \n" % counter)
+        print("serial loop")
         time.sleep(1)
         counter += 1
 
