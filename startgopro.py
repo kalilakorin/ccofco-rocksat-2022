@@ -61,8 +61,8 @@ gopro.commands_supported = "record start"
 
 
 #resolution "r5" is 5k360 for the max
-print('Setting default video')
-gopro.settings_supported.setdefault("r5")
+#print('Setting default video')
+#gopro.settings_supported.setdefault("r5")
 
 subprocess.call(f'python3 gopromain.py --verbose -a "D1:70:A4:FC:21:4F" -c "mode video" -c "record start"', shell=True)
 time.sleep(5)
