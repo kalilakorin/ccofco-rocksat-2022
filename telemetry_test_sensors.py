@@ -30,8 +30,8 @@ except :
     logger = None
     print ('Unable to acquire the global logger object, assuming that sensors.py is being run on its own')
 
-
-ser.write("Sensor PAGE TEST")
+string = "Sensor PAGE TEST"
+ser.write(string.encode('utf-8'))
 
 
 # Main sensor program loop
