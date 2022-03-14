@@ -2,6 +2,8 @@
 # Initial Testing for Telemetry code
 # Instructions to set up PI for serial communication
 # https://pimylifeup.com/raspberry-pi-serial/
+# serial library/documentation
+# https://pyserial.readthedocs.io/en/latest/tools.html
 
 #!/usr/bin/env python
 import time
