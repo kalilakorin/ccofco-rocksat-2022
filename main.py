@@ -65,14 +65,14 @@ logging.basicConfig(
     handlers=[rotatingFileHandler])
 
 # SET UP seerial RXD and TXD pins on Pi  8-N-1
-ser = serial.Serial(
-        port='/dev/ttyS0', #Replace ttyS0 with ttyAM0 for Pi1,Pi2,Pi0
-        baudrate = 19200,
-        parity=serial.PARITY_NONE,
-        stopbits=serial.STOPBITS_ONE,
-        bytesize=serial.EIGHTBITS,
-        timeout=1
-)
+# ser = serial.Serial(
+#         port='/dev/ttyS0', #Replace ttyS0 with ttyAM0 for Pi1,Pi2,Pi0
+#         baudrate = 19200,
+#         parity=serial.PARITY_NONE,
+#         stopbits=serial.STOPBITS_ONE,
+#         bytesize=serial.EIGHTBITS,
+#         timeout=1
+# )
     
 #formatter = logging.Formatter('[%(asctime)s.%(msecs)03d][%(module)7s][%(levelname)8s]\t%(message)s')
 
@@ -100,8 +100,6 @@ if __name__ == '__main__':
 
         # Tertiary experiment (sensors)
         if ('--sensors' in arguments or len(arguments) == 1):
-            ser.write('sensor thread sent'.encode('utf-8'))
-            print("SENSORS ABOUT TO GO")
             sensorThread = multiprocessing.Process(target=telemetry_test_sensors.main)
             sensorThread.start()
 

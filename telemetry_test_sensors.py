@@ -23,14 +23,14 @@ from adafruit_bme280 import basic as adafruit_bme280
 import adafruit_vl53l1x
 import adafruit_adxl34x
 
-# ser = serial.Serial(
-#         port='/dev/ttyS0', #Replace ttyS0 with ttyAM0 for Pi1,Pi2,Pi0
-#         baudrate = 19200,
-#         parity=serial.PARITY_NONE,
-#         stopbits=serial.STOPBITS_ONE,
-#         bytesize=serial.EIGHTBITS,
-#         timeout=1
-# )
+ser = serial.Serial(
+        port='/dev/ttyS0', #Replace ttyS0 with ttyAM0 for Pi1,Pi2,Pi0
+        baudrate = 19200,
+        parity=serial.PARITY_NONE,
+        stopbits=serial.STOPBITS_ONE,
+        bytesize=serial.EIGHTBITS,
+        timeout=1
+)
 
 # Acquire the existing logger
 try :
@@ -154,4 +154,4 @@ if __name__ == '__main__' :
 # Must set up ser = serial.Serial in file currently.
 # Want to test if I can run this in multiple files without it crashing
 # want to figure out a way to pass the argument around.
-# might be able to do a .pass info to serial class each time we need to send data???  have this class inizilze a new port use each time? 
+# might be able to do a .pass info to serial class each time we need to send data???  have this class inizilze a new port use each time?
