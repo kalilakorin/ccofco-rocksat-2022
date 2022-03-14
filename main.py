@@ -43,6 +43,7 @@ import serial # used for telemetry
 import sensors
 import fram
 import armMotor
+import telemetry_test_sensors
 
 
 # Create a log folder if it does not exist yet
