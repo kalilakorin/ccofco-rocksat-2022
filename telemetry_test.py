@@ -23,7 +23,7 @@ print("serial initialed")
 while 1:
         string = "Write counter" + str(counter)
         ser.write(string.encode('utf-8'))
-        print("serial loop")
+        print("serial loop: " + str(counter))
         time.sleep(1)
         counter += 1
 
