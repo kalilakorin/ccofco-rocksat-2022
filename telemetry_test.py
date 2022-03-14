@@ -21,7 +21,7 @@ counter = 0
 print("serial initialed")
 
 while 1:
-        ser.write("Write counter:" + counter)
+        ser.write("Write counter:" + str(counter))
         print("serial loop")
         time.sleep(1)
         counter += 1
