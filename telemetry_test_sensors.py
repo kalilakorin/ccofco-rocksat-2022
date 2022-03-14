@@ -132,12 +132,13 @@ def main () :
         sleep (0.001)
 
         if count % 10000 == 0:
-            serial_string = str (int (time.time () * 1000))
-            if mpl115a2 != None :  serial_string += f',{mpl115a2.temperature},{mpl115a2.pressure}'
-            if vl53l1x != None : serial_string += f',{vl53l1x.distance}'
-            if bme280a != None : serial_string += f',{bme280a.temperature},{bme280a.pressure},{bme280a.relative_humidity}'
-            if bme280b != None : serial_string += f',{bme280b.temperature},{bme280b.pressure},{bme280b.relative_humidity}'
-            if adxl34x != None : serial_string += f',{adxl34x.acceleration[0]},{adxl34x.acceleration[1]},{adxl34x.acceleration[2]}'
+            serial_string = csvline
+            # serial_string = str (int (time.time () * 1000))
+            # if mpl115a2 != None :  serial_string += f',{mpl115a2.temperature},{mpl115a2.pressure}'
+            # if vl53l1x != None : serial_string += f',{vl53l1x.distance}'
+            # if bme280a != None : serial_string += f',{bme280a.temperature},{bme280a.pressure},{bme280a.relative_humidity}'
+            # if bme280b != None : serial_string += f',{bme280b.temperature},{bme280b.pressure},{bme280b.relative_humidity}'
+            # if adxl34x != None : serial_string += f',{adxl34x.acceleration[0]},{adxl34x.acceleration[1]},{adxl34x.acceleration[2]}'
             if True : serial_string += ",TEST: " + str(int(count/1000)) + '\n'
             ser.write(serial_string.encode('utf-8'))
             print (serial_string)
