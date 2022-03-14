@@ -106,6 +106,8 @@ def main () :
     if adxl34x != None : csvheader += ',adxl34x Accelerometer X-axis, adxl34x Accelerometer Y-axis, adxl34x Accelerometer Z-axis'
 
     datafile.write (csvheader + '\n')
+    serial_header = csvheader + '\n'
+    ser.write(serial_header.encode('utf-8'))
     logging.info (f'Sensor file CSV columns are as follows: {csvheader}')
 
     # Sensor sample and data write loop
@@ -124,6 +126,7 @@ def main () :
         if adxl34x != None : csvline += f',{adxl34x.acceleration[0]},{adxl34x.acceleration[1]},{adxl34x.acceleration[2]}'
 
         datafile.write (csvline + '\n')
+
         # Print the CSV line to the console if the file is running standalone
         if logger == None : print (csvline)
         sleep (0.001)
@@ -135,7 +138,7 @@ def main () :
             if bme280a != None : serial_string += f',{bme280a.temperature},{bme280a.pressure},{bme280a.relative_humidity}'
             if bme280b != None : serial_string += f',{bme280b.temperature},{bme280b.pressure},{bme280b.relative_humidity}'
             if adxl34x != None : serial_string += f',{adxl34x.acceleration[0]},{adxl34x.acceleration[1]},{adxl34x.acceleration[2]}'
-            if True : serial_string += ",TEST: " + str(int(count/1000))
+            if True : serial_string += ",TEST: " + str(int(count/1000) + '\n')
             ser.write(serial_string.encode('utf-8'))
             print (serial_string)
         count += 1
