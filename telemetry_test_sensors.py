@@ -137,6 +137,7 @@ def main () :
             if adxl34x != None : serial_string += f',{adxl34x.acceleration[0]},{adxl34x.acceleration[1]},{adxl34x.acceleration[2]}'
             if True : serial_string += "TEST"
             ser.write(serial_string.encode('utf-8'))
+            print (serial_string)
         count += 1
 
 
