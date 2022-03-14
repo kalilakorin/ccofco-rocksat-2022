@@ -11,6 +11,7 @@ from time import sleep
 import time
 import logging
 import os
+import serial # might be needed for telemetry
 
 # Adafruit circutpython
 import board
@@ -28,6 +29,9 @@ try:
 except:
     logger = None
     print('Unable to acquire the global logger object, assuming that sensors.py is being run on its own')
+
+# ser.write("Sensor PAGE TEST")
+
 
 # Main sensor program loop
 def main():

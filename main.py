@@ -37,6 +37,7 @@ from logging.handlers import RotatingFileHandler
 import os
 import multiprocessing as multiprocessing
 import sys
+import serial # used for telemetry
 
 # Import system modules
 import sensors
@@ -61,6 +62,16 @@ logging.basicConfig(
     format='[%(asctime)s.%(msecs)03d][%(module)7s][%(levelname)8s]\t%(message)s',
     datefmt='%Y-%m-%d %H:%M:%S',
     handlers=[rotatingFileHandler])
+
+# SET UP seerial RXD and TXD pins on Pi  8-N-1
+ser = serial.Serial(
+        port='/dev/ttyS0', #Replace ttyS0 with ttyAM0 for Pi1,Pi2,Pi0
+        baudrate = 19200,
+        parity=serial.PARITY_NONE,
+        stopbits=serial.STOPBITS_ONE,
+        bytesize=serial.EIGHTBITS,
+        timeout=1
+)
     
 #formatter = logging.Formatter('[%(asctime)s.%(msecs)03d][%(module)7s][%(levelname)8s]\t%(message)s')
 
