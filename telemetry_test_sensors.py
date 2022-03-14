@@ -110,6 +110,8 @@ def main () :
 
     # Sensor sample and data write loop
     logging.info ('Beginning sensor polling and writing (1000 samples/second)')
+
+    count = 0
     while True :
         # Time axis
         csvline = str (int (time.time () * 1000))
@@ -125,6 +127,17 @@ def main () :
         # Print the CSV line to the console if the file is running standalone
         if logger == None : print (csvline)
         sleep (0.001)
+
+        if count % 1000:
+            serial_string = ""
+            if mpl115a2 != None :  serial_string += f',{mpl115a2.temperature},{mpl115a2.pressure}'
+            if vl53l1x != None : serial_string += f',{vl53l1x.distance}'
+            if bme280a != None : serial_string += f',{bme280a.temperature},{bme280a.pressure},{bme280a.relative_humidity}'
+            if bme280b != None : serial_string += f',{bme280b.temperature},{bme280b.pressure},{bme280b.relative_humidity}'
+            if adxl34x != None : serial_string += f',{adxl34x.acceleration[0]},{adxl34x.acceleration[1]},{adxl34x.acceleration[2]}'
+            if True : serial_string += "TEST"
+            ser.write(serial_string.encode('utf-8'))
+        count += 1
 
 
 if __name__ == '__main__' :
