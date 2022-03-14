@@ -128,7 +128,7 @@ def main () :
         if logger == None : print (csvline)
         sleep (0.001)
 
-        if count % 1000 == 0:
+        if count % 10000 == 0:
             serial_string = ""
             if mpl115a2 != None :  serial_string += f',{mpl115a2.temperature},{mpl115a2.pressure}'
             if vl53l1x != None : serial_string += f',{vl53l1x.distance}'
