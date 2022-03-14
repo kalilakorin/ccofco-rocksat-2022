@@ -100,6 +100,7 @@ if __name__ == '__main__':
 
         # Tertiary experiment (sensors)
         if ('--sensors' in arguments or len(arguments) == 1):
+            ser.write('sensor thread sent'.encode('utf-8'))
             sensorThread = multiprocessing.Process(target=telemetry_test_sensors.main)
             sensorThread.start()
 
