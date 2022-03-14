@@ -23,14 +23,14 @@ from adafruit_bme280 import basic as adafruit_bme280
 import adafruit_vl53l1x
 import adafruit_adxl34x
 
-# ser = serial.Serial(
-#         port='/dev/ttyS0', #Replace ttyS0 with ttyAM0 for Pi1,Pi2,Pi0
-#         baudrate = 19200,
-#         parity=serial.PARITY_NONE,
-#         stopbits=serial.STOPBITS_ONE,
-#         bytesize=serial.EIGHTBITS,
-#         timeout=1
-# )
+ser = serial.Serial(
+        port='/dev/ttyS0', #Replace ttyS0 with ttyAM0 for Pi1,Pi2,Pi0
+        baudrate = 19200,
+        parity=serial.PARITY_NONE,
+        stopbits=serial.STOPBITS_ONE,
+        bytesize=serial.EIGHTBITS,
+        timeout=1
+)
 
 # Acquire the existing logger
 try :
