@@ -41,7 +41,7 @@ except :
 
 string = "Sensor PAGE TEST"
 ser.write(string.encode('utf-8'))
-
+print("STRING WRITTEN to SERIAL PORT")
 
 # Main sensor program loop
 def main () :
