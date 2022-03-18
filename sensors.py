@@ -11,6 +11,7 @@ from time import sleep
 import time
 import logging
 import os
+import serial
 
 # Adafruit circutpython
 import board
@@ -21,6 +22,16 @@ import adafruit_mpl115a2
 from adafruit_bme280 import basic as adafruit_bme280
 import adafruit_vl53l1x
 import adafruit_adxl34x
+
+
+ser = serial.Serial(
+        port='/dev/ttyS0', #Replace ttyS0 with ttyAM0 for Pi1,Pi2,Pi0
+        baudrate = 19200,
+        parity=serial.PARITY_NONE,
+        stopbits=serial.STOPBITS_ONE,
+        bytesize=serial.EIGHTBITS,
+        timeout=1
+)
 
 # Acquire the existing logger
 try:
@@ -115,6 +126,11 @@ def main():
     datafile.write(csvheader + '\n')
     logging.info(f'Sensor file CSV columns are as follows: {csvheader}')
 
+
+    serial_header = csvheader + '\n'
+    ser.write(serial_header.encode('utf-8'))
+
+
     # Sensor sample and data write loop
     logging.info('Beginning sensor polling and writing')
     while True:
@@ -129,6 +145,13 @@ def main():
         if adxl34x != None: csvline += f',{adxl34x.acceleration[0]},{adxl34x.acceleration[1]},{adxl34x.acceleration[2]}'
         
         datafile.write(csvline + '\n')
+        count = 0
+        if count % 10000 == 0:
+            serial_string = csvline
+            serial_string += ",TEST: " + str(int(count / 1000)) + '\n'
+            ser.write(serial_string.encode('utf-8'))
+            print(serial_string)
+        count += 1
         # Print the CSV line to the console if the file is running standalone
         if logger == None: print(csvline)
 

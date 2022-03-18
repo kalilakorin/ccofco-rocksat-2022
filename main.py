@@ -89,7 +89,7 @@ if __name__ == '__main__':
 
         # Tertiary experiment (sensors)
         if ('--sensors' in arguments or runAll):
-            sensorThread = multiprocessing.Process(target=sensors_telem.main)
+            sensorThread = multiprocessing.Process(target=sensors.main)
             sensorThread.start()
 
         # Arm Motor functions
