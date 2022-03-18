@@ -6,8 +6,8 @@ import subprocess
 import RPi.GPIO as GPIO
 
 GPIO.setmode(GPIO.BCM)  #GPIO PIN NAMES
-
-GPIO.setup(ter, 17, pull_up_down=GPIO.PUD_DOWN)  # TE-1 around +85 seconds
+ter = 17
+GPIO.setup(ter, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-1 around +85 seconds
 
 def main():
     while True:
