@@ -132,7 +132,7 @@ def main () :
         sleep (0.001)
 
         # Sends senor data to
-        if count % 10000 == 0:
+        if count % 1000 == 0:
             serial_string = csvline
             # serial_string = str (int (time.time () * 1000))
             # if mpl115a2 != None :  serial_string += f',{mpl115a2.temperature},{mpl115a2.pressure}'

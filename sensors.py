@@ -133,6 +133,7 @@ def main():
 
     # Sensor sample and data write loop
     logging.info('Beginning sensor polling and writing')
+    count = 0
     while True:
         # Time axis
         csvline = str(int(time.time() * 1000))
@@ -145,13 +146,13 @@ def main():
         if adxl34x != None: csvline += f',{adxl34x.acceleration[0]},{adxl34x.acceleration[1]},{adxl34x.acceleration[2]}'
         
         datafile.write(csvline + '\n')
-        count = 0
+
         if count % 10000 == 0:
             serial_string = csvline
             serial_string += ",TEST: " + str(int(count / 1000)) + '\n'
             ser.write(serial_string.encode('utf-8'))
             print(serial_string)
-            count += 1
+        count += 1
         # Print the CSV line to the console if the file is running standalone
         if logger == None: print(csvline)
 
