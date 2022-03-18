@@ -23,7 +23,31 @@ def main():
     subprocess.call('ffmpeg -t "00:30" -y -video_size 1280x720 -framerate 60 -i /dev/video0 -f flv test0.flv', shell=True)
     subprocess.call('ffmpeg -t "00:30" -y -video_size 1280x720 -framerate 60 -i /dev/video0 -f flv test1.flv', shell=True)
     subprocess.call('ffmpeg -t "00:30" -y -video_size 1280x720 -framerate 60 -i /dev/video0 -f flv test2.flv', shell=True)
-
+    subprocess.call('ffmpeg -t "00:30" -y -video_size 1280x720 -framerate 60 -i /dev/video0 -f flv test2.flv',
+                    shell=True)
+    subprocess.call('ffmpeg -t "00:30" -y -video_size 1280x720 -framerate 60 -i /dev/video0 -f flv test2.flv',
+                    shell=True)
+    subprocess.call('ffmpeg -t "00:30" -y -video_size 1280x720 -framerate 60 -i /dev/video0 -f flv test2.flv',
+                    shell=True)
+    subprocess.call('ffmpeg -t "00:30" -y -video_size 1280x720 -framerate 60 -i /dev/video0 -f flv test2.flv',
+                    shell=True)
+    subprocess.call('ffmpeg -t "00:30" -y -video_size 1280x720 -framerate 60 -i /dev/video0 -f flv test2.flv',
+                    shell=True)
+    subprocess.call('ffmpeg -t "00:30" -y -video_size 1280x720 -framerate 60 -i /dev/video0 -f flv test2.flv',
+                    shell=True)
+    subprocess.call('ffmpeg -t "00:30" -y -video_size 1280x720 -framerate 60 -i /dev/video0 -f flv test2.flv',
+                    shell=True)
+    subprocess.call('ffmpeg -t "00:30" -y -video_size 1280x720 -framerate 60 -i /dev/video0 -f flv test2.flv',
+                    shell=True)
+    subprocess.call('ffmpeg -t "00:30" -y -video_size 1280x720 -framerate 60 -i /dev/video0 -f flv test2.flv',
+                    shell=True)
+    subprocess.call('ffmpeg -t "00:30" -y -video_size 1280x720 -framerate 60 -i /dev/video0 -f flv test2.flv',
+                    shell=True)
+    subprocess.call('ffmpeg -t "00:30" -y -video_size 1280x720 -framerate 60 -i /dev/video0 -f flv test2.flv',
+                    shell=True)
+    subprocess.call('ffmpeg -t "00:30" -y -video_size 1280x720 -framerate 60 -i /dev/video0 -f flv test2.flv',
+                    shell=True)
+    
 
 
     logging.info('USB-camera: Recording Stopped...')
