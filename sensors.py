@@ -151,7 +151,7 @@ def main():
             serial_string += ",TEST: " + str(int(count / 1000)) + '\n'
             ser.write(serial_string.encode('utf-8'))
             print(serial_string)
-        count += 1
+            count += 1
         # Print the CSV line to the console if the file is running standalone
         if logger == None: print(csvline)
 
