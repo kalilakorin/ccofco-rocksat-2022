@@ -43,6 +43,7 @@ import sensors
 import fram
 import armMotor
 import auxcam
+import gopro
 
 # Create a log folder if it does not exist yet
 os.system('mkdir -p ./logs')
@@ -101,6 +102,12 @@ if __name__ == '__main__':
         if ('--auxcam' in arguments or runAll):
             auxcamThread = multiprocessing.Process(target=auxcam.main)
             auxcamThread.start()
+
+
+        if ('--gopro' in arguments or runAll):
+            goproThread = multiprocessing.Process(target=gopro.main)
+            goproThread.start()
+
 
         # Prim
         #if framExperimentThread: framExperimentThread.join()
