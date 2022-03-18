@@ -42,7 +42,7 @@ import sys
 import sensors
 import fram
 import armMotor
-
+import auxcam
 
 # Create a log folder if it does not exist yet
 os.system('mkdir -p ./logs')
