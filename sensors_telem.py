@@ -142,7 +142,7 @@ def main () :
             # if adxl34x != None : serial_string += f',{adxl34x.acceleration[0]},{adxl34x.acceleration[1]},{adxl34x.acceleration[2]}'
             serial_string += ",TEST: " + str(int(count/1000)) + '\n'
             ser.write(serial_string.encode('utf-8'))
-            print (serial_string)
+            print(serial_string)
         count += 1
 
 
