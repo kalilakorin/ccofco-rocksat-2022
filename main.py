@@ -89,13 +89,18 @@ if __name__ == '__main__':
 
         # Tertiary experiment (sensors)
         if ('--sensors' in arguments or runAll):
-            sensorThread = multiprocessing.Process(target=sensors.main)
+            sensorThread = multiprocessing.Process(target=sensors_telem.main)
             sensorThread.start()
 
         # Arm Motor functions
         if ('--motor' in arguments or runAll):
-            armMotor = multiprocessing.Process(target=armMotor.main)
-            armMotor.start()
+            armMotorThread = multiprocessing.Process(target=armMotor.main)
+            armMotorThread.start()
+
+        # auxcam fuctions
+        if ('--auxcam' in arguments or runAll):
+            auxcamThread = multiprocessing.Process(target=auxcam.main)
+            auxcamThread.start()
 
         # Prim
         #if framExperimentThread: framExperimentThread.join()
