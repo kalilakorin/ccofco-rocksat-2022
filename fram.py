@@ -12,7 +12,8 @@ import time
 import logging
 import os
 import multiprocessing as multiprocessing
-
+import board
+import busio
 from adafruit_extended_bus import ExtendedI2C as I2C
 import adafruit_fram
 
@@ -47,7 +48,7 @@ def main():
     i2c = {}
     # I2C interface A
     try:
-        i2c['bus0'] = I2C(1)
+        i2c['bus0'] = busio.I2C(board.SCL, board.SDA)
         logging.info('I2C interface A ... OK')
     except Exception as error:
         logging.critical('Failed to enable i2c interface A')
