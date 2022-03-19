@@ -16,8 +16,8 @@ def main():
     subprocess.call(f'python3 gopromain.py --verbose -a "D1:70:A4:FC:21:4F" -c "preset maxvideo" -c "record start"', shell=True)
 
 
- if __name__ == '__main__':
-     main()
+if __name__ == '__main__':
+    main()
 
 #with GoPro() as gopro:
 #    print("Yay! I'm connected via BLE, Wifi, initialized, and ready to send / get data now!")
