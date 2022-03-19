@@ -4,6 +4,7 @@ import gopromain as gopro
 import time
 import subprocess
 import RPi.GPIO as GPIO
+import os
 
 GPIO.setmode(GPIO.BCM)  #GPIO PIN NAMES
 ter = 17
@@ -13,8 +14,10 @@ def main():
     while True:
         if GPIO.input(ter):
             break
-    subprocess.call(f'python3 gopromain.py --verbose -a "D1:70:A4:FC:21:4F" -c "preset maxvideo" -c "record start"', shell=True)
-
+    while True:
+        btReturn = os.system(f'python3 gopromain.py --verbose -a "D1:70:A4:FC:21:4F" -c "preset maxvideo" -c "record start"')
+        if 'Error' not in btReturn:
+            break
 
 if __name__ == '__main__':
     main()
