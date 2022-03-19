@@ -16,7 +16,7 @@ def main():
             break
     while True:
         btReturn = os.system(f'python3 gopromain.py --verbose -a "D1:70:A4:FC:21:4F" -c "preset maxvideo" -c "record start"')
-        if 'Error' not in btReturn:
+        if 'Error' not in str(btReturn):
             break
 
 if __name__ == '__main__':
