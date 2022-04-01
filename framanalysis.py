@@ -34,7 +34,7 @@ def main():
                 # Loop through the length of the source image
                 passing = False
                 for addr in range(0, len(sourceByteArray)):
-                    if sourceByteArray[addr] != currentByteArray:
+                    if sourceByteArray[addr] != currentByteArray[addr]:
                         # If there is a bit flip, is not pass
                         passing = False
                         print(f'-- Anomaly at {hex(addr)}:')
