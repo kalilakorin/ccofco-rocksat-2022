@@ -34,7 +34,7 @@ def main():
                 print(f'Finished reading output image: {filePath}')
                 
                 # Loop through the length of the source image
-                passing = False
+                passing = True
                 for addr in range(0, len(sourceByteArray)):
                     if sourceByteArray[addr] != currentByteArray[addr]:
                         # If there is a bit flip, is not pass
