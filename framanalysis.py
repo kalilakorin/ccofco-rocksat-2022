@@ -31,7 +31,7 @@ def main():
                 currentByteArray = bytearray()
                 with open(filePath, 'rb') as outputFile:
                     currentByteArray = outputFile.read()
-                print(f'Finished reading output image: {filePath}')
+                print(f'Finished reading output image: {filePath} {str(len(currentByteArray))} bytes')
                 
                 # Loop through the length of the source image
                 passing = True
