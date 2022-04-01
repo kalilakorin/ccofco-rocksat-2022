@@ -44,7 +44,7 @@ def main():
                         print(f'---- ACTUAL:   {str(currentByteArray[addr])}')
                 # Notify
                 resultText = 'PASS' if passing else 'FAIL'
-                print(f'RESULT for ({filePath}): {resultText}')
+                print(f'-- RESULT for ({filePath}): {resultText}')
             except IOError:
                 print(f'Unable to read in output image: {filePath}')
                 continue
