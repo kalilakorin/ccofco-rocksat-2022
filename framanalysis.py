@@ -25,11 +25,13 @@ def main():
         # If the file ends in JPG
         if file[-4:] == '.jpg':
             try:
+                filePath = './data-fram/' + file 
+                
                 # Build the byte array of the image currently being analyzed
                 currentByteArray = bytearray()
-                with open(file, 'rb') as outputFile:
+                with open(filePath, 'rb') as outputFile:
                     currentByteArray = outputFile.read()
-                print(f'Finished reading output image: {file}')
+                print(f'Finished reading output image: {filePath}')
                 
                 # Loop through the length of the source image
                 passing = False
@@ -42,9 +44,9 @@ def main():
                         print(f'---- ACTUAL:   {str(currentByteArray[addr])}')
                 # Notify
                 resultText = 'PASS' if passing else 'FAIL'
-                print(f'RESULT for ({file}): {resultText}')
+                print(f'RESULT for ({filePath}): {resultText}')
             except IOError:
-                print(f'Unable to read in output image: {file}')
+                print(f'Unable to read in output image: {filePath}')
                 continue
 
 if __name__ == '__main__':
