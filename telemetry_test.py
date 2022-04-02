@@ -24,7 +24,7 @@ def main():
 
         while 1:
                 string = "Write counter" + str(counter)
-                string_byte = byte(string, 'utf-8')
+                string_byte = str.encode(string)
                 ser.write(string_byte)
                 print("serial loop: " + str(counter))
                 time.sleep(1)
