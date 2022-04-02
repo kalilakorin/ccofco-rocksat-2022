@@ -107,7 +107,14 @@ if __name__ == '__main__':
         if ('--motor' in arguments or len(arguments) == 1):
             armMotor = multiprocessing.Process(target=armMotor.main)
             armMotor.start()
-
+        # Read telemetry
+        if ('--read' in arguments or len(arguments) == 1):
+            telemetryRead = multiprocessing.Process(target=telemetry_read.main)
+            telemetryRead.start()
+        # Write Telemetry test
+        if ('--read' in arguments or len(arguments) == 1):
+            telemetryWrite = multiprocessing.Process(target=telemetry_test.main)
+            telemetryWrite.start()
         # Prim
         #if framExperimentThread: framExperimentThread.join()
         #p1.terminate()

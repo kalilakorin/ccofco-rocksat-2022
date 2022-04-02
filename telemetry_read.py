@@ -4,6 +4,7 @@
 import time
 import serial
 
+
 ser = serial.Serial(
         port='/dev/ttyUSB0',
         baudrate = 9600,
@@ -12,7 +13,10 @@ ser = serial.Serial(
         bytesize=serial.EIGHTBITS,
         timeout=1
 )
+def main():
+        while 1:
+                x=ser.readline()
+                print(str(x))
 
-while 1:
-        x=ser.readline()
-        print(str(x))
+if __name__ == '__main__':
+        main()

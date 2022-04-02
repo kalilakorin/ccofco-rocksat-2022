@@ -17,13 +17,17 @@ ser = serial.Serial(
         bytesize=serial.EIGHTBITS,
         timeout=1
 )
-counter = 0
-print("serial initialed")
 
-while 1:
-        string = "Write counter" + str(counter)
-        ser.write(string.encode('utf-8'))
-        print("serial loop: " + str(counter))
-        time.sleep(1)
-        counter += 1
+def main():
+        counter = 0
+        print("serial initialed")
 
+        while 1:
+                string = "Write counter" + str(counter)
+                ser.write(string.encode('utf-8'))
+                print("serial loop: " + str(counter))
+                time.sleep(1)
+                counter += 1
+
+if __name__ == '__main__':
+    main()
