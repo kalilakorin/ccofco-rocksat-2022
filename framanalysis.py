@@ -44,7 +44,7 @@ def main():
                 # Notify
                 passing = (totalAnomalies == 0)
                 resultText = 'PASS (FILE HAS NO CORRUPTION)' if passing else 'FAIL (FILE HAS CORRUPTION)'
-                print(f'-- RESULT for ({filePath}): {resultText}')
+                print(f'-- RESULT for ({filePath}): {resultText} ({str(totalAnomalies)} anomalies)')
             except IOError:
                 print(f'Unable to read in output image: {filePath}')
                 continue
