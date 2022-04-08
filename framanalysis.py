@@ -34,16 +34,16 @@ def main():
                 print(f'Finished reading output image: {filePath} {str(len(currentByteArray))} bytes')
                 
                 # Loop through the length of the source image
-                passing = True
+                totalAnomalies = 0
                 for addr in range(0, len(sourceByteArray)):
                     if sourceByteArray[addr] != currentByteArray[addr]:
-                        # If there is a bit flip, is not pass
-                        passing = False
+                        totalAnomalies += 1
                         print(f'-- Anomaly at {hex(addr)}:')
                         print(f'---- CONTROL:  {str(sourceByteArray[addr])}')
                         print(f'---- ACTUAL:   {str(currentByteArray[addr])}')
                 # Notify
-                resultText = 'PASS' if passing else 'FAIL'
+                passing = (totalAnomalies == 0)
+                resultText = 'PASS (FILE HAS NO CORRUPTION)' if passing else 'FAIL (FILE HAS CORRUPTION)'
                 print(f'-- RESULT for ({filePath}): {resultText}')
             except IOError:
                 print(f'Unable to read in output image: {filePath}')
