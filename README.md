@@ -7,4 +7,4 @@ Make the cloned repository your working directory and then run the `install.sh` 
 You will be prompted for the pi user's password as some aspects of the installer must run with elevated priveleges.
 
 ###### Notes for coders
-All files should have a blank newline at the end.
+- All files should have a blank newline at the end.
