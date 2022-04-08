@@ -7,6 +7,15 @@ from audioop import add
 import os
 
 def main():
+    print('** CHOOSE A SOURCE DIRECTORY:')
+    print('   1) ./data-fram/')
+    print('   2) ./manual-fram-data/')
+    inputChoice = str(input('? '))
+    inputPath = './data-fram/'
+
+    if (inputChoice == 2):
+        inputPath = './manual-fram-data/'
+
     # Creating an array of the bytes that make up monalisa.jpg
     sourceByteArray = bytearray()
     try:
@@ -25,7 +34,7 @@ def main():
         # If the file ends in JPG
         if file[-4:] == '.jpg':
             try:
-                filePath = './data-fram/' + file 
+                filePath = inputPath + file 
                 
                 # Build the byte array of the image currently being analyzed
                 currentByteArray = bytearray()
