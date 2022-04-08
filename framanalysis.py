@@ -27,7 +27,7 @@ def main():
         print('Unable to read in source image (monalisa.jpg)')
     
     # Get a list of all the files in the output directory
-    outputFiles = os.listdir('./data-fram')
+    outputFiles = os.listdir(inputPath)
     
     # For each item in the output directory
     for file in outputFiles:
