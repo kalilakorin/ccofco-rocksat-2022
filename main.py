@@ -77,22 +77,23 @@ if __name__ == '__main__':
         multiprocessing.set_start_method('fork')
         processQueue = multiprocessing.Queue()
         # Accept command line arguments
-        
+
         # If no command line arguments are passed the script will assume that it is running in 
         arguments = sys.argv
+        runAll = len(arguments) == 1
         
         # Secondary experiment (radiation RAM)
-        if ('--fram' in arguments or len(arguments) == 1):
+        if ('--fram' in arguments or runAll):
             framExperimentThread = multiprocessing.Process(target=fram.main)
             framExperimentThread.start()
 
         # Tertiary experiment (sensors)
-        if ('--sensors' in arguments or len(arguments) == 1):
+        if ('--sensors' in arguments or runAll):
             sensorThread = multiprocessing.Process(target=sensors.main)
             sensorThread.start()
 
         # Arm Motor functions
-        if ('--motor' in arguments or len(arguments) == 1):
+        if ('--motor' in arguments or runAll):
             armMotor = multiprocessing.Process(target=armMotor.main)
             armMotor.start()
 

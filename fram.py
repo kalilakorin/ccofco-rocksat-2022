@@ -13,11 +13,8 @@ import logging
 import os
 import multiprocessing as multiprocessing
 
-import board
-import busio
-
+from adafruit_extended_bus import ExtendedI2C as I2C
 import adafruit_fram
-import adafruit_tca9548a
 
 # Configuration
 FRAM_COOK_DURATION = 0
@@ -35,13 +32,10 @@ def main():
     logging.info(f'Initializing FRAM experiment')
 
     # Creating an array of the bytes that make up monalisa.jpg
-    sourceByteArray = []
+    sourceByteArray = bytearray()
     try:
         with open('monalisa.jpg', 'rb') as sourceFile:
-            byte = sourceFile.read(1)
-            while byte:
-                byte = sourceFile.read(1)
-                sourceByteArray.append(int.from_bytes(byte, 'big'))
+            sourceByteArray = sourceFile.read()
         logging.info(f'Finished building array from input file, {str(len(sourceByteArray))} bytes')
     except IOError:
         logging.critical('Unable to read in source image (monalisa.jpg)')
@@ -49,38 +43,56 @@ def main():
     # Create the output directory if it does not exist yet
     os.system('mkdir -p ./data-fram')
 
-    # Begin i2c
+    # Configure the I2C busses
+    i2c = {}
+    # I2C interface A
     try:
-        i2c = busio.I2C(board.SCL, board.SDA)
-        logging.info('I2C interface ... OK')
-    except: 
-        logging.critical('Failed to enable i2c interface, the sensor thread will now crash')
-        return
+        i2c['bus0'] = I2C(1)
+        logging.info('I2C interface A ... OK')
+    except Exception as error:
+        logging.critical('Failed to enable i2c interface A')
+        logging.critical('  ' + str(error))
+        # Set the interface as None to indicate that it is not working
+        i2c['bus0'] = None
+    # I2C interface B
+    try:
+        i2c['bus1'] = I2C(4)
+        logging.info('I2C interface B ... OK')
+    except Exception as error:
+        logging.critical('Failed to enable i2c interface B')
+        logging.critical('  ' + str(error))
+        # Set the interface as None to indicate that it is not working
+        i2c['bus1'] = None
+    # I2C interface C
+    try:
+        i2c['bus2'] = I2C(5)
+        logging.info('I2C interface C ... OK')
+    except Exception as error:
+        logging.critical('Failed to enable i2c interface C')
+        logging.critical('  ' + str(error))
+        # Set the interface as None to indicate that it is not working
+        i2c['bus2'] = None
 
-    # Find all i2c devices
-    i2cDevices = i2c.scan()
+    # Find all i2c devices on the busses that are connected
+    if i2c['bus0'] != None: i2c['devices0'] = i2c['bus0'].scan()
+    if i2c['bus1'] != None: i2c['devices1'] = i2c['bus1'].scan()
+    if i2c['bus2'] != None: i2c['devices2'] = i2c['bus2'].scan()
 
     # Build an array of board classes dynamically
     fram = [None] * 24
-    for channelNo in range(0, 3):
-        address = 112 + channelNo
-        # If there is no i2c device at the intended address, we can assume that there is not a multiplexer there
-        if (address not in i2cDevices):
-            logging.error(f'Multiplexer {str(channelNo)} was not detected, skipping')
-            continue
-        # Initialize the multiplexer
-        try:
-            tca = adafruit_tca9548a.TCA9548A(i2c, address)
-            logging.info(f'Initialized multiplexer {str(channelNo)}')
-        except:
-            # If we can not get the multiplexer to work move on because we will not be able to get any boards off of it
-            logging.error(f'Failed to initialize multiplexer {str(channelNo)}')
-            continue
-        # For each board that should be connected to the
+    # For each i2c bus
+    for busNo in range(0, 3):
+        # If the i2c bus was not configured, do nothing and move on to the next bus
+        if i2c['bus' + str(busNo)] == None: continue
+        # For each board that should be connected to the i2c bus
         for boardNo in range(0, 8):
-            globalBoardNo = boardNo + (8 * channelNo)
+            # Global board no based on the position in the loops eg.
+            # bus0 contains fram0   thru  fram7
+            # bus1 contains fram8   thru  fram16
+            # bus2 contains fram16  thru  fram21
+            globalBoardNo = boardNo + (8 * busNo)
             try:
-                fram[globalBoardNo] = adafruit_fram.FRAM_I2C(tca[boardNo], 80)
+                fram[globalBoardNo] = adafruit_fram.FRAM_I2C(i2c['bus' + str(busNo)], 0x50 + boardNo)
                 logging.info(f'FRAM{str(globalBoardNo)} size: {str(len(fram[globalBoardNo]))} bytes')
             except Exception as error:
                 fram[globalBoardNo] = None
@@ -88,18 +100,23 @@ def main():
 
     # ** Define all sub methods used throughout experiment tirals
     # Write the source image to the provided FRAM board object
-    def writeBoard(framBoard):
+    def writeBoard(framBoard, framBoardIndex):
         try:
-            framBoard[0:len(sourceByteArray)] = sourceByteArray[:]
+            framBoard[0:len(sourceByteArray)] = sourceByteArray[0:len(sourceByteArray)]
         except Exception as err:
-            logging.error(f'Failed write to {str(framBoard)}: "{str(err)}"')
+            logging.error(f'Failed write to FRAM board {str(framBoardIndex)}. Error: "{str(err)}"')
 
     # Read back the contents of all FRAM boards and write to file
     def readBoard(framBoard, boardNo, trialNo):
-        cooked = framBoard[0:len(sourceByteArray)]
-        resultFile = open(f'data-fram__trial{str(trialNo)}__board{str(boardNo)}__{str(int(time.time()))}.jpg', 'wb')
-        resultFile.write(bytes(cooked))
-        resultFile.close()
+        try:
+            cooked = bytearray()
+            for byteIndex in range(0, len(sourceByteArray)):
+                cooked += framBoard[byteIndex]
+            resultFile = open(f'./data-fram/data-fram__trial{str(trialNo)}__board{str(boardNo)}__{str(int(time.time()))}.jpg', 'wb')
+            resultFile.write(cooked)
+            resultFile.close()
+        except Exception as err:
+            logging.error(f'Failed read from FRAM board {str(boardNo)} in experiment trial {str(trialNo)}. Error: "{str(err)}"')
 
     # Write all zeros to the FRAM boards present
     # -- this function is no longer used
@@ -112,9 +129,10 @@ def main():
     startWriteTime = time.time()
     logger.info(f'Beginning write of source image to FRAM boards at {str(int(startWriteTime))}')
     threads = []
-    for framBoard in fram:
+    for framBoardIndex in range(0, len(fram)):
+        framBoard = fram[framBoardIndex]
         if framBoard != None:
-            framWriteThread = multiprocessing.Process(target=writeBoard, args=(framBoard,))
+            framWriteThread = multiprocessing.Process(target=writeBoard, args=(framBoard,framBoardIndex))
             framWriteThread.start()
             threads.append(framWriteThread)
     # Wait for all threads to close
