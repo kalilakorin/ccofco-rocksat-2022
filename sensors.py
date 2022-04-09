@@ -11,6 +11,7 @@ from time import sleep
 import time
 import logging
 import os
+import serial  # might be needed for telemetry
 
 # Adafruit circutpython
 import board
@@ -22,115 +23,135 @@ from adafruit_bme280 import basic as adafruit_bme280
 import adafruit_vl53l1x
 import adafruit_adxl34x
 
+ser = serial.Serial(
+        port='/dev/ttyS0', #Replace ttyS0 with ttyAM0 for Pi1,Pi2,Pi0
+        baudrate = 19200,
+        parity=serial.PARITY_NONE,
+        stopbits=serial.STOPBITS_ONE,
+        bytesize=serial.EIGHTBITS,
+        timeout=1
+)
+
 # Acquire the existing logger
-try:
-    logger = logging.getLogger(__name__)
-except:
+try :
+    logger = logging.getLogger (__name__)
+except :
     logger = None
-    print('Unable to acquire the global logger object, assuming that sensors.py is being run on its own')
+    print ('Unable to acquire the global logger object, assuming that sensors.py is being run on its own')
+
+string = "Sensor PAGE TEST"
+ser.write(string.encode('utf-8'))
+print("STRING WRITTEN to SERIAL PORT")
 
 # Main sensor program loop
-def main():
-    # Sensor information and init functions
-    sensors = {
-        'MPL115A2': {
-            'addr': 0x60,
-            'type': 'temperature, pressure',
-            'init': adafruit_mpl115a2.MPL115A2
-        },
-        'BME280A': {
-            'addr': 0x77,
-            'type': 'outside temperature, pressure, humidity',
-            'init': adafruit_bme280.Adafruit_BME280_I2C
-        },
-        'BME280B': {
-            'addr': 0x76,
-            'type': 'inside temperature, pressure, humidity',
-            'init': adafruit_bme280.Adafruit_BME280_I2C
-        },
-        'VL53L1X': {
-            'addr': 0x29,
-            'type': 'distance',
-            'init': adafruit_vl53l1x.VL53L1X
-        },
-        'ADXL34X': {
-            'addr': 0x53,
-            'type': 'acceleration',
-            'init': adafruit_adxl34x.ADXL345
-        }
-    }
-
+def main () :
     # Configure & initialize the sensors
-    logging.info('Initializing sensors')
+    logging.info ('Initializing sensors')
 
     # Begin i2c
-    try:
-        i2c = busio.I2C(board.SCL, board.SDA)
-        logging.info('I2C interface ... OK')
-    except: 
-        logging.critical('Failed to enable i2c interface, the sensor thread will now crash')
+    try :
+        i2c = busio.I2C (board.SCL, board.SDA)
+        logging.info ('I2C interface ... OK')
+    except :
+        logging.critical ('Failed to enable i2c interface, the sensor thread will now crash')
         return
+    # Init mpl sensor
+    try :
+        mpl115a2 = adafruit_mpl115a2.MPL115A2 (i2c)
+        logging.info ('MPL115A2 (temperature, pressure) ... OK')
+    except :
+        mpl115a2 = None
+        logging.error ('Failed to enable MPL115A2 sensor')
+    # Init bme280 Outside
+    try :
+        bme280a = adafruit_bme280.Adafruit_BME280_I2C (i2c)  # address 0x77 DEFAULT (outside)
+    except :
+        bme280a = None
+        logging.error ('Failed to enable "outside" BME280 (temperature, pressure, humidity) sensor')
+    # Init bme280 Inside
+    try :
+        bme280b = adafruit_bme280.Adafruit_BME280_I2C (i2c, 0x76)  # address 0x76 ALTERNATIVE (inside EBox)
+    except :
+        bme280b = None
+        logging.error ('Failed to enable BME280 (temperature, pressure, humidity) sensor')
+    # Init vl53l1x distance sensor
+    try :
+        vl53l1x = adafruit_vl53l1x.VL53L1X (i2c)
+        vl53l1x.start_ranging ()
+    except :
+        vl53l1x = None
+        logging.error ('Failed to enable VL53L1X (distance) sensor')
+    # ADXL34x accelerometer
+    try :
+        adxl34x = adafruit_adxl34x.ADXL345 (i2c)
+    except :
+        adxl34x = None
+        logging.error ('Failed to enable ADXL34X (accelerometer) sensor')
 
-    # Query all the devices on the i2c bus
-    i2cDevices = i2c.scan()
-
-    # Sensors
-    mpl115a2 = None
-    bme280a = None
-    bme280b = None
-    vl53l1x = None
-    adxl34x = None
-
-    # For each sensor that we have defined
-    for name in sensors:
-        sensor = sensors[name]
-        # If the address of the sensor is not in the i2c bus, we can skip it
-        if sensor['addr'] not in i2cDevices:
-            logging.info(f'{name} ({sensor["type"]}) was not detected on the i2c bus')
-            continue
-        # Attempt to initialize the sensor
-        try:
-            # Dynamic assignment to the sensor's variable using the init function defined in the sensors object
-            globals()[name.lower()] = sensor['init'](i2c, sensor['addr'])
-            logging.info(f'{name} ({sensor["type"]}) ... OK')
-        except: 
-            logging.error(f'Failed to enable {name} ({sensor["type"]}) sensor')
-
-    logging.info('Sensor initialization complete')
+    logging.info ('Sensors initialized')
 
     # Create the output directory if it does not exist yet
-    os.system('mkdir -p ./data-sensors')
+    os.system ('mkdir -p ./data-sensors')
     # Start the sensor output file
-    datafileName = './data-sensors/sensors-' + str(int(time.time() * 1000)) + '.csv'
-    datafile = open(datafileName, 'w') 
-    logging.info('Opened sensor data file for writing: ' + datafileName)
+    datafileName = './data-sensors/sensors-' + str (int (time.time () * 1000)) + '.csv'
+    datafile = open (datafileName, 'w')
+    logging.info ('Opened sensor data file for writing: ' + datafileName)
 
     # CSV header line
     csvheader = 'Time'
-    if mpl115a2 != None: csvheader += ',MPL115A2 Temperature, MPL115A2 Pressure'
-    if vl53l1x != None: csvheader += ',VL53L1X Distance'
-    if bme280a != None: csvheader += ',Outside BME280 Temperature, Outside BME280 Pressure, Outside BME280 Humidity'
-    if bme280b != None: csvheader += ',Inside BME280 Temperature, Inside BME280 Pressure, Inside BME280 Humidity'
-    if adxl34x != None: csvheader += ',ADXL34X Accelerometer X-axis, ADXL34X Accelerometer Y-axis, ADXL34X Accelerometer Z-axis'
-    datafile.write(csvheader + '\n')
-    logging.info(f'Sensor file CSV columns are as follows: {csvheader}')
+    if mpl115a2 != None : csvheader += ',MPL115A2 Temperature, MPL115A2 Pressure'
+    if vl53l1x != None : csvheader += ',vl53l1x Distance'
+    if bme280a != None : csvheader += ',Outside BME280 Temperature, Outside BME280 Pressure, Outside BME280 Humidity'
+    if bme280b != None : csvheader += ',Inside BME280 Temperature, Inside BME280 Pressure, Inside BME280 Humidity'
+    if adxl34x != None : csvheader += ',adxl34x Accelerometer X-axis, adxl34x Accelerometer Y-axis, adxl34x Accelerometer Z-axis'
+
+    datafile.write (csvheader + '\n')
+    serial_header = csvheader + '\n'
+    ser.write(serial_header.encode('utf-8'))
+    logging.info (f'Sensor file CSV columns are as follows: {csvheader}')
 
     # Sensor sample and data write loop
-    logging.info('Beginning sensor polling and writing')
-    while True:
-        # Time axis
-        csvline = str(int(time.time() * 1000))
-        
-        # Add entries to the CSV line based on the presence of those particular sensors
-        if mpl115a2 != None: csvline += f',{mpl115a2.temperature},{mpl115a2.pressure}'
-        if vl53l1x != None: csvline += f',{vl53l1x.distance}'
-        if bme280a != None: csvline += f',{bme280a.temperature},{bme280a.pressure},{bme280a.relative_humidity}'
-        if bme280b != None: csvline += f',{bme280b.temperature},{bme280b.pressure},{bme280b.relative_humidity}'
-        if adxl34x != None: csvline += f',{adxl34x.acceleration[0]},{adxl34x.acceleration[1]},{adxl34x.acceleration[2]}'
-        
-        datafile.write(csvline + '\n')
-        # Print the CSV line to the console if the file is running standalone
-        if logger == None: print(csvline)
+    logging.info ('Beginning sensor polling and writing (1000 samples/second)')
 
-if __name__ == '__main__':
-    main()
+    count = 0
+    while True :
+        # Time axis
+        csvline = str (int (time.time () * 1000))
+
+        # Add entries to the CSV line based on the presence of those particular sensors
+        if mpl115a2 != None : csvline += f',{mpl115a2.temperature},{mpl115a2.pressure}'
+        if vl53l1x != None : csvline += f',{vl53l1x.distance}'
+        if bme280a != None : csvline += f',{bme280a.temperature},{bme280a.pressure},{bme280a.relative_humidity}'
+        if bme280b != None : csvline += f',{bme280b.temperature},{bme280b.pressure},{bme280b.relative_humidity}'
+        if adxl34x != None : csvline += f',{adxl34x.acceleration[0]},{adxl34x.acceleration[1]},{adxl34x.acceleration[2]}'
+
+        datafile.write (csvline + '\n')
+
+        # Print the CSV line to the console if the file is running standalone
+        if logger == None : print (csvline)
+        sleep (0.001)
+
+        # Sends senor data to
+        if count % 1000 == 0:
+            serial_string = csvline
+            # serial_string = str (int (time.time () * 1000))
+            # if mpl115a2 != None :  serial_string += f',{mpl115a2.temperature},{mpl115a2.pressure}'
+            # if vl53l1x != None : serial_string += f',{vl53l1x.distance}'
+            # if bme280a != None : serial_string += f',{bme280a.temperature},{bme280a.pressure},{bme280a.relative_humidity}'
+            # if bme280b != None : serial_string += f',{bme280b.temperature},{bme280b.pressure},{bme280b.relative_humidity}'
+            # if adxl34x != None : serial_string += f',{adxl34x.acceleration[0]},{adxl34x.acceleration[1]},{adxl34x.acceleration[2]}'
+            serial_string += ",TEST: " + str(int(count/1000)) + '\n'
+            ser.write(serial_string.encode('utf-8'))
+            print(serial_string)
+        count += 1
+
+
+if __name__ == '__main__' :
+    main ()
+
+
+#NOTES:  Currently can not run on mulitple theads.  Should work on just sensor thread.  I am sure there is a way around this?
+# Must set up ser = serial.Serial in file currently.
+# Want to test if I can run this in multiple files without it crashing
+# want to figure out a way to pass the argument around.
+# might be able to do a .pass info to serial class each time we need to send data???  have this class inizilze a new port use each time?
