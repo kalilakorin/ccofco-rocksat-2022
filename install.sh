@@ -42,5 +42,7 @@ sudo pip3 install pybluez #bluetooth connection ble
 sudo pip3 install open-gopro #open gopro so the pi and gopro can interact
 sudo pip3 install goprocam #gopro api
 sudo pip3 install gopro-ble-py-2 #ble control for gopro
+sudo pip3 install termcolor
+sudo pip3 install prettytable
 
 echo "   *** DONE ***   "
