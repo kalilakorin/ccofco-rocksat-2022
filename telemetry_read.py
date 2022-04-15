@@ -13,10 +13,10 @@ ser = serial.Serial(
         bytesize=serial.EIGHTBITS,
         timeout=1
 )
-def main():
-        while 1:
-                # x=ser.read(2)
-                # print(x)
+# def main():
+while 1:
+        # x=ser.read(2)
+        # print(x)
 
-if __name__ == '__main__':
+# if __name__ == '__main__':
         main()
