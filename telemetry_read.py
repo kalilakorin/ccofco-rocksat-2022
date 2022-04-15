@@ -15,7 +15,7 @@ ser = serial.Serial(
 )
 def main():
         while 1:
-                x=ser.readline()
+                x=ser.read(100)
                 print(x)
 
 if __name__ == '__main__':
