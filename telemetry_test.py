@@ -23,7 +23,7 @@ counter = 0
 print("serial initialed")
 
 while 1:
-        string = "Write counter" + str(counter)
+        string = "Write counter" + str(counter) + "\n"
         string_byte = str.encode(string)
         ser.write(string_byte)
         print("serial loop: " + str(counter))
