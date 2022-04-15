@@ -13,7 +13,9 @@ ser = serial.Serial(
         bytesize=serial.EIGHTBITS,
         timeout=1
 )
+ser.close()
 ser.open()
+
 # def main():
 while 1:
         x=ser.readline()
