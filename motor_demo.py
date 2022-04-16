@@ -3,6 +3,7 @@ import time
 import logging
 import RPi.GPIO as GPIO
 from adafruit_motorkit import MotorKit
+import time
 
 
 
@@ -28,4 +29,5 @@ while True:
         motor.motor1.throttle = 0.0
     if GPIO.input(reverse):
         print("Revers...\n")
-        motor.moter1.throttle = -1.0
+        motor.motor1.throttle = -1.0
+    time.sleep(0.5)
