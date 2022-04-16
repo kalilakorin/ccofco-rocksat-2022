@@ -6,7 +6,7 @@ from adafruit_motorkit import MotorKit
 
 
 
-te1 = 27 # TE-1
+
 forward = 22 # Limit Switch Extension
 stop = 23 # TE-2
 reverse = 24 # Limit Switch Retraction
@@ -20,12 +20,12 @@ GPIO.setup (stop, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # STOP
 GPIO.setup (reverse, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # REVERSE
 
 while True:
-    if GPIO.IN(forward):
+    if GPIO.input(forward):
         print("Forward...\n")
         motor.motor1.throttle = 1.0
-    if GPIO.IN(stop):
+    if GPIO.input(stop):
         print("Stop...\n")
         motor.motor1.throttle = 0.0
-    if GPIO.IN(reverse):
+    if GPIO.input(reverse):
         print("Revers...\n")
         motor.moter1.throttle = -1.0
