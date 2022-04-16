@@ -24,10 +24,13 @@ while True:
     if GPIO.input(forward):
         print("Forward...\n")
         motor.motor1.throttle = 1.0
+        time.sleep(0.25)
     if GPIO.input(stop):
         print("Stop...\n")
         motor.motor1.throttle = 0.0
+        time.sleep(0.25)
     if GPIO.input(reverse):
         print("Revers...\n")
         motor.motor1.throttle = -1.0
+        time.sleep(0.25)
     time.sleep(0.1)
