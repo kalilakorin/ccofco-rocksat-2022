@@ -65,8 +65,8 @@ logging.basicConfig(
     handlers=[rotatingFileHandler])
 
 #set up  inhibit for testing
-rf = 24 # RF inhibit GPIO pin
-am = 22 # arm motor inhibit GPIO pin
+rf = 24 # RF inhibit GPIO pin  (6)
+am = 22 # arm motor inhibit GPIO pin (5)
 GPIO.setmode(GPIO.BCM)  #GPIO PIN NAMES
 GPIO.setup (rf, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.setup (am, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
@@ -97,7 +97,7 @@ if __name__ == '__main__':
             # framExperimentThread.start()
 
         # Tertiary experiment (sensors)
-        if ('--sensors' in arguments or runAll) and (GPIO.input (rf)):
+        if ('--sensors' in arguments or runAll) and (GPIO.input (rf) == True):
             # sensorThread = multiprocessing.Process(target=sensors.main)
             # sensorThread.start()
             print("RF wire is engaged")
@@ -107,6 +107,8 @@ if __name__ == '__main__':
             # armMotor = multiprocessing.Process(target=armMotor.main)
             # armMotor.start()
             print("AM wire is dis engaged ")
+
+
 
         # Prim
         #if framExperimentThread: framExperimentThread.join()
