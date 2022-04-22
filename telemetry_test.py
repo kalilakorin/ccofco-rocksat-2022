@@ -32,7 +32,7 @@ print("serial initialed")
 
 while 1:
         x = ["fuck", "this", "god", "damn", "telemetry"]
-        ser.write(x)
+        ser.write(bytearray(x))
 
 # while 1:
 #         ser.write("Write counter: %d \n" % (counter))
