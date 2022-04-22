@@ -22,13 +22,18 @@ ser = serial.Serial(
 counter = 0
 print("serial initialed")
 
+# while 1:
+#         string = "Write counter" + str(counter) + "\n"
+#         string_byte = str.encode(string)
+#         ser.write(string_byte)
+#         print("serial loop: " + str(counter))
+#         time.sleep(1)
+#         counter += 1
+
 while 1:
-        string = "Write counter" + str(counter) + "\n"
-        string_byte = str.encode(string)
-        ser.write(string_byte)
-        print("serial loop: " + str(counter))
-        time.sleep(1)
-        counter += 1
+        x = ["fuck", "this", "god", "damn", "telemetry"]
+        ser.write(x)
+
 # while 1:
 #         ser.write("Write counter: %d \n" % (counter))
 #         time.sleep(1)
