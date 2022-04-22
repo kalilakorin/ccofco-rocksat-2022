@@ -33,6 +33,8 @@ print("serial initialed")
 while 1:
     x = [5, 4, 3, 2, 1]
     ser.write(bytearray(x))
+    time.sleep(1)
+
 
 # while 1:
 #         ser.write("Write counter: %d \n" % (counter))

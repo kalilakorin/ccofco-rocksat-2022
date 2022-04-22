@@ -21,5 +21,6 @@ while 1:
         x=ser.readline()
         print(str(x))
 
+
 # if __name__ == '__main__':
 #         main()
