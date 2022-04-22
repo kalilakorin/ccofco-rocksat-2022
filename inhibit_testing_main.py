@@ -95,6 +95,7 @@ if __name__ == '__main__':
         if ('--fram' in arguments or runAll):
             # framExperimentThread = multiprocessing.Process(target=fram.main)
             # framExperimentThread.start()
+            print("fram running")
 
         # Tertiary experiment (sensors)
         if ('--sensors' in arguments or runAll) and (GPIO.input (rf) == True):
