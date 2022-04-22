@@ -19,7 +19,7 @@ ser.open()
 # def main():
 while 1:
         x=ser.readline()
-        print(x)
+        print(str(x))
 
 # if __name__ == '__main__':
 #         main()
