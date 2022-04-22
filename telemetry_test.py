@@ -5,17 +5,17 @@
 # serial library/documentation
 # https://pyserial.readthedocs.io/en/latest/tools.html
 
-#!/usr/bin/env python3
+# !/usr/bin/env python3
 import time
 import serial
 
 ser = serial.Serial(
-        port='/dev/ttyS0', #Replace ttyS0 with ttyAM0 for Pi1,Pi2,Pi0
-        baudrate = 9600,
-        parity=serial.PARITY_NONE,
-        stopbits=serial.STOPBITS_ONE,
-        bytesize=serial.EIGHTBITS,
-        timeout=1
+    port='/dev/ttyS0',  # Replace ttyS0 with ttyAM0 for Pi1,Pi2,Pi0
+    baudrate=9600,
+    parity=serial.PARITY_NONE,
+    stopbits=serial.STOPBITS_ONE,
+    bytesize=serial.EIGHTBITS,
+    timeout=1
 )
 
 # def main():
@@ -31,8 +31,8 @@ print("serial initialed")
 #         counter += 1
 
 while 1:
-        x = ["fuck", "this", "god", "damn", "telemetry"]
-        ser.write(bytearray(x))
+    x = [5, 4, 3, 2, 1]
+    ser.write(bytearray(x))
 
 # while 1:
 #         ser.write("Write counter: %d \n" % (counter))
