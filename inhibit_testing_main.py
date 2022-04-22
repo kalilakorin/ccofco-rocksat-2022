@@ -100,13 +100,13 @@ if __name__ == '__main__':
         if ('--sensors' in arguments or runAll) and (GPIO.input (rf) == True):
             # sensorThread = multiprocessing.Process(target=sensors.main)
             # sensorThread.start()
-            print("RF wire is engaged")
+                print("RF wire is engaged")
 
         # Arm Motor functions
         if ('--motor' in arguments or runAll) and (GPIO.input (am) != True):
             # armMotor = multiprocessing.Process(target=armMotor.main)
             # armMotor.start()
-            print("AM wire is dis engaged ")
+                print("AM wire is dis engaged ")
 
 
 
