@@ -65,8 +65,8 @@ logging.basicConfig(
     handlers=[rotatingFileHandler])
 
 #set up  inhibit for testing
-rf = 24 # RF inhibit GPIO pin  (6)
-am = 22 # arm motor inhibit GPIO pin (5)
+rf = 6 # RF inhibit GPIO pin  (6)
+am = 5 # arm motor inhibit GPIO pin (5)
 GPIO.setmode(GPIO.BCM)  #GPIO PIN NAMES
 GPIO.setup (rf, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.setup (am, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
