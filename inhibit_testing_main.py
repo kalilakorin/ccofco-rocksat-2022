@@ -106,7 +106,7 @@ if __name__ == '__main__':
 
         # Arm Motor functions
         if ('--motor' in arguments or runAll) and (GPIO.input (am) != True):
-            print("AM wire is disengaged")
+            print("AM inhibit wire is disengaged")
             # armMotor = multiprocessing.Process(target=armMotor.main)
             # armMotor.start()
 
