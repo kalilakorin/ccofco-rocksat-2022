@@ -99,8 +99,14 @@ if __name__ == '__main__':
             armMotor.start()
 		
 	# gopro recording start
-        goproThread = multiprocessing.Process(target=gopro.main)
-        goproThread.start()
+	if ('--gopro' in arguments or runAll):
+            goproThread = multiprocessing.Process(target=gopro.main)
+            goproThread.start()
+	
+	# auxcam fuctions
+	if ('--auxcam' in arguments or runAll):
+    	    auxcamThread = multiprocessing.Process(target=auxcam.main)
+    	    auxcamThread.start()
 
         # Prim
         #if framExperimentThread: framExperimentThread.join()
