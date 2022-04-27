@@ -42,6 +42,7 @@ import sys
 import sensors
 import fram
 import armMotor
+import gopro
 
 
 # Create a log folder if it does not exist yet
@@ -96,6 +97,10 @@ if __name__ == '__main__':
         if ('--motor' in arguments or runAll):
             armMotor = multiprocessing.Process(target=armMotor.main)
             armMotor.start()
+		
+	# gopro recording start
+        goproThread = multiprocessing.Process(target=gopro.main)
+        goproThread.start()
 
         # Prim
         #if framExperimentThread: framExperimentThread.join()
