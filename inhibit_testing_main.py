@@ -96,14 +96,23 @@ if __name__ == '__main__':
             framExperimentThread = multiprocessing.Process(target=fram.main)
             framExperimentThread.start()
             print("fram running")
-
-        # Tertiary experiment (sensors)
-        if ('--sensors' in arguments or runAll) and (GPIO.input (rf) != True):
-            print("RF inhibit wire is disengaged")
+	
+	# Tertiary experiment (sensors)
+	if ('--sensors' in arguments or runAll):
             sensorThread = multiprocessing.Process(target=sensors.main)
             sensorThread.start()
 
-
+        # Gopro testing
+        if ('--gopro' in arguments or runAll) and (GPIO.input (rf) != True) and (GPIO.input (am) != True):  #  flight code
+            print("RF inhibit wire is disengaged")
+            goproThread = multiprocessing.Process(target=gopro.main)
+            goproThread.start()
+	##### MAKE GO PRO TEST!!!!!!!!!!!!!!!!!
+	if ('--gopro' in arguments or runAll) and (GPIO.input (rf) != True) and (GPIO.input (am) = True):   #  RF test 
+	    print("MAKE GO PRO TEST!!!!!!!!!!!!!!!!!")
+	    #goproTestThread = multiprocessing.Process(target=goprotest.main)
+            #goproTestThread.start()
+		
         # Arm Motor functions
         if ('--motor' in arguments or runAll) and (GPIO.input (am) != True):
             print("AM inhibit wire is disengaged")
