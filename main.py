@@ -100,12 +100,12 @@ if __name__ == '__main__' :
         if ('--gopro' in arguments or runAll) :
             goproThread = multiprocessing.Process (target=gopro.main)
             goproThread.start ()
+
         # gopro wallops RF testing start
         if ('--gopro' in arguments or runAll) :
             goprotestThread = multiprocessing.Process (target=goprotest.main)
             goprotestThread.start ()
 
-            
         # auxcam fuctions
         if ('--auxcam' in arguments or runAll) :
             auxcamThread = multiprocessing.Process (target=auxcam.main)
