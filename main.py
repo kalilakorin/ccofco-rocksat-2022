@@ -3,8 +3,8 @@
     This is the main control script for the CC of CO RockSat 2021-2022 payload.
 
     Contributors:
-	    Jillian Frimml
-	    Skyler Puckett
+        Jillian Frimml
+        Skyler Puckett
         Konstantin Zaremski
     
     --- This product contains software from the previous payload written
@@ -50,12 +50,12 @@ os.system('mkdir -p ./logs')
 # Set up logging and log boot time
 boottime = int(time.time())
 rotatingFileHandler = RotatingFileHandler(
- 	filename=f'logs/rocksat_payload_{str(boottime)}.log', 
-  	mode='a',
-  	maxBytes=20*1024*1024,
-  	backupCount=2,
-  	encoding='utf-8',
-  	delay=0
+    filename=f'logs/rocksat_payload_{str(boottime)}.log',
+    mode='a',
+    maxBytes=20*1024*1024,
+    backupCount=2,
+    encoding='utf-8',
+    delay=0
 )
 logging.basicConfig(
     level=logging.DEBUG,
@@ -97,16 +97,16 @@ if __name__ == '__main__':
         if ('--motor' in arguments or runAll):
             armMotor = multiprocessing.Process(target=armMotor.main)
             armMotor.start()
-		
-	# gopro recording start
-	if ('--gopro' in arguments or runAll):
+
+    # gopro recording start
+    if ('--gopro' in arguments or runAll):
             goproThread = multiprocessing.Process(target=gopro.main)
             goproThread.start()
-	
-	# auxcam fuctions
-	if ('--auxcam' in arguments or runAll):
-    	    auxcamThread = multiprocessing.Process(target=auxcam.main)
-    	    auxcamThread.start()
+
+    # auxcam fuctions
+    if ('--auxcam' in arguments or runAll):
+            auxcamThread = multiprocessing.Process(target=auxcam.main)
+            auxcamThread.start()
 
         # Prim
         #if framExperimentThread: framExperimentThread.join()
