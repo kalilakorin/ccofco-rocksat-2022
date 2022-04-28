@@ -105,12 +105,13 @@ if __name__ == '__main__':
             sensorThread = multiprocessing.Process(target=sensors.main)
             sensorThread.start()
 
-        # Gopro testing
+        # Gopro fuctions
         if ('--gopro' in arguments or runAll) and (GPIO.input (rf) != True) and (GPIO.input (am) != True):  #  flight code
             print("RF inhibit wire is disengaged")
             goproThread = multiprocessing.Process(target=gopro.main)
             goproThread.start()
-    ##### MAKE GO PRO TEST!!!!!!!!!!!!!!!!!
+
+        # Gopro RF Wallops testing
         if ('--goprotest' in arguments or runAll) and (GPIO.input (rf) != True) and (GPIO.input (am) = True):   #  RF test
             print("RF WALLOPS TESTING ACTIVE...")
             goprotestThread = multiprocessing.Process(target=goprotest.main)
