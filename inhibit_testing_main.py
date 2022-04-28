@@ -44,6 +44,9 @@ import RPi.GPIO as GPIO
 import sensors
 import fram
 import armMotor
+import gopro
+import goprotest
+
 
 
 # Create a log folder if it does not exist yet
@@ -98,7 +101,7 @@ if __name__ == '__main__':
             print("fram running")
 
     # Tertiary experiment (sensors)
-    if ('--sensors' in arguments or runAll):
+        if ('--sensors' in arguments or runAll):
             sensorThread = multiprocessing.Process(target=sensors.main)
             sensorThread.start()
 
@@ -108,10 +111,10 @@ if __name__ == '__main__':
             goproThread = multiprocessing.Process(target=gopro.main)
             goproThread.start()
     ##### MAKE GO PRO TEST!!!!!!!!!!!!!!!!!
-    if ('--gopro' in arguments or runAll) and (GPIO.input (rf) != True) and (GPIO.input (am) = True):   #  RF test
-        print("MAKE GO PRO TEST!!!!!!!!!!!!!!!!!")
-        #goproTestThread = multiprocessing.Process(target=goprotest.main)
-            #goproTestThread.start()
+        if ('--goprotest' in arguments or runAll) and (GPIO.input (rf) != True) and (GPIO.input (am) = True):   #  RF test
+            print("RF WALLOPS TESTING ACTIVE...")
+            goprotestThread = multiprocessing.Process(target=goprotest.main)
+            goprotestThread.start()
 
         # Arm Motor functions
         if ('--motor' in arguments or runAll) and (GPIO.input (am) != True):

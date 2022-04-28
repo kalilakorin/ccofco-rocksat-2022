@@ -44,6 +44,7 @@ import fram
 import armMotor
 
 
+
 # Create a log folder if it does not exist yet
 os.system('mkdir -p ./logs')
 # Set up logging and log boot time
