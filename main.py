@@ -42,7 +42,7 @@ import sys
 import sensors
 import fram
 import armMotor
-import gopro
+#import gopro
 
 
 # Create a log folder if it does not exist yet
