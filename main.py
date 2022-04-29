@@ -43,7 +43,7 @@ import sensors
 import fram
 import armMotor
 import auxcam
-import gopro
+#import gopro
 
 # Create a log folder if it does not exist yet
 os.system('mkdir -p ./logs')
