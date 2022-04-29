@@ -21,7 +21,7 @@ def main():
     logging.info('Initializing GoPro')
 
     ter = 17  # TE-R
-    gppower = 12  # GoPro power
+    gppower = 19  # GoPro power
 
     # GPIO pin assignment
     try:
@@ -47,7 +47,7 @@ def main():
     GPIO.output(gppower, GPIO.LOW)
 
     # start the gopro
-    subprocess.call(f'python3 gopromain.py --verbose -a "E3:BB:1E:0D:C8:52" -c "preset maxvideo" -c "record start"', shell=True)
+    subprocess.call(f'python3 gopromain.py --verbose -a "D1:70:A4:FC:21:4F" -c "preset maxvideo" -c "record start"', shell=True)
     logger.info('GoPro record started: ' + str(int(time.time() * 1000)))
 
     GPIO.cleanup()
