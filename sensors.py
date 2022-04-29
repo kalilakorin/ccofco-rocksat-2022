@@ -58,7 +58,7 @@ def main () :
     # Init mpl sensor
     try :
         mpl115a2 = adafruit_mpl115a2.MPL115A2 (i2c)
-        logging.info ('MPL115A2 (temperature, pressure) ... OK')
+        #logging.info ('MPL115A2 (temperature, pressure) ... OK')
     except :
         mpl115a2 = None
         logging.error ('Failed to enable MPL115A2 sensor')
