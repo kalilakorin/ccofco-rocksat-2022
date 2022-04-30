@@ -98,9 +98,9 @@ if __name__ == '__main__':
             armMotor.start()
 
         # gopro recording start
-        if ('--gopro' in arguments or runAll):
-            goproThread = multiprocessing.Process(target=gopro.main)
-            goproThread.start()
+        # if ('--gopro' in arguments or runAll):
+        #     goproThread = multiprocessing.Process(target=gopro.main)
+        #     goproThread.start()
 
         # gopro wallops RF testing start
         # if ('--goprotest' in arguments or runAll):
