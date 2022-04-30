@@ -1,4 +1,4 @@
-from open_gopro import GoPro
+#from open_gopro import GoPro
 
 import gopromain as gopro
 import time

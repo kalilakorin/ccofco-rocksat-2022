@@ -14,6 +14,7 @@ import logging
 import RPi.GPIO as GPIO
 from adafruit_motorkit import MotorKit
 import subprocess
+import gopromain as gopro
 
 print("Start...\n\n")
 try:
@@ -59,6 +60,10 @@ def main():
             break
     #call
     subprocess.call(f'python3 gopromain.py --verbose -a "D1:70:A4:FC:21:4F" -c "preset maxvideo" -c "record start"', shell=True)
+    print("FUCK")
+    time.sleep(5)
+    subprocess.call(f'python3 gopromain.py --verbose -a "D1:70:A4:FC:21:4F" -c "preset maxvideo" -c "record start"', shell=True)
+    print("fuck?")
 
     # wait for TE-1 signal
     while True:
