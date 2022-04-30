@@ -13,6 +13,7 @@ import time
 import logging
 import RPi.GPIO as GPIO
 from adafruit_motorkit import MotorKit
+import subprocess
 
 print("Start...\n\n")
 try:
@@ -35,21 +36,29 @@ def main():
     lse = 22 # Limit Switch Extension
     te2 = 23 # TE-2
     lsr = 24 # Limit Switch Retraction
+    ter = 17 # gopro activation
 
     # GPIO pin assignment
     try:
         motor = MotorKit()
         GPIO.setmode(GPIO.BCM)  #GPIO PIN NAMES
+        GPIO.setup(ter, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-R around 10 seconds
         GPIO.setup (te1, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-1 around +85 seconds
         GPIO.setup (lse, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # Extension Limit Switch
         GPIO.setup (te2, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-2 around +220 seconds
         GPIO.setup (lsr, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # Retraction Limit Switch
 
+
     except:
         logger.critical('Failed to initialize GPIO pins and motor hat ')
         return
 
-
+    # wait for ter signile
+    while True:
+        if GPIO.input(ter):
+            break
+    #call
+    subprocess.call(f'python3 gopromain.py --verbose -a "D1:70:A4:FC:21:4F" -c "preset maxvideo" -c "record start"', shell=True)
 
     # wait for TE-1 signal
     while True:

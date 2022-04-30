@@ -20,7 +20,7 @@ def main():
     # Configure & initialize the gopro to receive power from GPIO pins
     logging.info('Initializing GoPro')
 
-    ter = 5  # TE-R 17
+    ter = 17  # TE-R 17
     gppower = 19  # GoPro power
 
     # GPIO pin assignment
