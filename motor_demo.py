@@ -20,10 +20,12 @@ GPIO.setup (forward, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # Forward
 GPIO.setup (stop, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # STOP
 GPIO.setup (reverse, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # REVERSE
 
+x=0.6
+
 while True:
     if GPIO.input(forward):
         print("Forward...\n")
-        motor.motor1.throttle = 0.69
+        motor.motor1.throttle = x
         time.sleep(0.25)
     if GPIO.input(stop):
         print("Stop...\n")
@@ -31,6 +33,6 @@ while True:
         time.sleep(0.25)
     if GPIO.input(reverse):
         print("Revers...\n")
-        motor.motor1.throttle = -0.69
+        motor.motor1.throttle = -x
         time.sleep(0.25)
     time.sleep(0.1)
