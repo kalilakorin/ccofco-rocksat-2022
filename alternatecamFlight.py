@@ -15,6 +15,8 @@ uart = serial.Serial("/dev/ttyUSB0", baudrate=115200, timeout=0.25)
 
 # Setup VC0706 camera
 vc0706 = adafruit_vc0706.VC0706(uart)
+print("VC0706 version:")
+print(vc0706.version)
 # Set the image size.
 vc0706.image_size = adafruit_vc0706.IMAGE_SIZE_640x480
 
@@ -23,6 +25,10 @@ vc0706.image_size = adafruit_vc0706.IMAGE_SIZE_640x480
 size = vc0706.image_size
 if size == adafruit_vc0706.IMAGE_SIZE_640x480:
     print("Using 640x480 size image.")
+elif size == adafruit_vc0706.IMAGE_SIZE_320x240:
+    print("Using 320x240 size image.")
+elif size == adafruit_vc0706.IMAGE_SIZE_160x120:
+    print("Using 160x120 size image.")
 
 IMAGE_FILE = "./image" + str(int(time.time() * 1000)) + ".jpg"
 # Take a picture.
