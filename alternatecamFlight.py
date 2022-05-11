@@ -8,6 +8,9 @@ Primarily for use with Linux/Raspberry Pi but also can work with Mac/Windows"""
 import time
 import adafruit_vc0706
 import serial
+import os
+
+os.system('mkdir -p ./data-pictures')
 
 
 # For use with USB to serial adapter:
@@ -30,7 +33,7 @@ elif size == adafruit_vc0706.IMAGE_SIZE_320x240:
 elif size == adafruit_vc0706.IMAGE_SIZE_160x120:
     print("Using 160x120 size image.")
 
-IMAGE_FILE = "./image" + str(int(time.time() * 1000)) + ".jpg"
+IMAGE_FILE = "./data-pictures/image" + str(int(time.time() * 1000)) + ".jpg"
 # Take a picture.
 print("taking picture")
 if not vc0706.take_picture():
