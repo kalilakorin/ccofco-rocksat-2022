@@ -63,4 +63,5 @@ with open(IMAGE_FILE, "wb") as outfile:
             print(".", end="", flush=True)
             wcount = 0
 
+print()
 print("Finished in %0.1f seconds!" % (time.monotonic() - stamp))
