@@ -39,10 +39,11 @@ import multiprocessing as multiprocessing
 import sys
 
 # Import system modules
+import alternatecamFlight
 import sensors
 import fram
 import armMotor
-import auxcam
+
 
 
 # Create a log folder if it does not exist yet
@@ -98,8 +99,10 @@ if __name__ == '__main__':
             armMotor.start()
 
         if ('--auxcam' in arguments or len(arguments) == 1):
-            auxCam = multiprocessing.Process(target=auxcam.main)
+            auxCam = multiprocessing.Process(target=alternatecamFlight.main)
             auxCam.start()
+
+
 
         # Prim
         #if framExperimentThread: framExperimentThread.join()
