@@ -21,14 +21,14 @@ vc0706.image_size = adafruit_vc0706.IMAGE_SIZE_640x480
 # Note you can also read the property and compare against those values to
 # see the current size:
 size = vc0706.image_size
+if size == adafruit_vc0706.IMAGE_SIZE_640x480:
+    print("Using 640x480 size image.")
 
 IMAGE_FILE = "./image" + str(int(time.time() * 1000)) + ".jpg"
 # Take a picture.
 print("taking picture")
-try:
-    vc0706.take_picture()
-except:
-    print("error taking photo")
+if not vc0706.take_picture():
+    raise RuntimeError("Failed to take picture!")
 
 print("picture taken")
 # Print size of picture in bytes.
