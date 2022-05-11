@@ -20,14 +20,14 @@ IMAGE_FILE = "/image.jpg"
 
 
 # Create a serial connection for the VC0706 connection.
-uart = busio.UART(board.TX, board.RX, baudrate=115200, timeout=0.25)
+# uart = busio.UART(board.TX, board.RX, baudrate=115200, timeout=0.25)
 # Update the serial port name to match the serial connection for the camera!
 # For use with USB to serial adapter:
-# import serial
-# uart = serial.Serial("/dev/ttyUSB0", baudrate=115200, timeout=0.25)
-# For use with Raspberry Pi:
 import serial
-uart = serial.Serial("/dev/ttyS0", baudrate=115200, timeout=0.25)
+uart = serial.Serial("/dev/ttyUSB0", baudrate=115200, timeout=0.25)
+# For use with Raspberry Pi:
+# import serial
+# uart = serial.Serial("/dev/ttyS0", baudrate=115200, timeout=0.25)
 
 # Setup VC0706 camera
 vc0706 = adafruit_vc0706.VC0706(uart)
