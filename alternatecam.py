@@ -12,7 +12,7 @@ import adafruit_vc0706
 
 # Set this to the full path to the file name to save the captured image. WILL OVERWRITE!
 # CircuitPython internal filesystem configuration:
-IMAGE_FILE = "/image.jpg"
+IMAGE_FILE = "./image511.jpg"
 # USB to serial adapter configuration:
 # IMAGE_FILE = 'image.jpg'  # Full path to file name to save captured image. Will overwrite!
 # Raspberry Pi configuration:
