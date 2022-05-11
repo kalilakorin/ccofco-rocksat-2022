@@ -92,4 +92,4 @@ print()
 # pylint: enable=invalid-name
 print("Finished in %0.1f seconds!" % (time.monotonic() - stamp))
 # Turn the camera back into video mode.
-vc0706.resume_video()
+# vc0706.resume_video()
