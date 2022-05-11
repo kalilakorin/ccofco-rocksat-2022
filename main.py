@@ -38,8 +38,8 @@ import alternatecamFlight
 import sensors
 import fram
 import armMotor
-import gopro
-#import goprotest
+# import gopro
+# import goprotest
 
 # Create a log folder if it does not exist yet
 os.system('mkdir -p ./logs')
