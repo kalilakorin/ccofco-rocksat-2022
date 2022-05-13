@@ -41,7 +41,7 @@ import sys
 import auxcam
 import sensors
 import fram
-# import armMotor
+import armMotor
 # import gopro
 # import goprotest
 
