@@ -38,6 +38,7 @@ import multiprocessing as multiprocessing
 import sys
 
 # Import system modules
+import auxcam
 import sensors
 import fram
 import armMotor
