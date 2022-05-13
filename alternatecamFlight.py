@@ -30,21 +30,19 @@ def main():
     os.system('mkdir -p ./data-pictures')
 
     # For use with USB to serial adapter:
-    # try:
-    uart = serial.Serial("/dev/ttyUSB0", baudrate=115200, timeout=0.25)
-    logging.info('serial port USB0... OK')
-    # except:
-    #     uart = None
-    #     logging.error('failed to enable serial port USB0')
-
+    try:
+        uart = serial.Serial("/dev/ttyUSB0", baudrate=115200, timeout=0.25)
+        logging.info('serial port USB0... OK')
+    except:
+        logging.critical('failed to enable serial port USB0')
+        return
     # Setup VC0706 camera
-    # try:
-    vc0706 = adafruit_vc0706.VC0706(uart)
-    logging.info('vc0706 (camera) ... OK')
-    # except:
-    #     vc0706 = None
-    #     logging.error('failed to enable vc0706 (engineering camera)')
-
+    try:
+        vc0706 = adafruit_vc0706.VC0706(uart)
+        logging.info('vc0706 (camera) ... OK')
+    except:
+        logging.critical('failed to enable vc0706 (engineering camera)')
+        return
     print("VC0706 version:")
     print(vc0706.version)
     # Set the image size.
