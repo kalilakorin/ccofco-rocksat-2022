@@ -36,6 +36,7 @@ from logging.handlers import RotatingFileHandler
 import os
 import multiprocessing as multiprocessing
 import sys
+import busio
 
 # Import system modules
 import auxcam

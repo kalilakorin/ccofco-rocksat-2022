@@ -11,6 +11,7 @@ import time
 import logging
 import serial
 import os
+import busio
 # import Camera module library
 import adafruit_vc0706
 
