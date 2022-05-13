@@ -38,7 +38,7 @@ import multiprocessing as multiprocessing
 import sys
 
 # Import system modules
-# import auxcam
+import auxcam
 import sensors
 import fram
 import armMotor
@@ -109,9 +109,9 @@ if __name__ == '__main__':
         #     goprotestThread.start()
 
         # auxcam fuctions
-        # if ('--auxcam' in arguments or runAll):
-        #     auxcamThread = multiprocessing.Process(target=auxcam.main)
-        #     auxcamThread.start()
+        if ('--auxcam' in arguments or runAll):
+            auxcamThread = multiprocessing.Process(target=auxcam.main)
+            auxcamThread.start()
 
         # Prim
         # if framExperimentThread: framExperimentThread.join()
