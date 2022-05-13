@@ -1,30 +1,55 @@
 # SPDX-FileCopyrightText: 2021 ladyada for Adafruit Industries
 # SPDX-License-Identifier: MIT
+# Skyler Puckett (modified for CC of CO RockSat-X 2022)
 
 """VC0706 image capture to local storage.
 You must wire up the VC0706 to a USB or hardware serial port.
 Primarily for use with Linux/Raspberry Pi but also can work with Mac/Windows"""
 
+# import general python library's
 import time
-import adafruit_vc0706
+import logging
 import serial
 import os
+# import Camera module library
+import adafruit_vc0706
+
+# connect with logger functions
+try:
+    logger = logging.getLogger(__name__)
+except:
+    logger = None
+    print('Unable to acquire the global logger object, assuming that alternatecamFlight.py is being run on its own')
 
 
 def main():
+
+    logging.info('Initializing engineering camera')
+
     # Create a directory if not already there
     os.system('mkdir -p ./data-pictures')
 
-
     # For use with USB to serial adapter:
-    uart = serial.Serial("/dev/ttyUSB0", baudrate=115200, timeout=0.25)
+    try:
+        uart = serial.Serial("/dev/ttyUSB0", baudrate=115200, timeout=0.25)
+        logging.info('serial port USB0... OK')
+    except:
+        uart = None
+        logging.error('failed to enable serial port USB0')
 
     # Setup VC0706 camera
-    vc0706 = adafruit_vc0706.VC0706(uart)
+    try:
+        vc0706 = adafruit_vc0706.VC0706(uart)
+        logging.info('vc0706 (camera) ... OK')
+    except:
+        vc0706 = None
+        logging.error('failed to enable vc0706 (engineering camera)')
+
     print("VC0706 version:")
     print(vc0706.version)
     # Set the image size.
     vc0706.image_size = adafruit_vc0706.IMAGE_SIZE_640x480
+    logging.info('engineer camera image size set to 640x480')
 
     # Note you can also read the property and compare against those values to
     # see the current size:
@@ -35,13 +60,16 @@ def main():
         print("Using 320x240 size image.")
     elif size == adafruit_vc0706.IMAGE_SIZE_160x120:
         print("Using 160x120 size image.")
+    logging.info('engineer camera image size set to 640x480')
+
+    # Set to take a photo when last photo finishes saving
     while True:
         IMAGE_FILE = "./data-pictures/image" + str(int(time.time() * 1000)) + ".jpg"
         # Take a picture.
         print("taking picture")
         if not vc0706.take_picture():
             raise RuntimeError("Failed to take picture!")
-
+        logging.info('image taken')
         print("picture taken")
         # Print size of picture in bytes.
         frame_length = vc0706.frame_length
@@ -54,6 +82,7 @@ def main():
         stamp = time.monotonic()
         # Pylint doesn't like the wcount variable being lowercase, but uppercase makes less sense
         # pylint: disable=invalid-name
+        logging.info('image save beginning')
         with open(IMAGE_FILE, "wb") as outfile:
             wcount = 0
             while frame_length > 0:
@@ -74,7 +103,7 @@ def main():
                 if wcount >= 64:
                     print(".", end="", flush=True)
                     wcount = 0
-
+        logging.info('image saved... OK')
         print()
         print("Finished in %0.1f seconds!" % (time.monotonic() - stamp))
 
