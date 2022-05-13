@@ -1,36 +1,109 @@
-# Skyler Puckett
-#
-# ffmpeg -t "01:00" -y -video_size 1280x720 -framerate 60 -i /dev/video0 -f flv test.flv
-# ffmpeg -f v4l2 -video_size 1280x720 -i /dev/video0 -frames 1 out.jpg
+# SPDX-FileCopyrightText: 2021 ladyada for Adafruit Industries
+# SPDX-License-Identifier: MIT
+# Skyler Puckett (modified for CC of CO RockSat-X 2022)
 
-import subprocess
+"""VC0706 image capture to local storage.
+You must wire up the VC0706 to a USB or hardware serial port.
+Primarily for use with Linux/Raspberry Pi but also can work with Mac/Windows"""
+
+# import general python library's
+import time
 import logging
-# import RPi.GPIO as GPIO
-# from time import sleep
+import serial
+import os
+# import Camera module library
+import adafruit_vc0706
 
+# Acquire the existing logger
 try:
     logger = logging.getLogger(__name__)
 except:
     logger = None
-    print('Unable to acquire the global logger object, assuming that auxcam.py is being run on its own')
+    print('Unable to acquire the global logger object, assuming that alternatecamFlight.py is being run on its own')
+
 
 def main():
-    # pin3 = 23
-    # GPIO.setmode(GPIO.BCM)
-    # GPIO.setup(pin3, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-2 around +220 seconds GPIO23 blue
-    logging.info('USB-camera: Recording Started...')
 
-    for vidNo in range(0, 15):
-        subprocess.call(f'ffmpeg -t "00:30" -y -video_size 1280x720 -framerate 60 -i /dev/video0 -f flv test{str(vidNo)}.flv', shell=True)
+    logging.info('Initializing engineering camera')
 
-    logging.info('USB-camera: Recording Stopped...')
-    # print("stop soon")
-    # while True:
-    #     if GPIO.input(pin3):
-    #         break
-    #
-    # sleep(10)
-    # subprocess.call('signal.SIGINT', shell=True)
+    # Create a directory if not already there
+    os.system('mkdir -p ./data-pictures')
+
+    # For use with USB to serial adapter:
+    try:
+        uart = serial.Serial("/dev/ttyUSB0", baudrate=115200, timeout=0.25)
+        logging.info('serial port USB0... OK')
+    except:
+        logging.critical('failed to enable serial port USB0')
+        return
+    # Setup VC0706 camera
+    try:
+        vc0706 = adafruit_vc0706.VC0706(uart)
+        logging.info('vc0706 (camera) ... OK')
+    except:
+        logging.critical('failed to enable vc0706 (engineering camera)')
+        return
+    print("VC0706 version:")
+    print(vc0706.version)
+    # Set the image size.
+    vc0706.image_size = adafruit_vc0706.IMAGE_SIZE_640x480
+    logging.info('engineer camera image size set to 640x480')
+
+    # Note you can also read the property and compare against those values to
+    # see the current size:
+    size = vc0706.image_size
+    if size == adafruit_vc0706.IMAGE_SIZE_640x480:
+        print("Using 640x480 size image.")
+    elif size == adafruit_vc0706.IMAGE_SIZE_320x240:
+        print("Using 320x240 size image.")
+    elif size == adafruit_vc0706.IMAGE_SIZE_160x120:
+        print("Using 160x120 size image.")
+    logging.info('engineer camera image size set to 640x480')
+
+    # Set to take a photo when last photo finishes saving
+    while True:
+        IMAGE_FILE = "./data-pictures/image" + str(int(time.time() * 1000)) + ".jpg"
+        # Take a picture.
+        print("taking picture")
+        if not vc0706.take_picture():
+            raise RuntimeError("Failed to take picture!")
+        logging.info('image taken')
+        print("picture taken")
+        # Print size of picture in bytes.
+        frame_length = vc0706.frame_length
+        print("Picture size (bytes): {}".format(frame_length))
+
+        # Open a file for writing (overwriting it if necessary).
+        # This will write 50 bytes at a time using a small buffer.
+        # You MUST keep the buffer size under 100!
+        print("Writing image: {}".format(IMAGE_FILE), end="", flush=True)
+        stamp = time.monotonic()
+        # Pylint doesn't like the wcount variable being lowercase, but uppercase makes less sense
+        # pylint: disable=invalid-name
+        logging.info('image save beginning')
+        with open(IMAGE_FILE, "wb") as outfile:
+            wcount = 0
+            while frame_length > 0:
+                t = time.monotonic()
+                # Compute how much data is left to read as the lesser of remaining bytes
+                # or the copy buffer size (32 bytes at a time).  Buffer size MUST be
+                # a multiple of 4 and under 100.  Stick with 32!
+                to_read = min(frame_length, 32)
+                copy_buffer = bytearray(to_read)
+                # Read picture data into the copy buffer.
+                if vc0706.read_picture_into(copy_buffer) == 0:
+                    raise RuntimeError("Failed to read picture frame data!")
+                # Write the data to SD card file and decrement remaining bytes.
+                outfile.write(copy_buffer)
+                frame_length -= 32
+                # Print a dot every 2k bytes to show progress.
+                wcount += 1
+                if wcount >= 64:
+                    print(".", end="", flush=True)
+                    wcount = 0
+        logging.info('image saved... OK')
+        print()
+        print("Finished in %0.1f seconds!" % (time.monotonic() - stamp))
 
 if __name__ == '__main__':
     main()
