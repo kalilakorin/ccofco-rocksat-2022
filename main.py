@@ -36,15 +36,14 @@ from logging.handlers import RotatingFileHandler
 import os
 import multiprocessing as multiprocessing
 import sys
-import busio
 
 # Import system modules
-import auxcam
+# import auxcam
 import sensors
 import fram
 import armMotor
 import gopro
-#import goprotest
+# import goprotest
 
 # Create a log folder if it does not exist yet
 os.system('mkdir -p ./logs')
@@ -110,9 +109,9 @@ if __name__ == '__main__':
         #     goprotestThread.start()
 
         # auxcam fuctions
-        if ('--auxcam' in arguments or runAll):
-            auxcamThread = multiprocessing.Process(target=auxcam.main)
-            auxcamThread.start()
+        # if ('--auxcam' in arguments or runAll):
+        #     auxcamThread = multiprocessing.Process(target=auxcam.main)
+        #     auxcamThread.start()
 
         # Prim
         # if framExperimentThread: framExperimentThread.join()
