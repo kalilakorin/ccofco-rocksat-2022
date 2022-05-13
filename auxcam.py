@@ -19,7 +19,7 @@ try:
     logger = logging.getLogger(__name__)
 except:
     logger = None
-    print('Unable to acquire the global logger object, assuming that alternatecamFlight.py is being run on its own')
+    print('Unable to acquire the global logger object, assuming that auxcam.py is being run on its own')
 
 
 def main():
