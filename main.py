@@ -39,7 +39,7 @@ import sys
 
 # Import system modules
 import auxcam
-# import sensors
+import sensors
 # import fram
 # import armMotor
 # import gopro
