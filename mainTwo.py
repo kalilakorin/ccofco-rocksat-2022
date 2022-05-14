@@ -47,6 +47,13 @@ from adafruit_motorkit import MotorKit
 import subprocess
 import gopromain as gopro
 
+te1 = 27  # TE-1
+gppower = 19
+lse = 22  # Limit Switch Extension
+te2 = 23  # TE-2
+lsr = 24  # Limit Switch Retraction
+ter = 17  # gopro activation
+
 # import gopro
 # import goprotest
 
@@ -107,6 +114,7 @@ def main():
             motor = MotorKit()
             GPIO.setmode(GPIO.BCM)  # GPIO PIN NAMES
             GPIO.setup(ter, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-R around 10 seconds
+            GPIO.setup(gppower, GPIO.OUT, pull_up_down=GPIO.PUD_DOWN)  # power to the gopro camera
             GPIO.setup(te1, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-1 around +85 seconds
             GPIO.setup(lse, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # Extension Limit Switch
             GPIO.setup(te2, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-2 around +220 seconds
