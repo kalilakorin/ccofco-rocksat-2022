@@ -55,13 +55,6 @@ def main () :
     except :
         logging.critical ('Failed to enable i2c interface, the sensor thread will now crash')
         return
-    # Init mpl sensor
-    try :
-        mpl115a2 = adafruit_mpl115a2.MPL115A2 (i2c)
-        #logging.info ('MPL115A2 (temperature, pressure) ... OK')
-    except :
-        mpl115a2 = None
-        logging.error ('Failed to enable MPL115A2 sensor')
     # Init bme280 Outside
     try :
         bme280a = adafruit_bme280.Adafruit_BME280_I2C (i2c)  # address 0x77 DEFAULT (outside)
