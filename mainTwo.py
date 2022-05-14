@@ -120,10 +120,10 @@ def main():
         te1Done = 0
 
         while True:
-            if GPIO.input(ter) #and terDone == 0:
+            if GPIO.input(ter): #and terDone == 0:
                 print('TER detected')
                 #terDone = 1
-            if GPIO.input(te1) #and te1Done == 0:
+            if GPIO.input(te1): #and te1Done == 0:
                 print('TE1 detected')
                 #te1Done = 1
 
