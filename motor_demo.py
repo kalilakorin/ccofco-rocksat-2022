@@ -20,7 +20,7 @@ GPIO.setup (forward, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # Forward
 GPIO.setup (stop, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # STOP
 GPIO.setup (reverse, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # REVERSE
 
-x=.55
+x= 1.0  # 5-RPM 0.55 throttle speed
 
 while True:
     if GPIO.input(forward):
