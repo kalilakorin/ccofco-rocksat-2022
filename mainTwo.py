@@ -114,11 +114,11 @@ def main():
         # Arm Motor functions
         initializeGPIO()
 
-        #while True:
-        #    if (ter):
-        #        print('TER detected')
-        #    if (te1):
-        #        print('TE1 detected')
+        while True:
+            if (ter):
+                print('TER detected')
+            if (te1):
+                print('TE1 detected')
 
 
         # gopro recording start
