@@ -103,7 +103,19 @@ def main():
             sensorThread.start()
 
         # Arm Motor functions
-        initializeGPIO()
+        try:
+            motor = MotorKit()
+            GPIO.setmode(GPIO.BCM)  # GPIO PIN NAMES
+            GPIO.setup(ter, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-R around 10 seconds
+            GPIO.setup(te1, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-1 around +85 seconds
+            GPIO.setup(lse, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # Extension Limit Switch
+            GPIO.setup(te2, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-2 around +220 seconds
+            GPIO.setup(lsr, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # Retraction Limit Switch
+            logger.info('GPIO pins initialized logger... OK')
+        except:
+            logger.critical('Failed to initialize GPIO pins and motor hat.')
+            return
+
         terDone = 0
         te1Done = 0
 
@@ -132,19 +144,7 @@ def main():
         print('Caught KeyboardInterrupt exiting')
 
 
-def initializeGPIO():
-    try:
-        motor = MotorKit()
-        GPIO.setmode(GPIO.BCM)  # GPIO PIN NAMES
-        GPIO.setup(ter, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-R around 10 seconds
-        GPIO.setup(te1, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-1 around +85 seconds
-        GPIO.setup(lse, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # Extension Limit Switch
-        GPIO.setup(te2, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-2 around +220 seconds
-        GPIO.setup(lsr, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # Retraction Limit Switch
-        logger.info('GPIO pins initialized logger... OK')
-    except:
-        logger.critical('Failed to initialize GPIO pins and motor hat.')
-        return
+#def initializeGPIO():
 
 
 def motor():
