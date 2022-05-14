@@ -127,14 +127,26 @@ def main():
 
         terDone = 0
         te1Done = 0
+        lseDone = 0 #limit switch extension
+        te2Done = 0
+        lsrDone = 0 #limit switch retraction
 
         while True:
             if GPIO.input(ter) and terDone == 0:
-                print('TER detected')
+                logger.info('TER detected, turning on GoPro')
                 terDone = 1
             if GPIO.input(te1) and te1Done == 0:
-                print('TE1 detected')
+                logger.info('TE1 detected, extension start')
                 te1Done = 1
+            if GPIO.input(lse) and lseDone == 0:
+                logger.info('Limit switch detected, extension stop')
+                lseDone = 1
+            if GPIO.input(te2) and te2Done == 0:
+                logger.info('TE2 detected, retraction start')
+                te2Done = 1
+            if GPIO.input(lsr) and lsrDone == 0:
+                logger.info('Limit switch detected, retraction stop')
+                lsrDone = 1
 
         # gopro recording start
         # if ('--gopro' in arguments or runAll):
