@@ -106,6 +106,7 @@ def main () :
 
     count = 0
     while True :
+
         # Time axis
         csvline = str (int (time.time () * 1000))
 
