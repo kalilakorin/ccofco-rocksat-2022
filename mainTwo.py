@@ -41,15 +41,13 @@ import sys
 import auxcam
 import sensors
 import fram
-import armMotor
-# import gopro
-# import goprotest
-import time
-import logging
+
 import RPi.GPIO as GPIO
 from adafruit_motorkit import MotorKit
 import subprocess
 import gopromain as gopro
+# import gopro
+# import goprotest
 
 # Create a log folder if it does not exist yet
 os.system('mkdir -p ./logs')
@@ -77,14 +75,6 @@ logger = logging.getLogger(__name__)
 logging.getLogger().addHandler(logging.StreamHandler(sys.stdout))
 
 logger.info(f'CC of CO payload finished booting at {boottime}')
-
-# GPIO initialization
-te1 = 27  # TE-1
-ter = 17  # gopro activation
-gppower = 19  # GoPro power
-lse = 22  # Limit Switch Extension
-te2 = 23  # TE-2
-lsr = 24  # Limit Switch Retraction
 
 def main():
 
@@ -116,6 +106,14 @@ def main():
         logging.info('Initializing GPIO pins in main...')
 
         # GPIO pin assignment
+        # GPIO initialization
+        te1 = 27  # TE-1
+        ter = 17  # gopro activation
+        gppower = 19  # GoPro power
+        lse = 22  # Limit Switch Extension
+        te2 = 23  # TE-2
+        lsr = 24  # Limit Switch Retraction
+
         try:
             motor = MotorKit()
             GPIO.setmode(GPIO.BCM)  # GPIO PIN NAMES
