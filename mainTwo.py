@@ -130,9 +130,9 @@ def main():
         print('Done with GPIO pins...\n')
 
         while True:
-            if (ter):
+            if GPIO.input(ter):
                 print('TER detected')
-            if (te1):
+            if GPIO.input(te1):
                 print('TE1 detected')
 
 
