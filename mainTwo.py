@@ -154,7 +154,7 @@ def main():
     except KeyboardInterrupt:
         print('Caught KeyboardInterrupt exiting')
 
-def initializeGPIO():
+#def initializeGPIO():
 
 
 def motor():
