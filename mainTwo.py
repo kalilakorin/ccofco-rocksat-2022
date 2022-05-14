@@ -78,15 +78,15 @@ logging.getLogger().addHandler(logging.StreamHandler(sys.stdout))
 
 logger.info(f'CC of CO payload finished booting at {boottime}')
 
-def main():
+# GPIO initialization
+te1 = 27  # TE-1
+ter = 17  # gopro activation
+gppower = 19  # GoPro power
+lse = 22  # Limit Switch Extension
+te2 = 23  # TE-2
+lsr = 24  # Limit Switch Retraction
 
-    #GPIO initialization
-    te1 = 27 # TE-1
-    ter = 17 # gopro activation
-    gppower = 19  # GoPro power
-    lse = 22 # Limit Switch Extension
-    te2 = 23 # TE-2
-    lsr = 24 # Limit Switch Retraction
+def main():
 
     try:
         multiprocessing.set_start_method('fork')
@@ -114,11 +114,11 @@ def main():
         # Arm Motor functions
         initializeGPIO()
 
-        while True:
-            if (ter):
-                print('TER detected')
-            if (te1):
-                print('TE1 detected')
+        #while True:
+        #    if (ter):
+        #        print('TER detected')
+        #    if (te1):
+        #        print('TE1 detected')
 
 
         # gopro recording start
@@ -147,10 +147,10 @@ def initializeGPIO():
         motor = MotorKit()
         GPIO.setmode(GPIO.BCM)  #GPIO PIN NAMES
         GPIO.setup(ter, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-R around 10 seconds
-        GPIO.setup (te1, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-1 around +85 seconds
-        GPIO.setup (lse, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # Extension Limit Switch
-        GPIO.setup (te2, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-2 around +220 seconds
-        GPIO.setup (lsr, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # Retraction Limit Switch
+        GPIO.setup(te1, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-1 around +85 seconds
+        GPIO.setup(lse, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # Extension Limit Switch
+        GPIO.setup(te2, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-2 around +220 seconds
+        GPIO.setup(lsr, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # Retraction Limit Switch
         logger.info('GPIO pins initialized... OK')
         print('GPIO pins initialized... OK')
     except:
