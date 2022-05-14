@@ -110,16 +110,17 @@ def main():
         lsr = 24  # Limit Switch Retraction
         ter = 17  # gopro activation
 
+        logger.info('Initializing GPIO pins...')
         try:
             motor = MotorKit()
             GPIO.setmode(GPIO.BCM)  # GPIO PIN NAMES
             GPIO.setup(ter, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-R around 10 seconds
-            GPIO.setup(gppower, GPIO.OUT, pull_up_down=GPIO.PUD_DOWN)  # power to the gopro camera
+            #GPIO.setup(gppower, GPIO.OUT, pull_up_down=GPIO.PUD_DOWN)  # power to the gopro camera
             GPIO.setup(te1, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-1 around +85 seconds
             GPIO.setup(lse, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # Extension Limit Switch
             GPIO.setup(te2, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-2 around +220 seconds
             GPIO.setup(lsr, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # Retraction Limit Switch
-            logger.info('GPIO pins initialized logger... OK')
+            logger.info('GPIO pins initialized... OK')
         except:
             logger.critical('Failed to initialize GPIO pins and motor hat.')
             return
