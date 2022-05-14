@@ -157,7 +157,7 @@ def main():
 def initializeGPIO():
 
 
-def ter():
+def motor():
     # wait for ter signile
     while True:
         if GPIO.input(ter):
