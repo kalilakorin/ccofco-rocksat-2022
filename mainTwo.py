@@ -82,10 +82,11 @@ def main():
 
     #GPIO initialization
     te1 = 27 # TE-1
+    ter = 17 # gopro activation
+    gppower = 19  # GoPro power
     lse = 22 # Limit Switch Extension
     te2 = 23 # TE-2
     lsr = 24 # Limit Switch Retraction
-    ter = 17 # gopro activation
 
     try:
         multiprocessing.set_start_method('fork')
@@ -112,6 +113,13 @@ def main():
 
         # Arm Motor functions
         initializeGPIO()
+
+        while True:
+            if (ter):
+                print('TER detected')
+            if (te1):
+                print('TE1 detected')
+
 
         # gopro recording start
         # if ('--gopro' in arguments or runAll):
