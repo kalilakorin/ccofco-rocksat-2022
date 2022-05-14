@@ -32,6 +32,8 @@ def main():
         logger.critical('Failed to initialize GPIO pins and GoPro')
         return
 
+    GPIO.output(gppower, GPIO.LOW)
+
     # wait for TE-R signal
     while True:
         if GPIO.input(ter):
