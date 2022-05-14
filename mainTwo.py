@@ -45,35 +45,34 @@ import armMotor
 # import gopro
 # import goprotest
 
-# Create a log folder if it does not exist yet
-os.system('mkdir -p ./logs')
-# Set up logging and log boot time
-boottime = int(time.time())
-rotatingFileHandler = RotatingFileHandler(
-    filename=f'logs/rocksat_payload_{str(boottime)}.log',
-    mode='a',
-    maxBytes=20 * 1024 * 1024,
-    backupCount=2,
-    encoding='utf-8',
-    delay=0
-)
-logging.basicConfig(
-    level=logging.DEBUG,
-    format='[%(asctime)s.%(msecs)03d][%(module)7s][%(levelname)8s]\t%(message)s',
-    datefmt='%Y-%m-%d %H:%M:%S',
-    handlers=[rotatingFileHandler])
+def main():
+    # Create a log folder if it does not exist yet
+    os.system('mkdir -p ./logs')
+    # Set up logging and log boot time
+    boottime = int(time.time())
+    rotatingFileHandler = RotatingFileHandler(
+        filename=f'logs/rocksat_payload_{str(boottime)}.log',
+        mode='a',
+        maxBytes=20 * 1024 * 1024,
+        backupCount=2,
+        encoding='utf-8',
+        delay=0
+    )
+    logging.basicConfig(
+        level=logging.DEBUG,
+        format='[%(asctime)s.%(msecs)03d][%(module)7s][%(levelname)8s]\t%(message)s',
+        datefmt='%Y-%m-%d %H:%M:%S',
+        handlers=[rotatingFileHandler])
 
-# formatter = logging.Formatter('[%(asctime)s.%(msecs)03d][%(module)7s][%(levelname)8s]\t%(message)s')
+    # formatter = logging.Formatter('[%(asctime)s.%(msecs)03d][%(module)7s][%(levelname)8s]\t%(message)s')
 
-logger = logging.getLogger(__name__)
+    logger = logging.getLogger(__name__)
 
-# Output all logs to console
-logging.getLogger().addHandler(logging.StreamHandler(sys.stdout))
+    # Output all logs to console
+    logging.getLogger().addHandler(logging.StreamHandler(sys.stdout))
 
-logger.info(f'CC of CO payload finished booting at {boottime}')
+    logger.info(f'CC of CO payload finished booting at {boottime}')
 
-# Entry point
-if __name__ == '__main__':
     try:
         multiprocessing.set_start_method('fork')
         processQueue = multiprocessing.Queue()
@@ -118,3 +117,6 @@ if __name__ == '__main__':
         # p1.terminate()
     except KeyboardInterrupt:
         print('Caught KeyboardInterrupt exiting')
+
+if __name__ == '__main__':
+    main()
