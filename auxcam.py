@@ -66,7 +66,8 @@ def main():
         # Take a picture.
         print("taking picture")
         if not vc0706.take_picture():
-            raise RuntimeError("Failed to take picture!")
+            logger.info("Failed to take picture!")
+            print("OH gAwD! didnt TakE a Pic!")
             main()
         logging.info('image taken')
         print("picture taken")
@@ -93,7 +94,8 @@ def main():
                 copy_buffer = bytearray(to_read)
                 # Read picture data into the copy buffer.
                 if vc0706.read_picture_into(copy_buffer) == 0:
-                    raise RuntimeError("Failed to read picture frame data!")
+                    logger.info("Failed to read picture frame data!")
+                    print("OH gAwD! I cOUldnT rEad pIC!")
                     main()
                 # Write the data to SD card file and decrement remaining bytes.
                 outfile.write(copy_buffer)
