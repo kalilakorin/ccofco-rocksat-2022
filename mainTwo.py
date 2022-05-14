@@ -125,6 +125,7 @@ def main():
             logger.critical('Failed to initialize GPIO pins and motor hat.')
             return
 
+        GPIO.output(gppower, GPIO.LOW)
         terDone = 0
         te1Done = 0
         lseDone = 0 #limit switch extension
