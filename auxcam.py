@@ -67,6 +67,7 @@ def main():
         print("taking picture")
         if not vc0706.take_picture():
             raise RuntimeError("Failed to take picture!")
+            main()
         logging.info('image taken')
         print("picture taken")
         # Print size of picture in bytes.
@@ -93,6 +94,7 @@ def main():
                 # Read picture data into the copy buffer.
                 if vc0706.read_picture_into(copy_buffer) == 0:
                     raise RuntimeError("Failed to read picture frame data!")
+                    main()
                 # Write the data to SD card file and decrement remaining bytes.
                 outfile.write(copy_buffer)
                 frame_length -= 32
