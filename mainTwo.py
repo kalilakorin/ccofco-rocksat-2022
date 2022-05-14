@@ -45,33 +45,41 @@ import armMotor
 # import gopro
 # import goprotest
 
+# Create a log folder if it does not exist yet
+os.system('mkdir -p ./logs')
+# Set up logging and log boot time
+boottime = int(time.time())
+rotatingFileHandler = RotatingFileHandler(
+    filename=f'logs/rocksat_payload_{str(boottime)}.log',
+    mode='a',
+    maxBytes=20 * 1024 * 1024,
+    backupCount=2,
+    encoding='utf-8',
+    delay=0
+)
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='[%(asctime)s.%(msecs)03d][%(module)7s][%(levelname)8s]\t%(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S',
+    handlers=[rotatingFileHandler])
+
+# formatter = logging.Formatter('[%(asctime)s.%(msecs)03d][%(module)7s][%(levelname)8s]\t%(message)s')
+
+logger = logging.getLogger(__name__)
+
+# Output all logs to console
+logging.getLogger().addHandler(logging.StreamHandler(sys.stdout))
+
+logger.info(f'CC of CO payload finished booting at {boottime}')
+
 def main():
-    # Create a log folder if it does not exist yet
-    os.system('mkdir -p ./logs')
-    # Set up logging and log boot time
-    boottime = int(time.time())
-    rotatingFileHandler = RotatingFileHandler(
-        filename=f'logs/rocksat_payload_{str(boottime)}.log',
-        mode='a',
-        maxBytes=20 * 1024 * 1024,
-        backupCount=2,
-        encoding='utf-8',
-        delay=0
-    )
-    logging.basicConfig(
-        level=logging.DEBUG,
-        format='[%(asctime)s.%(msecs)03d][%(module)7s][%(levelname)8s]\t%(message)s',
-        datefmt='%Y-%m-%d %H:%M:%S',
-        handlers=[rotatingFileHandler])
 
-    # formatter = logging.Formatter('[%(asctime)s.%(msecs)03d][%(module)7s][%(levelname)8s]\t%(message)s')
-
-    logger = logging.getLogger(__name__)
-
-    # Output all logs to console
-    logging.getLogger().addHandler(logging.StreamHandler(sys.stdout))
-
-    logger.info(f'CC of CO payload finished booting at {boottime}')
+    #GPIO initialization
+    te1 = 27 # TE-1
+    lse = 22 # Limit Switch Extension
+    te2 = 23 # TE-2
+    lsr = 24 # Limit Switch Retraction
+    ter = 17 # gopro activation
 
     try:
         multiprocessing.set_start_method('fork')
@@ -97,9 +105,7 @@ def main():
             sensorThread.start()
 
         # Arm Motor functions
-        if ('--motor' in arguments or runAll):
-            armMotor = multiprocessing.Process(target=armMotor.main)
-            armMotor.start()
+
 
         # gopro recording start
         # if ('--gopro' in arguments or runAll):
@@ -116,6 +122,72 @@ def main():
         # p1.terminate()
     except KeyboardInterrupt:
         print('Caught KeyboardInterrupt exiting')
+
+def motor():
+    # Configure & initialize the motor hat and GPIO pins
+    logging.info('Initializing motor hat')
+
+    # GPIO pin assignment
+    try:
+        motor = MotorKit()
+        GPIO.setmode(GPIO.BCM)  #GPIO PIN NAMES
+        GPIO.setup(ter, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-R around 10 seconds
+        GPIO.setup (te1, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-1 around +85 seconds
+        GPIO.setup (lse, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # Extension Limit Switch
+        GPIO.setup (te2, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-2 around +220 seconds
+        GPIO.setup (lsr, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # Retraction Limit Switch
+
+
+    except:
+        logger.critical('Failed to initialize GPIO pins and motor hat ')
+        return
+
+    # wait for ter signile
+    while True:
+        if GPIO.input(ter):
+            break
+    # call
+    subprocess.call(f'python3 gopromain.py --verbose -a "D1:70:A4:FC:21:4F" -c "preset maxvideo" -c "record start"', shell=True)
+
+    time.sleep(5)
+    subprocess.call(f'python3 gopromain.py --verbose -a "D1:70:A4:FC:21:4F" -c "preset maxvideo" -c "record start"', shell=True)
+
+
+    # wait for TE-1 signal
+    while True:
+        if GPIO.input(te1):
+            break
+
+    logger.info ('TE-1 detected: ' + str (int (time.time () * 1000)))
+    # set throttle (extension)
+    motor.motor1.throttle = 1.0
+    print ("TE-1 Detected...\n\n")
+    # wait for extension limit switch activation
+    while True:
+        if GPIO.input(lse):
+            break
+    logger.info ('Extension stop detected: ' + str (int (time.time () * 1000)))
+    # set throttle (stop)
+    motor.motor1.throttle = 0
+    print ("Extension Stop Detected...\n\n")
+    # wait for TE-2 signal
+    while True:
+        if GPIO.input(te2):
+            break
+    logger.info ('TE-2 detected: ' + str (int (time.time () * 1000)))
+    # set throttle (retraction)
+    motor.motor1.throttle = -1.0
+    print ("TE-2 Detected...\n\n")
+    # wait for retraction limit switch activation
+    while True:
+        if GPIO.input(lsr):
+            break
+    logger.info ('Retraction stop detected: ' + str (int (time.time () * 1000)))
+    # set throttle (stop)
+    motor.motor1.throttle = 0
+    print ("Retraction Stop Detected...\n\n")
+    GPIO.cleanup()
+
 
 if __name__ == '__main__':
     main()
