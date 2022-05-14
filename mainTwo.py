@@ -104,7 +104,7 @@ def main():
 
         # Arm Motor functions
         te1 = 27  # TE-1
-        gppower = 12 # 19
+        gppower = 16 # is the original power
         lse = 22  # Limit Switch Extension
         te2 = 23  # TE-2
         lsr = 24  # Limit Switch Retraction
