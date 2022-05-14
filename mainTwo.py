@@ -82,6 +82,10 @@ def main():
         arguments = sys.argv
         runAll = len(arguments) == 1
 
+        if ('--auxcam' in arguments or runAll):
+            auxcamThread = multiprocessing.Process(target=auxcam.main)
+            auxcamThread.start()
+
         # Secondary experiment (radiation RAM)
         if ('--fram' in arguments or runAll):
             framExperimentThread = multiprocessing.Process(target=fram.main)
@@ -106,13 +110,6 @@ def main():
         # if ('--goprotest' in arguments or runAll):
         #     goprotestThread = multiprocessing.Process(target=goprotest.main)
         #     goprotestThread.start()
-
-        # auxcam fuctions
-        if ('--auxcam' in arguments or runAll):
-            #auxcamThread = multiprocessing.Process(target=auxcam.main)
-            #auxcamThread.start()
-            auxcam
-
 
         # Prim
         # if framExperimentThread: framExperimentThread.join()
