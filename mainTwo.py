@@ -47,13 +47,6 @@ from adafruit_motorkit import MotorKit
 import subprocess
 import gopromain as gopro
 
-te1 = 27  # TE-1
-gppower = 19
-lse = 22  # Limit Switch Extension
-te2 = 23  # TE-2
-lsr = 24  # Limit Switch Retraction
-ter = 17  # gopro activation
-
 # import gopro
 # import goprotest
 
@@ -110,6 +103,13 @@ def main():
             sensorThread.start()
 
         # Arm Motor functions
+        te1 = 27  # TE-1
+        gppower = 19
+        lse = 22  # Limit Switch Extension
+        te2 = 23  # TE-2
+        lsr = 24  # Limit Switch Retraction
+        ter = 17  # gopro activation
+
         try:
             motor = MotorKit()
             GPIO.setmode(GPIO.BCM)  # GPIO PIN NAMES
