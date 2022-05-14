@@ -139,8 +139,7 @@ def main():
 
 def initializeGPIO():
     # Configure & initialize the motor hat and GPIO pins
-    logging.info('Initializing GPIO pins in main logger...')
-    print('Initializing GPIO pins in main...')
+    logging.info('Initializing GPIO pins in main...')
 
     # GPIO pin assignment
     try:
@@ -151,11 +150,9 @@ def initializeGPIO():
         GPIO.setup(lse, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # Extension Limit Switch
         GPIO.setup(te2, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-2 around +220 seconds
         GPIO.setup(lsr, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # Retraction Limit Switch
-        logger.info('GPIO pins initialized... OK')
-        print('GPIO pins initialized... OK')
+        logger.info('GPIO pins initialized logger... OK')
     except:
-        logger.critical('Failed to initialize GPIO pins and motor hat ')
-        print('Failed to initialize GPIO pins and motor hat ')
+        logger.critical('Failed to initialize GPIO pins and motor hat.')
         return
 
     print('Done with GPIO pins...\n')
