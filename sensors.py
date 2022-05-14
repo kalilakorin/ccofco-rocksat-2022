@@ -50,7 +50,7 @@ def main () :
     # Begin i2c
     try :
         i2c = busio.I2C (board.SCL, board.SDA)
-        logging.info ('I2C interface ... OK')
+        logging.info ('I2C interface of sensors... OK')
     except :
         logging.critical ('Failed to enable i2c interface, the sensor thread will now crash')
         return
