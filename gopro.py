@@ -27,7 +27,7 @@ def main():
     try:
         #GPIO.setmode(GPIO.BCM)  # GPIO PIN NAMES
         GPIO.setup(ter, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-R around 10 seconds
-        GPIO.setup(gppower, GPIO.OUT, pull_up_down=GPIO.PUD_DOWN)  # power to the gopro camera
+        GPIO.setup(gppower, GPIO.OUT) #, pull_up_down=GPIO.PUD_DOWN)  # power to the gopro camera
     except:
         logger.critical('Failed to initialize GPIO pins and GoPro')
         return
