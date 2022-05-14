@@ -112,7 +112,24 @@ def main():
             sensorThread.start()
 
         # Arm Motor functions
-        initializeGPIO()
+        # Configure & initialize the motor hat and GPIO pins
+        logging.info('Initializing GPIO pins in main...')
+
+        # GPIO pin assignment
+        try:
+            motor = MotorKit()
+            GPIO.setmode(GPIO.BCM)  # GPIO PIN NAMES
+            GPIO.setup(ter, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-R around 10 seconds
+            GPIO.setup(te1, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-1 around +85 seconds
+            GPIO.setup(lse, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # Extension Limit Switch
+            GPIO.setup(te2, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-2 around +220 seconds
+            GPIO.setup(lsr, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # Retraction Limit Switch
+            logger.info('GPIO pins initialized logger... OK')
+        except:
+            logger.critical('Failed to initialize GPIO pins and motor hat.')
+            return
+
+        print('Done with GPIO pins...\n')
 
         while True:
             if (ter):
@@ -138,24 +155,7 @@ def main():
         print('Caught KeyboardInterrupt exiting')
 
 def initializeGPIO():
-    # Configure & initialize the motor hat and GPIO pins
-    logging.info('Initializing GPIO pins in main...')
 
-    # GPIO pin assignment
-    try:
-        motor = MotorKit()
-        GPIO.setmode(GPIO.BCM)  #GPIO PIN NAMES
-        GPIO.setup(ter, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-R around 10 seconds
-        GPIO.setup(te1, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-1 around +85 seconds
-        GPIO.setup(lse, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # Extension Limit Switch
-        GPIO.setup(te2, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-2 around +220 seconds
-        GPIO.setup(lsr, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # Retraction Limit Switch
-        logger.info('GPIO pins initialized logger... OK')
-    except:
-        logger.critical('Failed to initialize GPIO pins and motor hat.')
-        return
-
-    print('Done with GPIO pins...\n')
 
 def ter():
     # wait for ter signile
