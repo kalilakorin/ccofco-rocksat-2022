@@ -111,7 +111,8 @@ def main():
         if ('--auxcam' in arguments or runAll):
             #auxcamThread = multiprocessing.Process(target=auxcam.main)
             #auxcamThread.start()
-            auxcam.main
+            auxcam
+
 
         # Prim
         # if framExperimentThread: framExperimentThread.join()
