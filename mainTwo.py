@@ -139,8 +139,8 @@ def main():
 
 def initializeGPIO():
     # Configure & initialize the motor hat and GPIO pins
-    logging.info('Initializing GPIO pins...')
-    print('Initializing GPIO pins...')
+    logging.info('Initializing GPIO pins in main logger...')
+    print('Initializing GPIO pins in main...')
 
     # GPIO pin assignment
     try:
