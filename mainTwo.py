@@ -135,7 +135,12 @@ def main():
             if GPIO.input(ter) and terDone == 0:
                 logger.info('TER detected')
                 GPIO.output(gppower, GPIO.HIGH)
-                time.sleep(15)
+                time.sleep(5)
+                print('Slept 5 sec')
+                time.sleep(5)
+                print('Slept 10 sec')
+                time.sleep(5)
+                print('Slept 15 sec')
                 goproCall()
                 GPIO.output(gppower, GPIO.LOW)
                 terDone = 1
@@ -172,6 +177,8 @@ def main():
 #def initializeGPIO():
 
 def goproCall():
+    # test address D1:70:A4:FC:21:4F
+    # flight address E3:BB:1E:0D:C8:52
     logger.info('Record starting...')
     while True:
         subprocess.call(f'python3 gopromain.py --verbose -a "D1:70:A4:FC:21:4F" -c "preset maxvideo" -c "record start"', shell=True)
