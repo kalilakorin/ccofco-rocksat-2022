@@ -44,6 +44,12 @@ import fram
 import armMotor
 # import gopro
 # import goprotest
+import time
+import logging
+import RPi.GPIO as GPIO
+from adafruit_motorkit import MotorKit
+import subprocess
+import gopromain as gopro
 
 # Create a log folder if it does not exist yet
 os.system('mkdir -p ./logs')
@@ -105,7 +111,7 @@ def main():
             sensorThread.start()
 
         # Arm Motor functions
-
+        initializeGPIO()
 
         # gopro recording start
         # if ('--gopro' in arguments or runAll):
@@ -123,9 +129,10 @@ def main():
     except KeyboardInterrupt:
         print('Caught KeyboardInterrupt exiting')
 
-def motor():
+def initializeGPIO():
     # Configure & initialize the motor hat and GPIO pins
-    logging.info('Initializing motor hat')
+    logging.info('Initializing GPIO pins...')
+    print('Initializing GPIO pins...')
 
     # GPIO pin assignment
     try:
@@ -136,12 +143,16 @@ def motor():
         GPIO.setup (lse, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # Extension Limit Switch
         GPIO.setup (te2, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-2 around +220 seconds
         GPIO.setup (lsr, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # Retraction Limit Switch
-
-
+        logger.info('GPIO pins initialized... OK')
+        print('GPIO pins initialized... OK')
     except:
         logger.critical('Failed to initialize GPIO pins and motor hat ')
+        print('Failed to initialize GPIO pins and motor hat ')
         return
 
+    print('Done with GPIO pins...\n')
+
+def ter():
     # wait for ter signile
     while True:
         if GPIO.input(ter):
