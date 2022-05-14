@@ -103,6 +103,7 @@ def main():
             sensorThread.start()
 
         # Arm Motor functions
+        initializeGPIO()
         terDone = 0
         te1Done = 0
 
