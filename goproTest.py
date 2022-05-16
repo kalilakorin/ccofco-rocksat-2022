@@ -8,7 +8,7 @@ import logging
 # test address D1:70:A4:FC:21:4F
 # flight address E3:BB:1E:0D:C8:52
 
-print("\nStart in Gopro test...")
+logging.info('\nInitializing GoPro RF test')
 try:
     logger = logging.getLogger(__name__)
 except:
@@ -17,8 +17,6 @@ except:
 
 def main():
     # Configure & initialize the gopro to receive power from GPIO pins
-    logging.info('Initializing GoPro RF test')
-
     logger.info('Wallops RF test start: ' + str(int(time.time() * 1000)))
 
     # wait 15 seconds to allow camera to turn on
@@ -30,8 +28,6 @@ def main():
     time.sleep(5)
     subprocess.call(f'python3 gopromain.py --verbose -a "E3:BB:1E:0D:C8:52" -c "record stop"', shell=True)
     logger.info('GoPro record stopped: ' + str(int(time.time() * 1000)))
-
-    GPIO.cleanup()
 
 if __name__ == '__main__':
     main()

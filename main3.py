@@ -130,22 +130,32 @@ def main():
             logger.critical('Failed to initialize GPIO pins and motor hat.')
             return
 
-        #normal functionality
+        # normal flight functionality
         terDone = 0
         te1Done = 0
         lseDone = 0 #limit switch extension
         te2Done = 0
         lsrDone = 0 #limit switch retraction
 
-        # set up for inhibit testing
+        # inhibit testing
         if GPIO.input(am):
-            logger.info('Testing mode: ' + str(int(time.time() * 1000)))
-
+            logger.info('Testing mode enabled: ' + str(int(time.time() * 1000)))
+            # attempt test 1
+            while True:
+                try:
+                    logger.info('Testing RF: ' + str(int(time.time() * 1000)))
+                    rfCall()
+                    break
+                except:
+                    logger.info('Waiting for power to test RF')
+                    sleep(15)
 
         while True:
-            if GPIO.input(am) and GPIO.input(rf):
-                logger.info('Testing RF: ' + str(int(time.time() * 1000)))
-                rfCall()
+            # attempt test 2 - may need to be used in conjunction with the above as well
+            # if GPIO.input(am): # and GPIO.input(rf): # i don't think this second half is correct
+            #    logger.info('Testing RF: ' + str(int(time.time() * 1000)))
+            #    rfCall()
+            #    break
             if GPIO.input(ter) and terDone == 0:
                 logger.info('TE-R detected')
                 goproCall()
@@ -217,6 +227,7 @@ def lsrCall():
     logger.info('Retraction stop detected: ' + str(int(time.time() * 1000)))
 
 def rfCall():
+    logger.info('Calling GoPro test thread...')
     goprotestThread = multiprocessing.Process(target=goprotest.main)
     goprotestThread.start()
 
