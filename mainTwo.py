@@ -136,11 +136,7 @@ def main():
             if GPIO.input(ter) and terDone == 0:
                 logger.info('TER detected')
                 GPIO.output(gppower, GPIO.HIGH)
-                time.sleep(5)
-                print('Slept 5 sec')
-                time.sleep(5)
-                print('Slept 10 sec')
-                time.sleep(5)
+                time.sleep(15)
                 print('Slept 15 sec')
                 goproCall()
                 GPIO.output(gppower, GPIO.LOW)
