@@ -143,7 +143,7 @@ def main():
             # attempt test 1
         #    while True:
         #        try:
-        #            logger.info('Testing RF: ' + str(int(time.time() * 1000)))
+        #            logger.info('Testing RF in first test: ' + str(int(time.time() * 1000)))
         #            rfCall()
         #            break
         #        except:
