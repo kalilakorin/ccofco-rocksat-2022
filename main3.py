@@ -102,12 +102,16 @@ def main():
             sensorThread = multiprocessing.Process(target=sensors.main)
             sensorThread.start()
 
-        # Arm Motor functions
+        # Normal flight functionality
         te1 = 27  # TE-1
         lse = 22  # Limit Switch Extension
         te2 = 23  # TE-2
         lsr = 24  # Limit Switch Retraction
         ter = 17  # gopro activation
+
+        # inhibits for testing
+        rf = 6  # RF inhibit GPIO pin  (6)
+        am = 5  # arm motor inhibit GPIO pin (5)
 
         logger.info('Initializing GPIO pins...')
         try:
@@ -118,18 +122,30 @@ def main():
             GPIO.setup(lse, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # Extension Limit Switch
             GPIO.setup(te2, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-2 around +220 seconds
             GPIO.setup(lsr, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # Retraction Limit Switch
+            # testing inhibits
+            GPIO.setup(rf, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)   # RF inhibit
+            GPIO.setup(am, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)   # motor inhibit
             logger.info('GPIO pins initialized... OK')
         except:
             logger.critical('Failed to initialize GPIO pins and motor hat.')
             return
 
+        #normal functionality
         terDone = 0
         te1Done = 0
         lseDone = 0 #limit switch extension
         te2Done = 0
         lsrDone = 0 #limit switch retraction
 
+        # set up for inhibit testing
+        if GPIO.input(am):
+            logger.info('Testing mode: ' + str(int(time.time() * 1000)))
+
+
         while True:
+            if GPIO.input(am) and GPIO.input(rf):
+                logger.info('Testing RF: ' + str(int(time.time() * 1000)))
+                rfCall()
             if GPIO.input(ter) and terDone == 0:
                 logger.info('TE-R detected')
                 goproCall()
@@ -147,9 +163,12 @@ def main():
                 te2Call()
                 te2Done = 1
             if GPIO.input(lsr) and lsrDone == 0:
-                logger.info('Limit switch detected, retraction stop')
+                logger.info('Limit switch detected')
                 lsrCall()
                 lsrDone = 1
+                break
+
+        GPIO.cleanup()
 
         # gopro recording start
         # if ('--gopro' in arguments or runAll):
@@ -196,7 +215,10 @@ def lsrCall():
     # set throttle (stop)
     motor.motor1.throttle = 0
     logger.info('Retraction stop detected: ' + str(int(time.time() * 1000)))
-    GPIO.cleanup()
+
+def rfCall():
+    goprotestThread = multiprocessing.Process(target=goprotest.main)
+    goprotestThread.start()
 
 if __name__ == '__main__':
     main()

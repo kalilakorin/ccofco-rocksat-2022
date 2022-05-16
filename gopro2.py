@@ -4,7 +4,6 @@ import gopromain as gopro
 import time
 import subprocess
 import logging
-import RPi.GPIO as GPIO
 
 # test address D1:70:A4:FC:21:4F
 # flight address E3:BB:1E:0D:C8:52
