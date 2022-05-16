@@ -110,8 +110,8 @@ def main():
         ter = 17  # gopro activation
 
         # inhibits for testing
-        rf = 6  # RF inhibit GPIO pin  (6)
-        am = 5  # arm motor inhibit GPIO pin (5)
+        #rf = 6  # RF inhibit GPIO pin  (6)
+        #am = 5  # arm motor inhibit GPIO pin (5)
 
         logger.info('Initializing GPIO pins...')
         try:
@@ -123,8 +123,8 @@ def main():
             GPIO.setup(te2, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-2 around +220 seconds
             GPIO.setup(lsr, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # Retraction Limit Switch
             # testing inhibits
-            GPIO.setup(rf, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)   # RF inhibit
-            GPIO.setup(am, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)   # motor inhibit
+            #GPIO.setup(rf, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)   # RF inhibit
+            #GPIO.setup(am, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)   # motor inhibit
             logger.info('GPIO pins initialized... OK')
         except:
             logger.critical('Failed to initialize GPIO pins and motor hat.')
@@ -138,17 +138,17 @@ def main():
         lsrDone = 0 #limit switch retraction
 
         # inhibit testing
-        if GPIO.input(am):
-            logger.info('Testing mode enabled: ' + str(int(time.time() * 1000)))
+        #if GPIO.input(am):
+        #    logger.info('Testing mode enabled: ' + str(int(time.time() * 1000)))
             # attempt test 1
-            while True:
-                try:
-                    logger.info('Testing RF: ' + str(int(time.time() * 1000)))
-                    rfCall()
-                    break
-                except:
-                    logger.info('Waiting for power to test RF')
-                    sleep(15)
+        #    while True:
+        #        try:
+        #            logger.info('Testing RF: ' + str(int(time.time() * 1000)))
+        #            rfCall()
+        #            break
+        #        except:
+        #            logger.info('Waiting for power to test RF')
+        #            sleep(15)
 
         while True:
             # attempt test 2 - may need to be used in conjunction with the above as well
@@ -179,20 +179,6 @@ def main():
                 break
 
         GPIO.cleanup()
-
-        # gopro recording start
-        # if ('--gopro' in arguments or runAll):
-        #     goproThread = multiprocessing.Process(target=gopro.main)
-        #     goproThread.start()
-
-        # gopro wallops RF testing start
-        # if ('--goprotest' in arguments or runAll):
-        #     goprotestThread = multiprocessing.Process(target=goprotest.main)
-        #     goprotestThread.start()
-
-        # Prim
-        # if framExperimentThread: framExperimentThread.join()
-        # p1.terminate()
     except KeyboardInterrupt:
         print('Caught KeyboardInterrupt exiting')
 
