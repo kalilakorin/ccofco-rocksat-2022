@@ -45,7 +45,7 @@ import fram
 import RPi.GPIO as GPIO
 from adafruit_motorkit import MotorKit
 import subprocess
-import gopromain as gopro
+import gopro2
 
 # import gopro
 # import goprotest
@@ -104,7 +104,6 @@ def main():
 
         # Arm Motor functions
         te1 = 27  # TE-1
-        gppower = 16 # is the original power
         lse = 22  # Limit Switch Extension
         te2 = 23  # TE-2
         lsr = 24  # Limit Switch Retraction
@@ -115,7 +114,6 @@ def main():
             motor = MotorKit()
             GPIO.setmode(GPIO.BCM)  # GPIO PIN NAMES
             GPIO.setup(ter, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-R around 10 seconds
-            GPIO.setup(gppower, GPIO.OUT)                         # power to the gopro camera
             GPIO.setup(te1, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-1 around +85 seconds
             GPIO.setup(lse, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # Extension Limit Switch
             GPIO.setup(te2, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-2 around +220 seconds
@@ -125,7 +123,6 @@ def main():
             logger.critical('Failed to initialize GPIO pins and motor hat.')
             return
 
-        GPIO.output(gppower, GPIO.LOW)
         terDone = 0
         te1Done = 0
         lseDone = 0 #limit switch extension
@@ -134,24 +131,24 @@ def main():
 
         while True:
             if GPIO.input(ter) and terDone == 0:
-                logger.info('TER detected')
-                GPIO.output(gppower, GPIO.HIGH)
-                time.sleep(15)
-                print('Slept 15 sec')
+                logger.info('TE-R detected')
                 goproCall()
-                GPIO.output(gppower, GPIO.LOW)
                 terDone = 1
             if GPIO.input(te1) and te1Done == 0:
-                logger.info('TE1 detected, extension start')
+                logger.info('TE-1 detected')
+                te1Call()
                 te1Done = 1
             if GPIO.input(lse) and lseDone == 0:
-                logger.info('Limit switch detected, extension stop')
+                logger.info('Limit switch detected')
+                lseCall()
                 lseDone = 1
             if GPIO.input(te2) and te2Done == 0:
-                logger.info('TE2 detected, retraction start')
+                logger.info('TE-2 detected')
+                te2Call()
                 te2Done = 1
             if GPIO.input(lsr) and lsrDone == 0:
                 logger.info('Limit switch detected, retraction stop')
+                lsrCall()
                 lsrDone = 1
 
         # gopro recording start
@@ -176,59 +173,30 @@ def main():
 def goproCall():
     # test address D1:70:A4:FC:21:4F
     # flight address E3:BB:1E:0D:C8:52
-    logger.info('Record starting...')
-    while True:
-        subprocess.call(f'python3 gopromain.py --verbose -a "D1:70:A4:FC:21:4F" -c "preset maxvideo" -c "record start"', shell=True)
-        time.sleep(5)
+    logger.info('Calling GoPro thread...')
+    goproThread = multiprocessing.Process(target=gopro2.main)
+    goproThread.start()
 
-def motor():
-    # wait for ter signile
-    while True:
-        if GPIO.input(ter):
-            break
-    # call
-    subprocess.call(f'python3 gopromain.py --verbose -a "D1:70:A4:FC:21:4F" -c "preset maxvideo" -c "record start"',
-                    shell=True)
-
-    time.sleep(5)
-    subprocess.call(f'python3 gopromain.py --verbose -a "D1:70:A4:FC:21:4F" -c "preset maxvideo" -c "record start"',
-                    shell=True)
-
-    # wait for TE-1 signal
-    while True:
-        if GPIO.input(te1):
-            break
-
-    logger.info('TE-1 detected: ' + str(int(time.time() * 1000)))
+def te1Call():
     # set throttle (extension)
     motor.motor1.throttle = 1.0
-    print("TE-1 Detected...\n\n")
-    # wait for extension limit switch activation
-    while True:
-        if GPIO.input(lse):
-            break
-    logger.info('Extension stop detected: ' + str(int(time.time() * 1000)))
+    logger.info('Extension start: ' + str(int(time.time() * 1000)))
+
+def lseCall():
     # set throttle (stop)
     motor.motor1.throttle = 0
-    print("Extension Stop Detected...\n\n")
-    # wait for TE-2 signal
-    while True:
-        if GPIO.input(te2):
-            break
-    logger.info('TE-2 detected: ' + str(int(time.time() * 1000)))
+    logger.info('Extension stop: ' + str(int(time.time() * 1000)))
+
+def te2Call():
     # set throttle (retraction)
     motor.motor1.throttle = -1.0
-    print("TE-2 Detected...\n\n")
-    # wait for retraction limit switch activation
-    while True:
-        if GPIO.input(lsr):
-            break
-    logger.info('Retraction stop detected: ' + str(int(time.time() * 1000)))
+    logger.info('Retraction start: ' + str(int(time.time() * 1000)))
+
+def lsrCall():
     # set throttle (stop)
     motor.motor1.throttle = 0
-    print("Retraction Stop Detected...\n\n")
+    logger.info('Retraction stop detected: ' + str(int(time.time() * 1000)))
     GPIO.cleanup()
-
 
 if __name__ == '__main__':
     main()
