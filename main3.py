@@ -162,19 +162,19 @@ def main():
                 terDone = 1
             if GPIO.input(te1) and te1Done == 0:
                 logger.info('TE-1 detected')
-                te1Call()
+                te1Call(motor)
                 te1Done = 1
             if GPIO.input(lse) and lseDone == 0:
                 logger.info('Limit switch detected')
-                lseCall()
+                lseCall(motor)
                 lseDone = 1
             if GPIO.input(te2) and te2Done == 0:
                 logger.info('TE-2 detected')
-                te2Call()
+                te2Call(motor)
                 te2Done = 1
             if GPIO.input(lsr) and lsrDone == 0:
                 logger.info('Limit switch detected')
-                lsrCall()
+                lsrCall(motor)
                 lsrDone = 1
                 break
 
@@ -192,22 +192,22 @@ def goproCall():
     goproThread = multiprocessing.Process(target=gopro2.main)
     goproThread.start()
 
-def te1Call():
+def te1Call(motor):
     # set throttle (extension)
     motor.motor1.throttle = 1.0
     logger.info('Extension start: ' + str(int(time.time() * 1000)))
 
-def lseCall():
+def lseCall(motor):
     # set throttle (stop)
     motor.motor1.throttle = 0
     logger.info('Extension stop: ' + str(int(time.time() * 1000)))
 
-def te2Call():
+def te2Call(motor):
     # set throttle (retraction)
     motor.motor1.throttle = -1.0
     logger.info('Retraction start: ' + str(int(time.time() * 1000)))
 
-def lsrCall():
+def lsrCall(motor):
     # set throttle (stop)
     motor.motor1.throttle = 0
     logger.info('Retraction stop detected: ' + str(int(time.time() * 1000)))
