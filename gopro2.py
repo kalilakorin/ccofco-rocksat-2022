@@ -19,7 +19,7 @@ def main():
     # Configure & initialize the gopro to receive power from GPIO pins
     logging.info('Initializing GoPro')
 
-    while true:
+    while True:
         # wait 15 seconds and turn off the pin
         time.sleep(15)
         # start the gopro
