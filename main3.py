@@ -88,19 +88,19 @@ def main():
         arguments = sys.argv
         runAll = len(arguments) == 1
 
-        # if ('--auxcam' in arguments or runAll):
-        #     auxcamThread = multiprocessing.Process(target=auxcam.main)
-        #     auxcamThread.start()
-        #
-        # # Secondary experiment (radiation RAM)
-        # if ('--fram' in arguments or runAll):
-        #     framExperimentThread = multiprocessing.Process(target=fram.main)
-        #     framExperimentThread.start()
-        #
-        # # Tertiary experiment (sensors)
-        # if ('--sensors' in arguments or runAll):
-        #     sensorThread = multiprocessing.Process(target=sensors.main)
-        #     sensorThread.start()
+        if ('--auxcam' in arguments or runAll):
+            auxcamThread = multiprocessing.Process(target=auxcam.main)
+            auxcamThread.start()
+
+        # Secondary experiment (radiation RAM)
+        if ('--fram' in arguments or runAll):
+            framExperimentThread = multiprocessing.Process(target=fram.main)
+            framExperimentThread.start()
+
+        # Tertiary experiment (sensors)
+        if ('--sensors' in arguments or runAll):
+            sensorThread = multiprocessing.Process(target=sensors.main)
+            sensorThread.start()
 
         # Normal flight functionality
         te1 = 27  # TE-1
