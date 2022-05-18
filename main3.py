@@ -158,7 +158,7 @@ def main():
             #    break
             if GPIO.input(ter) and terDone == 0:
                 logger.info('TE-R detected')
-                goproCall()
+                goproCall(motor)
                 terDone = 1
             if GPIO.input(te1) and te1Done == 0:
                 logger.info('TE-1 detected')
@@ -186,13 +186,16 @@ def main():
 
 #def initializeGPIO():
 
-def goproCall():
+def goproCall(motor):
     # test address D1:70:A4:FC:21:4F
     # flight address E3:BB:1E:0D:C8:52
     logger.info('Calling GoPro thread...')
     motor.motor4.throttle = 1.0
     goproThread = multiprocessing.Process(target=gopro2.main)
     goproThread.start()
+    time.sleep(15)
+    motor.motor4.throttle = 0
+    logger.info('GoPro motor off...')
 
 def te1Call(motor):
     # set throttle (extension)
