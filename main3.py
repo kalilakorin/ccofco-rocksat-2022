@@ -162,7 +162,9 @@ def main():
                 terDone = 1
             if GPIO.input(te1) and te1Done == 0:
                 logger.info('TE-1 detected')
-                te1Call(motor)
+                motor.motor1.throttle = 1.0
+                logger.info('Extension start: ' + str(int(time.time() * 1000)))
+                #te1Call(motor)
                 te1Done = 1
             if GPIO.input(lse) and lseDone == 0:
                 logger.info('Extension limit switch detected')
@@ -178,6 +180,7 @@ def main():
                 lsrDone = 1
                 break
 
+        logger.info('All time events have been detected: ' + str(int(time.time() * 1000)))
         GPIO.cleanup()
     except KeyboardInterrupt:
         print('Caught KeyboardInterrupt exiting')
