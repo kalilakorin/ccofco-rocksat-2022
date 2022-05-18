@@ -75,7 +75,7 @@ logger = logging.getLogger(__name__)
 # Output all logs to console
 logging.getLogger().addHandler(logging.StreamHandler(sys.stdout))
 
-logger.info(f'CC of CO payload finished booting at {boottime}')
+logger.info(f'CC of CO payload finished booting at {boottime}\n')
 
 
 def main():
@@ -110,8 +110,8 @@ def main():
         ter = 17  # gopro activation
 
         # inhibits for testing
-        #rf = 6  # RF inhibit GPIO pin  (6)
-        #am = 5  # arm motor inhibit GPIO pin (5)
+        rf = 6  # RF inhibit GPIO pin  (6)
+        am = 5  # arm motor inhibit GPIO pin (5)
 
         logger.info('Initializing GPIO pins...')
         try:
@@ -123,39 +123,50 @@ def main():
             GPIO.setup(te2, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-2 around +220 seconds
             GPIO.setup(lsr, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # Retraction Limit Switch
             # testing inhibits
-            #GPIO.setup(rf, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)   # RF inhibit
-            #GPIO.setup(am, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)   # motor inhibit
-            logger.info('GPIO pins initialized... OK')
+            GPIO.setup(rf, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)   # RF inhibit
+            GPIO.setup(am, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)   # motor inhibit
+            logger.info('GPIO pins initialized... OK\n')
         except:
-            logger.critical('Failed to initialize GPIO pins and motor hat.')
+            logger.critical('Failed to initialize GPIO pins and motor hat.\n')
             return
 
-        # normal flight functionality
-        terDone = 0
-        te1Done = 0
-        lseDone = 0 #limit switch extension
-        te2Done = 0
-        lsrDone = 0 #limit switch retraction
-
         # inhibit testing
-        #if GPIO.input(am):
-        #    logger.info('Testing mode enabled: ' + str(int(time.time() * 1000)))
+        if GPIO.input(am):
+            logger.info('Testing mode enabled: ' + str(int(time.time() * 1000)) + '\n')
+            terDone = 1
+            te1Done = 1
+            lseDone = 1  # limit switch extension
+            te2Done = 1
+            lsrDone = 1  # limit switch retraction
+            # if GPIO.input(rf):
+            #     logger.info('Testing RF: ' + str(int(time.time() * 1000)))
+            #     rfCall(motor)
+
+        else:
+            # normal flight functionality
+            logger.info('Flight mode enabled: ' + str(int(time.time() * 1000)) + '\n')
+            terDone = 0
+            te1Done = 0
+            lseDone = 0  # limit switch extension
+            te2Done = 0
+            lsrDone = 0  # limit switch retraction
+
             # attempt test 1
-        #    while True:
-        #        try:
-        #            logger.info('Testing RF in first test: ' + str(int(time.time() * 1000)))
-        #            rfCall()
-        #            break
-        #        except:
-        #            logger.info('Waiting for power to test RF')
-        #            sleep(15)
+            # #while True:
+            # #    try:
+            # #        logger.info('Testing RF in first test: ' + str(int(time.time() * 1000)))
+            # #        rfCall()
+            # #        break
+            # #    except:
+            #         logger.info('Waiting for power to test RF')
+            #         sleep(15)
 
         while True:
             # attempt test 2 - may need to be used in conjunction with the above as well
-            # if GPIO.input(am): # and GPIO.input(rf): # i don't think this second half is correct
-            #    logger.info('Testing RF: ' + str(int(time.time() * 1000)))
-            #    rfCall()
-            #    break
+            if GPIO.input(am) and GPIO.input(rf):
+                logger.info('Testing RF: ' + str(int(time.time() * 1000)))
+                rfCall(motor)
+                break
             if GPIO.input(ter) and terDone == 0:
                 logger.info('TE-R detected')
                 goproCall(motor)
@@ -178,7 +189,7 @@ def main():
                 lsrDone = 1
                 break
 
-        logger.info('All time events have been detected: ' + str(int(time.time() * 1000)))
+        logger.info('All time events have been detected: ' + str(int(time.time() * 1000)) + '\n')
         GPIO.cleanup()
     except KeyboardInterrupt:
         print('Caught KeyboardInterrupt exiting')
@@ -195,32 +206,36 @@ def goproCall(motor):
     goproThread.start()
     time.sleep(15)
     motor.motor4.throttle = 0
-    logger.info('GoPro motor off...')
+    logger.info('GoPro motor off...\n')
 
 def te1Call(motor):
     # set throttle (extension)
     motor.motor1.throttle = 1.0
-    logger.info('Extension start: ' + str(int(time.time() * 1000)))
+    logger.info('Extension start: ' + str(int(time.time() * 1000)) + '\n')
 
 def lseCall(motor):
     # set throttle (stop)
     motor.motor1.throttle = 0
-    logger.info('Extension stop: ' + str(int(time.time() * 1000)))
+    logger.info('Extension stop: ' + str(int(time.time() * 1000)) + '\n')
 
 def te2Call(motor):
     # set throttle (retraction)
     motor.motor1.throttle = -1.0
-    logger.info('Retraction start: ' + str(int(time.time() * 1000)))
+    logger.info('Retraction start: ' + str(int(time.time() * 1000)) + '\n')
 
 def lsrCall(motor):
     # set throttle (stop)
     motor.motor1.throttle = 0
-    logger.info('Retraction stop detected: ' + str(int(time.time() * 1000)))
+    logger.info('Retraction stop detected: ' + str(int(time.time() * 1000)) + '\n')
 
-def rfCall():
+def rfCall(motor):
     logger.info('Calling GoPro test thread...')
+    motor.motor4.throttle = 1.0
     goprotestThread = multiprocessing.Process(target=goprotest.main)
     goprotestThread.start()
+    time.sleep(15)
+    motor.motor4.throttle = 0
+    logger.info('GoPro motor test off...\n')
 
 if __name__ == '__main__':
     main()

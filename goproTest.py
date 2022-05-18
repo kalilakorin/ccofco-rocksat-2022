@@ -23,11 +23,12 @@ def main():
     time.sleep(15)
 
     # start the gopro
-    subprocess.call(f'python3 gopromain.py --verbose -a "E3:BB:1E:0D:C8:52" -c "record start"', shell=True)
-    logger.info('GoPro record started: ' + str(int(time.time() * 1000)))
-    time.sleep(5)
+    for x in range(0, 3):
+        subprocess.call(f'python3 gopromain.py --verbose -a "E3:BB:1E:0D:C8:52" -c "record start"', shell=True)
+        logger.info('GoPro record started: ' + str(int(time.time() * 1000)) + '\n')
+        time.sleep(5)
     subprocess.call(f'python3 gopromain.py --verbose -a "E3:BB:1E:0D:C8:52" -c "record stop"', shell=True)
-    logger.info('GoPro record stopped: ' + str(int(time.time() * 1000)))
+    logger.info('GoPro record stopped: ' + str(int(time.time() * 1000)) + '\n')
 
 if __name__ == '__main__':
     main()
