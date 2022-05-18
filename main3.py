@@ -190,12 +190,13 @@ def goproCall():
     # test address D1:70:A4:FC:21:4F
     # flight address E3:BB:1E:0D:C8:52
     logger.info('Calling GoPro thread...')
+    motor.motor4.throttle = 1.0
     goproThread = multiprocessing.Process(target=gopro2.main)
     goproThread.start()
 
 def te1Call(motor):
     # set throttle (extension)
-    motor.motor1.throttle = 0.01
+    motor.motor1.throttle = 1.0
     logger.info('Extension start: ' + str(int(time.time() * 1000)))
 
 def lseCall(motor):
