@@ -233,7 +233,7 @@ def lsrCall(motor):
 def rfCall(motor):
     logger.info('Calling GoPro test thread...')
     motor.motor4.throttle = 1.0
-    goprotestThread = multiprocessing.Process(target=goprotest.main)
+    goprotestThread = multiprocessing.Process(target=goproTest.main)
     goprotestThread.start()
     time.sleep(15)
     motor.motor4.throttle = 0
