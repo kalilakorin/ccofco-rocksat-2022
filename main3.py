@@ -162,9 +162,7 @@ def main():
                 terDone = 1
             if GPIO.input(te1) and te1Done == 0:
                 logger.info('TE-1 detected')
-                motor.motor1.throttle = 1.0
-                logger.info('Extension start: ' + str(int(time.time() * 1000)))
-                #te1Call(motor)
+                te1Call(motor)
                 te1Done = 1
             if GPIO.input(lse) and lseDone == 0:
                 logger.info('Extension limit switch detected')
