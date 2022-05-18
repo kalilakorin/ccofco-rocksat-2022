@@ -165,8 +165,9 @@ def main():
 
         while True:
             # attempt test 2 - may need to be used in conjunction with the above as well
-            if GPIO.input(am) and GPIO.input(rf):
+            if GPIO.input(am) and not GPIO.input(rf):
                 logger.info('Testing RF: ' + str(int(time.time() * 1000)))
+                print('Testing RF: ' + str(int(time.time() * 1000)))
                 rfCall(motor)
                 break
             if GPIO.input(ter) and terDone == 0:
