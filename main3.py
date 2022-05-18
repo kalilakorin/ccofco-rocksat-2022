@@ -141,7 +141,6 @@ def main():
             # if GPIO.input(rf):
             #     logger.info('Testing RF: ' + str(int(time.time() * 1000)))
             #     rfCall(motor)
-
         else:
             # normal flight functionality
             logger.info('Flight mode enabled: ' + str(int(time.time() * 1000)) + '\n')

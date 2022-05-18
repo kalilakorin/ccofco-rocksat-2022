@@ -8,7 +8,7 @@ import logging
 # test address D1:70:A4:FC:21:4F
 # flight address E3:BB:1E:0D:C8:52
 
-print("Start in Gopro...\n")
+print("Start in Gopro2...\n")
 try:
     logger = logging.getLogger(__name__)
 except:
