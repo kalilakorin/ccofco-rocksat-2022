@@ -27,8 +27,10 @@ def main():
         subprocess.call(f'python3 gopromain.py --verbose -a "D1:70:A4:FC:21:4F" -c "record start"', shell=True)
         logger.info('GoPro test record started: ' + str(int(time.time() * 1000)) + '\n')
         time.sleep(5)
-    subprocess.call(f'python3 gopromain.py --verbose -a "D1:70:A4:FC:21:4F" -c "record stop"', shell=True)
-    logger.info('GoPro test record stopped: ' + str(int(time.time() * 1000)) + '\n')
+    for x in range(0, 3):
+        subprocess.call(f'python3 gopromain.py --verbose -a "D1:70:A4:FC:21:4F" -c "record stop"', shell=True)
+        logger.info('GoPro test record stopped: ' + str(int(time.time() * 1000)) + '\n')
+        time.sleep(5)
 
 if __name__ == '__main__':
     main()
