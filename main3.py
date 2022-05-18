@@ -195,7 +195,7 @@ def goproCall():
 
 def te1Call(motor):
     # set throttle (extension)
-    motor.motor1.throttle = 0.25
+    motor.motor1.throttle = 0.01
     logger.info('Extension start: ' + str(int(time.time() * 1000)))
 
 def lseCall(motor):
