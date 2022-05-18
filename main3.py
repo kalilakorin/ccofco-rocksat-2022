@@ -46,9 +46,9 @@ import RPi.GPIO as GPIO
 from adafruit_motorkit import MotorKit
 import subprocess
 import gopro2
+import goproTest
 
 # import gopro
-# import goprotest
 
 # Create a log folder if it does not exist yet
 os.system('mkdir -p ./logs')
@@ -110,7 +110,7 @@ def main():
         ter = 17  # gopro activation
 
         # inhibits for testing
-        rf = 6  # RF inhibit GPIO pin  (6)
+        rf = 6  # RF inhibit GPIO pin (6)
         am = 5  # arm motor inhibit GPIO pin (5)
 
         logger.info('Initializing GPIO pins...')
