@@ -80,8 +80,8 @@ logger.info(f'CC of CO payload finished booting at {boottime}\n')
 
 def main():
     try:
-        multiprocessing.set_start_method('fork')
-        processQueue = multiprocessing.Queue()
+        #multiprocessing.set_start_method('fork')
+        #processQueue = multiprocessing.Queue()
         # Accept command line arguments
 
         # If no command line arguments are passed the script will assume that it is running in
