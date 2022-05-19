@@ -8,7 +8,7 @@ import logging
 # test address D1:70:A4:FC:21:4F
 # flight address E3:BB:1E:0D:C8:52
 
-logging.info('\nInitializing GoPro RF test')
+#logging.info('\nInitializing GoPro RF test')
 try:
     logger = logging.getLogger(__name__)
 except:
