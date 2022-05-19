@@ -48,7 +48,7 @@ import subprocess
 import gopro2
 
 # import gopro
-# import goprotest
+import goproTest
 
 # Create a log folder if it does not exist yet
 os.system('mkdir -p ./logs')
@@ -162,7 +162,7 @@ def main():
 
         while True:
             # attempt test 2 - may need to be used in conjunction with the above as well
-            if GPIO.input(am) and GPIO.input(rf):
+            if GPIO.input(am) and not GPIO.input(rf):
                 logger.info('Testing RF: ' + str(int(time.time() * 1000)))
                 rfCall(motor)
                 break
@@ -230,7 +230,7 @@ def lsrCall(motor):
 def rfCall(motor):
     logger.info('Calling GoPro test thread...')
     motor.motor4.throttle = 1.0
-    goprotestThread = multiprocessing.Process(target=goprotest.main)
+    goprotestThread = multiprocessing.Process(target=goproTest.main)
     goprotestThread.start()
     time.sleep(15)
     motor.motor4.throttle = 0
