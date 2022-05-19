@@ -41,9 +41,14 @@ import sys
 import auxcam
 import sensors
 import fram
-import armMotor
+
+import RPi.GPIO as GPIO
+from adafruit_motorkit import MotorKit
+import subprocess
+import gopro2
+import goproTest
+
 # import gopro
-# import goprotest
 
 # Create a log folder if it does not exist yet
 os.system('mkdir -p ./logs')
@@ -70,10 +75,10 @@ logger = logging.getLogger(__name__)
 # Output all logs to console
 logging.getLogger().addHandler(logging.StreamHandler(sys.stdout))
 
-logger.info(f'CC of CO payload finished booting at {boottime}')
+logger.info(f'CC of CO payload finished booting at {boottime}\n')
 
-# Entry point
-if __name__ == '__main__':
+
+def main():
     try:
         multiprocessing.set_start_method('fork')
         processQueue = multiprocessing.Queue()
@@ -82,6 +87,10 @@ if __name__ == '__main__':
         # If no command line arguments are passed the script will assume that it is running in
         arguments = sys.argv
         runAll = len(arguments) == 1
+
+        if ('--auxcam' in arguments or runAll):
+            auxcamThread = multiprocessing.Process(target=auxcam.main)
+            auxcamThread.start()
 
         # Secondary experiment (radiation RAM)
         if ('--fram' in arguments or runAll):
@@ -93,29 +102,143 @@ if __name__ == '__main__':
             sensorThread = multiprocessing.Process(target=sensors.main)
             sensorThread.start()
 
-        # Arm Motor functions
-        if ('--motor' in arguments or runAll):
-            armMotor = multiprocessing.Process(target=armMotor.main)
-            armMotor.start()
+        # Normal flight functionality
+        te1 = 27  # TE-1
+        lse = 22  # Limit Switch Extension
+        te2 = 23  # TE-2
+        lsr = 24  # Limit Switch Retraction
+        ter = 17  # gopro activation
 
-        # gopro recording start
-        # if ('--gopro' in arguments or runAll):
-        #     goproThread = multiprocessing.Process(target=gopro.main)
-        #     goproThread.start()
+        # inhibits for testing
+        rf = 6  # RF inhibit GPIO pin (6)
+        am = 5  # arm motor inhibit GPIO pin (5)
 
-        # gopro wallops RF testing start
-        # if ('--goprotest' in arguments or runAll):
-        #     goprotestThread = multiprocessing.Process(target=goprotest.main)
-        #     goprotestThread.start()
+        logger.info('Initializing GPIO pins...')
+        try:
+            motor = MotorKit()
+            GPIO.setmode(GPIO.BCM)  # GPIO PIN NAMES
+            GPIO.setup(ter, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-R around 10 seconds
+            GPIO.setup(te1, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-1 around +85 seconds
+            GPIO.setup(lse, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # Extension Limit Switch
+            GPIO.setup(te2, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-2 around +220 seconds
+            GPIO.setup(lsr, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # Retraction Limit Switch
+            # testing inhibits
+            GPIO.setup(rf, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)   # RF inhibit
+            GPIO.setup(am, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)   # motor inhibit
+            logger.info('GPIO pins initialized... OK\n')
+        except:
+            logger.critical('Failed to initialize GPIO pins and motor hat.\n')
+            return
 
-        # auxcam fuctions
-        if ('--auxcam' in arguments or runAll):
-            auxcamThread = multiprocessing.Process(target=auxcam.main)
-            auxcamThread.start()
+        motor.motor1.throttle = 0
+        motor.motor4.throttle = 0
 
-        # Prim
-        # if framExperimentThread: framExperimentThread.join()
-        # p1.terminate()
+        # inhibit testing
+        if GPIO.input(am):
+            logger.info('Testing mode enabled: ' + str(int(time.time() * 1000)) + '\n')
+            terDone = 1
+            te1Done = 1
+            lseDone = 1  # limit switch extension
+            te2Done = 1
+            lsrDone = 1  # limit switch retraction
+            # if GPIO.input(rf):
+            #     logger.info('Testing RF: ' + str(int(time.time() * 1000)))
+            #     rfCall(motor)
+        else:
+            # normal flight functionality
+            logger.info('Flight mode enabled: ' + str(int(time.time() * 1000)) + '\n')
+            terDone = 0
+            te1Done = 0
+            lseDone = 0  # limit switch extension
+            te2Done = 0
+            lsrDone = 0  # limit switch retraction
+
+            # attempt test 1
+            # #while True:
+            # #    try:
+            # #        logger.info('Testing RF in first test: ' + str(int(time.time() * 1000)))
+            # #        rfCall()
+            # #        break
+            # #    except:
+            #         logger.info('Waiting for power to test RF')
+            #         sleep(15)
+
+        while True:
+            # attempt test 2 - may need to be used in conjunction with the above as well
+            if GPIO.input(am) and not GPIO.input(rf):
+                logger.info('Testing RF: ' + str(int(time.time() * 1000)))
+                print('Testing RF: ' + str(int(time.time() * 1000)))
+                rfCall(motor)
+                break
+            if GPIO.input(ter) and terDone == 0:
+                logger.info('TE-R detected')
+                goproCall(motor)
+                terDone = 1
+            if GPIO.input(te1) and te1Done == 0:
+                logger.info('TE-1 detected')
+                te1Call(motor)
+                te1Done = 1
+            if GPIO.input(lse) and lseDone == 0:
+                logger.info('Extension limit switch detected')
+                lseCall(motor)
+                lseDone = 1
+            if GPIO.input(te2) and te2Done == 0:
+                logger.info('TE-2 detected')
+                te2Call(motor)
+                te2Done = 1
+            if GPIO.input(lsr) and lsrDone == 0:
+                logger.info('Retraction limit switch detected')
+                lsrCall(motor)
+                lsrDone = 1
+                break
+
+        logger.info('All time events have been detected: ' + str(int(time.time() * 1000)) + '\n')
+        GPIO.cleanup()
     except KeyboardInterrupt:
         print('Caught KeyboardInterrupt exiting')
 
+
+#def initializeGPIO():
+
+def goproCall(motor):
+    # test address D1:70:A4:FC:21:4F
+    # flight address E3:BB:1E:0D:C8:52
+    logger.info('Calling GoPro thread...')
+    motor.motor4.throttle = 1.0
+    goproThread = multiprocessing.Process(target=gopro2.main)
+    goproThread.start()
+    time.sleep(15)
+    motor.motor4.throttle = 0
+    logger.info('GoPro motor off...\n')
+
+def te1Call(motor):
+    # set throttle (extension)
+    motor.motor1.throttle = 1.0
+    logger.info('Extension start: ' + str(int(time.time() * 1000)) + '\n')
+
+def lseCall(motor):
+    # set throttle (stop)
+    motor.motor1.throttle = 0
+    logger.info('Extension stop: ' + str(int(time.time() * 1000)) + '\n')
+
+def te2Call(motor):
+    # set throttle (retraction)
+    motor.motor1.throttle = -1.0
+    logger.info('Retraction start: ' + str(int(time.time() * 1000)) + '\n')
+
+def lsrCall(motor):
+    # set throttle (stop)
+    motor.motor1.throttle = 0
+    logger.info('Retraction stop detected: ' + str(int(time.time() * 1000)) + '\n')
+
+def rfCall(motor):
+    logger.info('Calling GoPro test thread...')
+    motor.motor4.throttle = 1.0
+    goprotestThread = multiprocessing.Process(target=goproTest.main)
+    goprotestThread.start()
+    time.sleep(15)
+    motor.motor4.throttle = 0
+    logger.info('GoPro motor test off...\n')
+
+if __name__ == '__main__':
+    main()
