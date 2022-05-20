@@ -38,14 +38,14 @@ import multiprocessing as multiprocessing
 import sys
 
 # Import system modules
-import auxcam
-import sensors
-import fram
+# import auxcam
+# import sensors
+# import fram
 
 import RPi.GPIO as GPIO
 from adafruit_motorkit import MotorKit
 import subprocess
-import gopro2
+# import gopro2
 import goproTest
 
 # import gopro
@@ -200,16 +200,16 @@ def main():
 
 #def initializeGPIO():
 
-def goproCall(motor):
-    # test address D1:70:A4:FC:21:4F
-    # flight address E3:BB:1E:0D:C8:52
-    logger.info('Calling GoPro thread...')
-    motor.motor4.throttle = 1.0
-    goproThread = multiprocessing.Process(target=gopro2.main)
-    goproThread.start()
-    time.sleep(15)
-    motor.motor4.throttle = 0
-    logger.info('GoPro motor off...\n')
+# def goproCall(motor):
+#     # test address D1:70:A4:FC:21:4F
+#     # flight address E3:BB:1E:0D:C8:52
+#     logger.info('Calling GoPro thread...')
+#     motor.motor4.throttle = 1.0
+#     goproThread = multiprocessing.Process(target=gopro2.main)
+#     goproThread.start()
+#     time.sleep(15)
+#     motor.motor4.throttle = 0
+#     logger.info('GoPro motor off...\n')
 
 def te1Call(motor):
     # set throttle (extension)
