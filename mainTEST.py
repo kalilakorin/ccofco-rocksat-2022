@@ -151,7 +151,7 @@ def main():
             te1Done = 0
             lseDone = 0  # limit switch extension
             te2Done = 0
-            lsrDone = 0  # limit switch retraction
+            lsrDone = 1  # limit switch retraction
 
             # attempt test 1
             # #while True:
@@ -186,6 +186,7 @@ def main():
                 logger.info('TE-2 detected')
                 te2Call(motor)
                 te2Done = 1
+                lsrDone = 0
             if GPIO.input(lsr) and lsrDone == 0:
                 logger.info('Retraction limit switch detected')
                 lsrCall(motor)
