@@ -68,8 +68,6 @@ logging.basicConfig(
     datefmt='%Y-%m-%d %H:%M:%S',
     handlers=[rotatingFileHandler])
 
-# formatter = logging.Formatter('[%(asctime)s.%(msecs)03d][%(module)7s][%(levelname)8s]\t%(message)s')
-
 logger = logging.getLogger(__name__)
 
 # Output all logs to console
@@ -77,41 +75,14 @@ logging.getLogger().addHandler(logging.StreamHandler(sys.stdout))
 
 logger.info(f'CC of CO payload finished booting at {boottime}\n')
 
-
 def main():
     try:
-        #multiprocessing.set_start_method('fork')
-        #processQueue = multiprocessing.Queue()
-        # Accept command line arguments
-
-        # If no command line arguments are passed the script will assume that it is running in
-        arguments = sys.argv
-        runAll = len(arguments) == 1
-
-        # if ('--auxcam' in arguments or runAll):
-        #     auxcamThread = multiprocessing.Process(target=auxcam.main)
-        #     auxcamThread.start()
-        #
-        # # Secondary experiment (radiation RAM)
-        # if ('--fram' in arguments or runAll):
-        #     framExperimentThread = multiprocessing.Process(target=fram.main)
-        #     framExperimentThread.start()
-        #
-        # # Tertiary experiment (sensors)
-        # if ('--sensors' in arguments or runAll):
-        #     sensorThread = multiprocessing.Process(target=sensors.main)
-        #     sensorThread.start()
-
         # Normal flight functionality
         te1 = 27  # TE-1
         lse = 22  # Limit Switch Extension
         te2 = 23  # TE-2
         lsr = 24  # Limit Switch Retraction
         ter = 17  # gopro activation
-
-        # inhibits for testing
-        rf = 6  # RF inhibit GPIO pin (6)
-        am = 5  # arm motor inhibit GPIO pin (5)
 
         logger.info('Initializing GPIO pins...')
         try:
@@ -123,15 +94,12 @@ def main():
             GPIO.setup(te2, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-2 around +220 seconds
             GPIO.setup(lsr, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # Retraction Limit Switch
             # testing inhibits
-            GPIO.setup(rf, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)   # RF inhibit
-            GPIO.setup(am, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)   # motor inhibit
             logger.info('GPIO pins initialized... OK\n')
         except:
             logger.critical('Failed to initialize GPIO pins and motor hat.\n')
             return
 
         motor.motor1.throttle = 0
-        motor.motor4.throttle = 0
 
         # inhibit testing
         if GPIO.input(am):
@@ -141,9 +109,6 @@ def main():
             lseDone = 1  # limit switch extension
             te2Done = 1
             lsrDone = 1  # limit switch retraction
-            # if GPIO.input(rf):
-            #     logger.info('Testing RF: ' + str(int(time.time() * 1000)))
-            #     rfCall(motor)
         else:
             # normal flight functionality
             logger.info('Flight mode enabled: ' + str(int(time.time() * 1000)) + '\n')
@@ -153,27 +118,7 @@ def main():
             te2Done = 0
             lsrDone = 1  # limit switch retraction
 
-            # attempt test 1
-            # #while True:
-            # #    try:
-            # #        logger.info('Testing RF in first test: ' + str(int(time.time() * 1000)))
-            # #        rfCall()
-            # #        break
-            # #    except:
-            #         logger.info('Waiting for power to test RF')
-            #         sleep(15)
-
         while True:
-            # attempt test 2 - may need to be used in conjunction with the above as well
-            # if GPIO.input(am) and not GPIO.input(rf):
-            #     logger.info('Testing RF: ' + str(int(time.time() * 1000)))
-            #     print('Testing RF: ' + str(int(time.time() * 1000)))
-            #     rfCall(motor)
-            #     break
-            # if GPIO.input(ter) and terDone == 0:
-            #     logger.info('TE-R detected')
-            #     goproCall(motor)
-            #     terDone = 1
             if GPIO.input(te1):
                 print("Forward...\n")
                 motor.motor1.throttle = 1
