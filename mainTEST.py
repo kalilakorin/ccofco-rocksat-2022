@@ -174,24 +174,22 @@ def main():
             #     logger.info('TE-R detected')
             #     goproCall(motor)
             #     terDone = 1
-            if GPIO.input(te1) and te1Done == 0:
-                logger.info('TE-1 detected')
-                te1Call(motor)
-                te1Done = 1
-                time.sleep(30)
-            if GPIO.input(lse) and lseDone == 0:
-                logger.info('Extension limit switch detected')
-                lseCall(motor)
-                lseDone = 1
-            if GPIO.input(te2) and te2Done == 0:
-                logger.info('TE-2 detected')
-                te2Call(motor)
-                te2Done = 1
-                lsrDone = 0
-            if GPIO.input(lsr) and lsrDone == 0:
-                logger.info('Retraction limit switch detected')
-                lsrCall(motor)
-                lsrDone = 1
+            if GPIO.input(te1):
+                print("Forward...\n")
+                motor.motor1.throttle = x
+                time.sleep(0.25)
+            if GPIO.input(lse):
+                print("Stop...\n")
+                motor.motor1.throttle = 0.0
+                time.sleep(0.25)
+            if GPIO.input(te2):
+                print("Revers...\n")
+                motor.motor1.throttle = -x
+                time.sleep(0.25)
+            if GPIO.input(lsr):
+                print("Stop2...\n")
+                motor.motor1.throttle = 0.0
+                time.sleep(0.25)
                 break
 
         logger.info('All time events have been detected: ' + str(int(time.time() * 1000)) + '\n')
