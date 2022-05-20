@@ -55,14 +55,14 @@ def main():
         return
 
     # wait for ter signile
-    while True:
-        if GPIO.input(ter):
-            break
-    # call
-    subprocess.call(f'python3 gopromain.py --verbose -a "D1:70:A4:FC:21:4F" -c "preset maxvideo" -c "record start"', shell=True)
-
-    time.sleep(5)
-    subprocess.call(f'python3 gopromain.py --verbose -a "D1:70:A4:FC:21:4F" -c "preset maxvideo" -c "record start"', shell=True)
+    # while True:
+    #     if GPIO.input(ter):
+    #         break
+    # # call
+    # subprocess.call(f'python3 gopromain.py --verbose -a "D1:70:A4:FC:21:4F" -c "preset maxvideo" -c "record start"', shell=True)
+    #
+    # time.sleep(5)
+    # subprocess.call(f'python3 gopromain.py --verbose -a "D1:70:A4:FC:21:4F" -c "preset maxvideo" -c "record start"', shell=True)
 
 
     # wait for TE-1 signal
