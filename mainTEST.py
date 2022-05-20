@@ -176,7 +176,7 @@ def main():
             #     terDone = 1
             if GPIO.input(te1):
                 print("Forward...\n")
-                motor.motor1.throttle = x
+                motor.motor1.throttle = 1
                 time.sleep(0.25)
             if GPIO.input(lse):
                 print("Stop...\n")
@@ -184,7 +184,7 @@ def main():
                 time.sleep(0.25)
             if GPIO.input(te2):
                 print("Revers...\n")
-                motor.motor1.throttle = -x
+                motor.motor1.throttle = -1
                 time.sleep(0.25)
             if GPIO.input(lsr):
                 print("Stop2...\n")
