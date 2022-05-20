@@ -46,7 +46,7 @@ import RPi.GPIO as GPIO
 from adafruit_motorkit import MotorKit
 import subprocess
 # import gopro2
-import goproTest
+# import goproTest
 
 # import gopro
 
