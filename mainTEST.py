@@ -149,7 +149,7 @@ def main():
             logger.info('Flight mode enabled: ' + str(int(time.time() * 1000)) + '\n')
             terDone = 0
             te1Done = 0
-            lseDone = 1  # limit switch extension
+            lseDone = 0  # limit switch extension
             te2Done = 0
             lsrDone = 1  # limit switch retraction
 
@@ -178,9 +178,8 @@ def main():
                 logger.info('TE-1 detected')
                 te1Call(motor)
                 te1Done = 1
-                lseDone = 0
                 time.sleep(5)
-            if GPIO.input(lse): #and lseDone == 0:
+            if GPIO.input(lse) and lseDone == 0:
                 logger.info('Extension limit switch detected')
                 lseCall(motor)
                 lseDone = 1
