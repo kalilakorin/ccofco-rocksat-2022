@@ -8,9 +8,10 @@ import time
 
 
 
-forward = 22 # Limit Switch Extension
-stop = 23 # TE-2
-reverse = 24 # Limit Switch Retraction
+forward = 27 # Limit Switch Extension
+stop = 22 # TE-2
+reverse = 23 # Limit Switch Retraction
+stop2 = 24 #second stop
 
 # GPIO pin assignment
 
@@ -35,4 +36,9 @@ while True:
         print("Revers...\n")
         motor.motor1.throttle = -x
         time.sleep(0.25)
+    if GPIO.input(stop2):
+        print("Stop2...\n")
+        motor.motor1.throttle = -x
+        time.sleep(0.25)
+
     time.sleep(0.1)
