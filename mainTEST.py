@@ -180,7 +180,7 @@ def main():
                 te1Done = 1
                 lseDone = 0
                 time.sleep(5)
-            if GPIO.input(lse) and lseDone == 0:
+            if GPIO.input(lse): #and lseDone == 0:
                 logger.info('Extension limit switch detected')
                 lseCall(motor)
                 lseDone = 1
