@@ -39,7 +39,7 @@ while True:
         time.sleep(0.25)
     if GPIO.input(stop2):
         print("Stop2...\n")
-        motor.motor1.throttle = -x
+        motor.motor1.throttle = 0.0
         time.sleep(0.25)
 
     time.sleep(0.1)
