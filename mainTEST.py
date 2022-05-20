@@ -44,6 +44,7 @@ import sys
 
 import RPi.GPIO as GPIO
 from adafruit_motorkit import MotorKit
+import armMotor
 import subprocess
 # import gopro2
 # import goproTest
@@ -120,21 +121,8 @@ def main():
 
         while True:
             if GPIO.input(te1):
-                print("Forward...\n")
-                motor.motor1.throttle = 1
-                time.sleep(0.25)
-            if GPIO.input(lse):
-                print("Stop...\n")
-                motor.motor1.throttle = 0.0
-                time.sleep(0.25)
-            if GPIO.input(te2):
-                print("Revers...\n")
-                motor.motor1.throttle = -1
-                time.sleep(0.25)
-            if GPIO.input(lsr):
-                print("Stop2...\n")
-                motor.motor1.throttle = 0.0
-                time.sleep(0.25)
+                armMotor = multiprocessing.Process(target=armMotor.main)
+                armMotor.start()
                 break
 
         logger.info('All time events have been detected: ' + str(int(time.time() * 1000)) + '\n')
