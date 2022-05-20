@@ -14,7 +14,7 @@ import logging
 import RPi.GPIO as GPIO
 from adafruit_motorkit import MotorKit
 import subprocess
-import gopromain as gopro
+# import gopromain as gopro
 
 print("Start...\n\n")
 try:
