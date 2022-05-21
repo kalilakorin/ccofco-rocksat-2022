@@ -77,6 +77,14 @@ logging.getLogger().addHandler(logging.StreamHandler(sys.stdout))
 logger.info(f'CC of CO payload finished booting at {boottime}\n')
 
 def main():
+    multiprocessing.set_start_method('fork')
+    processQueue = multiprocessing.Queue()
+    # Accept command line arguments
+
+    # If no command line arguments are passed the script will assume that it is running in
+    arguments = sys.argv
+    runAll = len(arguments) == 1
+
     try:
         # Normal flight functionality
         te1 = 27  # TE-1
