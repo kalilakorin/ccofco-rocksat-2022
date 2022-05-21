@@ -40,7 +40,7 @@ import sys
 # Import system modules
 import auxcam
 import sensors
-import fram
+# import fram
 
 import RPi.GPIO as GPIO
 from adafruit_motorkit import MotorKit
@@ -93,9 +93,9 @@ def main():
             auxcamThread.start()
 
         # Secondary experiment (radiation RAM)
-        if ('--fram' in arguments or runAll):
-            framExperimentThread = multiprocessing.Process(target=fram.main)
-            framExperimentThread.start()
+        # if ('--fram' in arguments or runAll):
+        #     framExperimentThread = multiprocessing.Process(target=fram.main)
+        #     framExperimentThread.start()
 
         # Tertiary experiment (sensors)
         if ('--sensors' in arguments or runAll):
