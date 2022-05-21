@@ -174,7 +174,7 @@ def main():
                 logger.info('TE-R detected')
                 # goproCall(motor)
                 terDone = 1
-                time.sleep(15)
+
             if GPIO.input(te1) and te1Done == 0:
                 logger.info('TE-1 detected')
                 te1Call(motor)
@@ -217,7 +217,7 @@ def te1Call(motor):
     # set throttle (extension)
     motor.motor1.throttle = 1.0
     logger.info('Extension start: ' + str(int(time.time() * 1000)) + '\n')
-
+    time.sleep(15)
 def lseCall(motor):
     # set throttle (stop)
     motor.motor1.throttle = 0
