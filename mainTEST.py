@@ -192,7 +192,7 @@ def main():
                 logger.info('Retraction limit switch detected')
                 lsrCall(motor)
                 lsrDone = 1
-                break
+                # break
 
         logger.info('All time events have been detected: ' + str(int(time.time() * 1000)) + '\n')
         GPIO.cleanup()
@@ -217,7 +217,7 @@ def te1Call(motor):
     # set throttle (extension)
     motor.motor1.throttle = 1.0
     logger.info('Extension start: ' + str(int(time.time() * 1000)) + '\n')
-    time.sleep(15)
+    time.sleep(25)
 def lseCall(motor):
     # set throttle (stop)
     motor.motor1.throttle = 0
@@ -227,7 +227,7 @@ def te2Call(motor):
     # set throttle (retraction)
     motor.motor1.throttle = -1.0
     logger.info('Retraction start: ' + str(int(time.time() * 1000)) + '\n')
-
+    time.sleep(25)
 def lsrCall(motor):
     # set throttle (stop)
     motor.motor1.throttle = 0
