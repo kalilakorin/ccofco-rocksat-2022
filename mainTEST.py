@@ -84,6 +84,7 @@ def main():
         te2 = 23  # TE-2
         lsr = 24  # Limit Switch Retraction
         ter = 17  # gopro activation
+        am = 5  # arm motor inhibit GPIO pin (5)
 
         logger.info('Initializing GPIO pins...')
         try:
