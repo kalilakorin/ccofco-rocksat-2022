@@ -174,6 +174,7 @@ def main():
                 logger.info('TE-R detected')
                 # goproCall(motor)
                 terDone = 1
+                time.sleep(15)
             if GPIO.input(te1) and te1Done == 0:
                 logger.info('TE-1 detected')
                 te1Call(motor)
