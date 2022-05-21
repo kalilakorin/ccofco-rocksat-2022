@@ -192,7 +192,7 @@ def main():
                 logger.info('Retraction limit switch detected')
                 lsrCall(motor)
                 lsrDone = 1
-                # break
+                break
 
         logger.info('All time events have been detected: ' + str(int(time.time() * 1000)) + '\n')
         GPIO.cleanup()
