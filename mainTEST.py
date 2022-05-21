@@ -96,6 +96,7 @@ def main():
             GPIO.setup(te2, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # TE-2 around +220 seconds
             GPIO.setup(lsr, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # Retraction Limit Switch
             # testing inhibits
+            GPIO.setup(am, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)   # motor inhibit
             logger.info('GPIO pins initialized... OK\n')
         except:
             logger.critical('Failed to initialize GPIO pins and motor hat.\n')
