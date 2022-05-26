@@ -217,7 +217,7 @@ def goproCall(motor):
 
 def te1Call(motor):
     # set throttle (extension)
-    motor.motor1.throttle = 1.0
+    motor.motor1.throttle = .55
     logger.info('Extension start: ' + str(int(time.time() * 1000)) + '\n')
 
 def lseCall(motor):
@@ -227,7 +227,7 @@ def lseCall(motor):
 
 def te2Call(motor):
     # set throttle (retraction)
-    motor.motor1.throttle = -1.0
+    motor.motor1.throttle = -.55
     logger.info('Retraction start: ' + str(int(time.time() * 1000)) + '\n')
 
 def lsrCall(motor):
