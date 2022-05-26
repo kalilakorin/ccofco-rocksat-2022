@@ -163,6 +163,7 @@ def main():
             #         logger.info('Waiting for power to test RF')
             #         sleep(15)
         motor_dwell_time = 24
+
         while True:
             # attempt test 2 - may need to be used in conjunction with the above as well
             if GPIO.input(am) and not GPIO.input(rf):
@@ -180,7 +181,6 @@ def main():
                 te1Done = 1
                 lseDone = 0
                 time.sleep(motor_dwell_time)
-                time.sleep(3)
             if GPIO.input(lse) and lseDone == 0:
                 logger.info('Extension limit switch detected')
                 lseCall(motor)
@@ -191,7 +191,6 @@ def main():
                 te2Done = 1
                 lsrDone = 0
                 time.sleep(motor_dwell_time)
-                time.sleep(3)
             if GPIO.input(lsr) and lsrDone == 0:
                 logger.info('Retraction limit switch detected')
                 lsrCall(motor)
@@ -219,7 +218,7 @@ def goproCall(motor):
 
 def te1Call(motor):
     # set throttle (extension)
-    motor.motor1.throttle = .55
+    motor.motor1.throttle = 0.55
     logger.info('Extension start: ' + str(int(time.time() * 1000)) + '\n')
 
 def lseCall(motor):
@@ -229,7 +228,7 @@ def lseCall(motor):
 
 def te2Call(motor):
     # set throttle (retraction)
-    motor.motor1.throttle = -.55
+    motor.motor1.throttle = -0.55
     logger.info('Retraction start: ' + str(int(time.time() * 1000)) + '\n')
 
 def lsrCall(motor):
