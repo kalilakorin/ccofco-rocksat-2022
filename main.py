@@ -162,7 +162,7 @@ def main():
             # #    except:
             #         logger.info('Waiting for power to test RF')
             #         sleep(15)
-
+        motor_dwell_time = 25
         while True:
             # attempt test 2 - may need to be used in conjunction with the above as well
             if GPIO.input(am) and not GPIO.input(rf):
@@ -179,6 +179,7 @@ def main():
                 te1Call(motor)
                 te1Done = 1
                 lseDone = 0
+                time.sleep(motor_dwell_time)
                 time.sleep(3)
             if GPIO.input(lse) and lseDone == 0:
                 logger.info('Extension limit switch detected')
@@ -189,6 +190,7 @@ def main():
                 te2Call(motor)
                 te2Done = 1
                 lsrDone = 0
+                time.sleep(motor_dwell_time)
                 time.sleep(3)
             if GPIO.input(lsr) and lsrDone == 0:
                 logger.info('Retraction limit switch detected')
