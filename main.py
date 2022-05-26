@@ -162,7 +162,7 @@ def main():
             # #    except:
             #         logger.info('Waiting for power to test RF')
             #         sleep(15)
-        motor_dwell_time = 24
+        motor_dwell_time = 25
 
         while True:
             # attempt test 2 - may need to be used in conjunction with the above as well
@@ -191,7 +191,7 @@ def main():
                 te2Call(motor)
                 te2Done = 1
                 lsrDone = 0
-                time.sleep(motor_dwell_time + 1)
+                time.sleep(motor_dwell_time + 2)
                 lsrCall(motor)
             if GPIO.input(lsr) and lsrDone == 0:
                 logger.info('Retraction limit switch detected')
