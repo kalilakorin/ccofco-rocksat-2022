@@ -162,7 +162,7 @@ def main():
             # #    except:
             #         logger.info('Waiting for power to test RF')
             #         sleep(15)
-        motor_dwell_time = 25
+        motor_dwell_time = 25.5
 
         while True:
             # attempt test 2 - may need to be used in conjunction with the above as well
