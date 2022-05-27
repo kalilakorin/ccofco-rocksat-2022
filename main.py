@@ -141,9 +141,6 @@ def main():
             lseDone = 1  # limit switch extension
             te2Done = 1
             lsrDone = 1  # limit switch retraction
-            # if GPIO.input(rf):
-            #     logger.info('Testing RF: ' + str(int(time.time() * 1000)))
-            #     rfCall(motor)
         else:
             # normal flight functionality
             logger.info('Flight mode enabled: ' + str(int(time.time() * 1000)) + '\n')
@@ -153,15 +150,6 @@ def main():
             te2Done = 0
             lsrDone = 1  # limit switch retraction
 
-            # attempt test 1
-            # #while True:
-            # #    try:
-            # #        logger.info('Testing RF in first test: ' + str(int(time.time() * 1000)))
-            # #        rfCall()
-            # #        break
-            # #    except:
-            #         logger.info('Waiting for power to test RF')
-            #         sleep(15)
         motor_dwell_time = 25.5
 
         while True:

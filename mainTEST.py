@@ -168,16 +168,15 @@ def main():
             if GPIO.input(am) and not GPIO.input(rf):
                 logger.info('Testing RF: ' + str(int(time.time() * 1000)))
                 print('Testing RF: ' + str(int(time.time() * 1000)))
-                # rfCall(motor)
+                rfCall(motor)
                 break
             if GPIO.input(ter) and terDone == 0:
                 logger.info('TE-R detected')
                 # goproCall(motor)
                 terDone = 1
-
             if GPIO.input(te1) and te1Done == 0:
                 logger.info('TE-1 detected')
-                te1Call(motor)
+                lseDone = te1Call(motor, motor_dwell_time)
                 te1Done = 1
             if GPIO.input(lse) and lseDone == 0:
                 logger.info('Extension limit switch detected')
@@ -185,9 +184,8 @@ def main():
                 lseDone = 1
             if GPIO.input(te2) and te2Done == 0:
                 logger.info('TE-2 detected')
-                te2Call(motor)
+                lsrDone = te2Call(motor, motor_dwell_time)
                 te2Done = 1
-                lsrDone = 0
             if GPIO.input(lsr) and lsrDone == 0:
                 logger.info('Retraction limit switch detected')
                 lsrCall(motor)
@@ -213,20 +211,24 @@ def main():
 #     motor.motor4.throttle = 0
 #     logger.info('GoPro motor off...\n')
 
-def te1Call(motor):
+def te1Call(motor, motor_dwell_time):
     # set throttle (extension)
     motor.motor1.throttle = 1.0
     logger.info('Extension start: ' + str(int(time.time() * 1000)) + '\n')
+    time.sleep(motor_dwell_time)
+    return 0
 
 def lseCall(motor):
     # set throttle (stop)
     motor.motor1.throttle = 0
     logger.info('Extension stop: ' + str(int(time.time() * 1000)) + '\n')
 
-def te2Call(motor):
+def te2Call(motor, motor_dwell_time):
     # set throttle (retraction)
     motor.motor1.throttle = -1.0
     logger.info('Retraction start: ' + str(int(time.time() * 1000)) + '\n')
+    time.sleep(motor_dwell_time + 2)
+    return 0
 
 def lsrCall(motor):
     # set throttle (stop)
