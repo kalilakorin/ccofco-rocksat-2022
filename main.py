@@ -202,13 +202,13 @@ def goproCall(motor):
     motor.motor4.throttle = 1.0
     goproThread = multiprocessing.Process(target=gopro2.main)
     goproThread.start()
-    time.sleep(15)
+    time.sleep(30)
     motor.motor4.throttle = 0
     logger.info('GoPro motor off...\n')
 
 def te1Call(motor):
     # set throttle (extension)
-    motor.motor1.throttle = 0.55
+    motor.motor1.throttle = 1 # 1 for 2rpm // 0.55 for 5rpm
     logger.info('Extension start: ' + str(int(time.time() * 1000)) + '\n')
 
 def lseCall(motor):
@@ -218,7 +218,7 @@ def lseCall(motor):
 
 def te2Call(motor):
     # set throttle (retraction)
-    motor.motor1.throttle = -0.55
+    motor.motor1.throttle = -1 # 1 for 2rpm // 0.55 for 5rpm
     logger.info('Retraction start: ' + str(int(time.time() * 1000)) + '\n')
 
 def lsrCall(motor):
