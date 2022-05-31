@@ -6,7 +6,8 @@ import subprocess
 import logging
 
 # test address D1:70:A4:FC:21:4F
-# flight address E3:BB:1E:0D:C8:52
+# OLD flight address E3:BB:1E:0D:C8:52
+# NEW flight address DF:C9:00:93:B7:8D
 
 print('\nInitializing GoPro RF test')
 try:
@@ -24,11 +25,11 @@ def main():
 
     # start the gopro
     for x in range(0, 3):
-        subprocess.call(f'python3 gopromain.py --verbose -a "D1:70:A4:FC:21:4F" -c "record start"', shell=True)
+        subprocess.call(f'python3 gopromain.py --verbose -a "DF:C9:00:93:B7:8D" -c "record start"', shell=True)
         logger.info('GoPro test record started: ' + str(int(time.time() * 1000)) + '\n')
         time.sleep(5)
     for x in range(0, 3):
-        subprocess.call(f'python3 gopromain.py --verbose -a "D1:70:A4:FC:21:4F" -c "record stop"', shell=True)
+        subprocess.call(f'python3 gopromain.py --verbose -a "DF:C9:00:93:B7:8D" -c "record stop"', shell=True)
         logger.info('GoPro test record stopped: ' + str(int(time.time() * 1000)) + '\n')
         time.sleep(5)
 
