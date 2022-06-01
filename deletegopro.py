@@ -1,6 +1,6 @@
 import os
 import time
-#
+import subprocess
 # from goprocam import GoProCamera, constants
 # gpCam = GoProCamera.GoPro()
 #
