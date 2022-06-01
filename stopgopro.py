@@ -19,13 +19,8 @@ except:
 def main():
     # Configure & initialize the gopro to receive power from GPIO pins
     logging.info('Initializing GoPro')
-
-    while True:
-        # wait 15 seconds and turn off the pin
-        time.sleep(15)
-        # start the gopro
-        subprocess.call(f'sudo python3 gopromain.py --verbose -a "DF:C9:00:93:B7:8D" -c "record stop"', shell=True)
-        logger.info('GoPro record stopped: ' + str(int(time.time() * 1000)) + '\n')
+    subprocess.call(f'sudo python3 gopromain.py --verbose -a "DF:C9:00:93:B7:8D" -c "record stop"', shell=True)
+    logger.info('GoPro record stopped: ' + str(int(time.time() * 1000)) + '\n')
 
 if __name__ == '__main__':
     main()
