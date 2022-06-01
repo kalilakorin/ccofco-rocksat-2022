@@ -32,7 +32,7 @@ def main():
         subprocess.call(f'python3 gopromain.py --verbose -a "DF:C9:00:93:B7:8D" -c "record stop"', shell=True)
         logger.info('GoPro test record stopped: ' + str(int(time.time() * 1000)) + '\n')
         time.sleep(5)
-    for x in range(0, 5):
+    for x in range(0, 3):
         subprocess.call(f'python3 gopromain.py --verbose -a "DF:C9:00:93:B7:8D" -c "poweroff"', shell=True)
         logger.info('GoPro test power off: ' + str(int(time.time() * 1000)) + '\n')
         time.sleep(5)
