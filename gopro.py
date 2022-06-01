@@ -7,8 +7,8 @@ import logging
 import RPi.GPIO as GPIO
 
 # test address D1:70:A4:FC:21:4F
-# OLD flight address E3:BB:1E:0D:C8:52
-# NEW flight address DF:C9:00:93:B7:8D
+# # OLD flight address E3:BB:1E:0D:C8:52
+# # NEW flight address DF:C9:00:93:B7:8D
 
 print("\nStart in Gopro...")
 try:
