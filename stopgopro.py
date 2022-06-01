@@ -14,7 +14,7 @@ try:
     logger = logging.getLogger(__name__)
 except:
     logger = None
-    print('Unable to acquire the global logger object, assuming that gopro.py is being run on its own.\n')
+    print('Unable to acquire the global logger object, assuming that stopgopro.py is being run on its own.\n')
 
 def main():
     # Configure & initialize the gopro to receive power from GPIO pins
