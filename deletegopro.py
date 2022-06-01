@@ -1,5 +1,5 @@
-# import os
-# import time
+import os
+import time
 #
 # from goprocam import GoProCamera, constants
 # gpCam = GoProCamera.GoPro()
