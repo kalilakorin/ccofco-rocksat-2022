@@ -9,7 +9,7 @@ import logging
 # OLD flight address E3:BB:1E:0D:C8:52
 # NEW flight address DF:C9:00:93:B7:8D
 
-print("Start in Gopro2...\n")
+print("In stop GoPro...\n")
 try:
     logger = logging.getLogger(__name__)
 except:
@@ -24,8 +24,8 @@ def main():
         # wait 15 seconds and turn off the pin
         time.sleep(15)
         # start the gopro
-        subprocess.call(f'python3 gopromain.py --verbose -a "DF:C9:00:93:B7:8D" -c "record stop"', shell=True)
-        logger.info('GoPro record started: ' + str(int(time.time() * 1000)) + '\n')
+        subprocess.call(f'sudo python3 gopromain.py --verbose -a "DF:C9:00:93:B7:8D" -c "record stop"', shell=True)
+        logger.info('GoPro record stopped: ' + str(int(time.time() * 1000)) + '\n')
 
 if __name__ == '__main__':
     main()
