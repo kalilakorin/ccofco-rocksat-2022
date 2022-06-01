@@ -4,7 +4,7 @@ import time
 from goprocam import GoProCamera, constants
 gpCam = GoProCamera.GoPro()
 
-deletepath = '/home/pi/Documents/gopro-ble-py-2'
+deletepath = '/home/pi/Documents/gopro-py-api-master'
 homepath = '/home/pi/ccofco-rocksat-2022'
 
 print("Current working directory: {0}".format(os.getcwd()))
