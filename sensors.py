@@ -20,6 +20,7 @@ import busio
 # Import sensor modules
 from adafruit_bme280 import basic as adafruit_bme280
 import adafruit_vl53l1x
+import adafruit_vl53l0x #can delete this later if it doesn't work
 import adafruit_adxl34x
 
 ser = serial.Serial(
