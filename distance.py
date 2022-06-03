@@ -1,91 +1,39 @@
-# SPDX-FileCopyrightText: 2017 Scott Shawcroft, written for Adafruit Industries
-# SPDX-FileCopyrightText: Copyright (c) 2021 Carter Nelson for Adafruit Industries
-#
-# SPDX-License-Identifier: Unlicense
+# SPDX-FileCopyrightText: 2021 Smankusors for Adafruit Industries
+# SPDX-License-Identifier: MIT
 
-# Simple demo of the VL53L1X distance sensor.
-# Will print the sensed range/distance every second.
+# Simple demo of the VL53L0X distance sensor with continuous mode.
+# Will print the sensed range/distance as fast as possible.
+import time
 
-# import time
-# import board
-# import adafruit_vl53l1x
-#
-# i2c = board.I2C()
-#
-# vl53 = adafruit_vl53l1x.VL53L1X(i2c)
-#
-# # OPTIONAL: can set non-default values
-# vl53.distance_mode = 1
-# vl53.timing_budget = 100
-#
-# print("VL53L1X Simple Test.")
-# print("--------------------")
-# model_id, module_type, mask_rev = vl53.model_info
-# print("Model ID: 0x{:0X}".format(model_id))
-# print("Module Type: 0x{:0X}".format(module_type))
-# print("Mask Revision: 0x{:0X}".format(mask_rev))
-# print("Distance Mode: ", end="")
-# if vl53.distance_mode == 1:
-#     print("SHORT")
-# elif vl53.distance_mode == 2:
-#     print("LONG")
-# else:
-#     print("UNKNOWN")
-# print("Timing Budget: {}".format(vl53.timing_budget))
-# print("--------------------")
-#
-# vl53.start_ranging()
-#
-# while True:
-#     if vl53.data_ready:
-#         print("Distance: {} cm".format(vl53.distance))
-#         vl53.clear_interrupt()
-#         time.sleep(1.0)
+import board
+import busio
 
-from subprocess import Popen, PIPE
-import sys, select, time
-import pigpio  # http://abyz.me.uk/rpi/pigpio/python.html
-import tl_variables as tlv
+import adafruit_vl53l0x
 
-# pigpio bitbang i2c states
-_addr = 4
-_start = 2
-_stop = 3
-_end = 0
-_write = 7
-_read = 6
-# -------------------------
+# Initialize I2C bus and sensor.
+i2c = busio.I2C(board.SCL, board.SDA)
+vl53 = adafruit_vl53l0x.VL53L0X(i2c)
 
-def start_pigpio_daemon():
-    p = Popen("sudo pigpiod", stdout=PIPE, stderr=PIPE, shell=True)
+# Optionally adjust the measurement timing budget to change speed and accuracy.
+# See the example here for more details:
+#   https://github.com/pololu/vl53l0x-arduino/blob/master/examples/Single/Single.ino
+# For example a higher speed but less accurate timing budget of 20ms:
+# vl53.measurement_timing_budget = 20000
+# Or a slower but more accurate timing budget of 200ms:
+vl53.measurement_timing_budget = 200000
+# The default timing budget is 33ms, a good compromise of speed and accuracy.
 
-    s_out = p.stdout.readline()
-    s_err = p.stderr.readline()
+# You will see the benefit of continous mode if you set the measurement timing
+# budget very high, while your program doing something else. When your program done
+# with something else, and the sensor already calculated the distance, the result
+# will return instantly, instead of waiting the sensor measuring first.
 
-    if s_out == '' and s_err == '':
-        return 0  # started OK
-    elif "pigpio.pid" in s_err:
-        print('Error 1')
-        return 1  # already started
-    else:
-        print('Error!')
-        return 2  # error
+# Main loop will read the range and print it every second.
+with vl53.continuous_mode():
+    while True:
+        # try to adjust the sleep time (simulating program doing something else)
+        # and see how fast the sensor returns the range
+        time.sleep(0.1)
 
-
-def stop_pigpio_daemon():
-    p = Popen("sudo killall pigpiod", stdout=PIPE, stderr=PIPE, shell=True)
-
-    s_out = p.stdout.readline()
-    s_err = p.stderr.readline()
-
-    if s_out == '' and s_err == '':
-        return 0  # killed OK
-    else:
-        return 2  # error
-
-if __name__ == '__main__':
-    print(stop_pigpio_daemon())  # stop pigpiod in case it was started already from a previous run
-    print(start_pigpio_daemon())  # start pigpiod now
-
-    pi = pigio.pi()  # open local Pi
-    pi.bb_i2c_open(tlv.SDA, tlv.SCL, tlv.I2C_Speed)
+        curTime = time.time()
+        print("Range: {0}mm ({1:.2f}ms)".format(vl53.range, time.time() - curTime))
