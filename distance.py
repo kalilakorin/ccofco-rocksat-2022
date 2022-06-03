@@ -56,12 +56,6 @@ _write = 7
 _read = 6
 # -------------------------
 
-print(stop_pigpio_daemon())  # stop pigpiod in case it was started already from a previous run
-print(start_pigpio_daemon())  # start pigpiod now
-
-pi = pigpio.pi()  # open local Pi
-pi.bb_i2c_open(tlv.SDA, tlv.SCL, tlv.I2C_Speed)
-
 def start_pigpio_daemon():
     p = Popen("sudo pigpiod", stdout=PIPE, stderr=PIPE, shell=True)
 
@@ -88,3 +82,10 @@ def stop_pigpio_daemon():
         return 0  # killed OK
     else:
         return 2  # error
+
+if __name__ == '__main__':
+    print(stop_pigpio_daemon())  # stop pigpiod in case it was started already from a previous run
+    print(start_pigpio_daemon())  # start pigpiod now
+
+    pi = pigpio.pi()  # open local Pi
+    pi.bb_i2c_open(tlv.SDA, tlv.SCL, tlv.I2C_Speed)
