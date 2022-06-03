@@ -9,6 +9,9 @@
 import time
 import board
 import adafruit_vl53l1x
+from adafruit_motorkit import MotorKit
+
+motor = MotorKit()
 
 i2c = board.I2C()
 
