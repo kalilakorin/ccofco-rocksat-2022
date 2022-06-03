@@ -12,8 +12,7 @@ import adafruit_vl53l1x
 
 i2c = board.I2C()
 
-vl53 = adafruit_vl53l1x.VL53L1X(i2c, address=0x41)
-
+vl53 = adafruit_vl53l1x.VL53L1X(i2c)
 
 # OPTIONAL: can set non-default values
 vl53.distance_mode = 1
