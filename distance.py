@@ -64,9 +64,9 @@ def start_pigpio_daemon():
 
     if s_out == '' and s_err == '':
         return 0  # started OK
-    # elif "pigpio.pid" in s_err:
-    #     print('Error 1')
-    #     return 1  # already started
+    elif "pigpio.pid" in s_err:
+        print('Error 1')
+        return 1  # already started
     else:
         print('Error!')
         return 2  # error
@@ -87,5 +87,5 @@ if __name__ == '__main__':
     print(stop_pigpio_daemon())  # stop pigpiod in case it was started already from a previous run
     print(start_pigpio_daemon())  # start pigpiod now
 
-    pi = pigpio.pi()  # open local Pi
+    pi = pigio.pi()  # open local Pi
     pi.bb_i2c_open(tlv.SDA, tlv.SCL, tlv.I2C_Speed)
