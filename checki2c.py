@@ -17,7 +17,7 @@ import digitalio
 import adafruit_vl53l1x
 from adafruit_motorkit import MotorKit
 
-motor = MotorKit()
+# motor = MotorKit()
 
 # Define the I2C pins.
 i2c = board.I2C()
