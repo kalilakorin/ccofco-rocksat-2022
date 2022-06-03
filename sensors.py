@@ -68,7 +68,7 @@ def main () :
         logging.error ('Failed to enable BME280 (temperature, pressure, humidity) sensor')
     # Init vl53l1x distance sensor
     try :
-        vl53l1x = adafruit_vl53l1x.VL53L1X(i2c)
+        vl53l1x = adafruit_vl53l1x.VL53L1X(i2c, address=0x29)
         vl53l1x.start_ranging()
     except :
         vl53l1x = None
