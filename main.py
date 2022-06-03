@@ -167,9 +167,10 @@ def main():
                 logger.info('TE-1 detected')
                 te1Call(motor)
                 te1Done = 1
-                lseDone = 0
+                # lseDone = 0
                 time.sleep(motor_dwell_time)
-                lseCall(motor)
+                lseDone = 0
+                # lseCall(motor)
             if GPIO.input(lse) and lseDone == 0:
                 logger.info('Extension limit switch detected')
                 lseCall(motor)
@@ -178,9 +179,10 @@ def main():
                 logger.info('TE-2 detected')
                 te2Call(motor)
                 te2Done = 1
-                lsrDone = 0
+                # lsrDone = 0
                 time.sleep(motor_dwell_time + 2)
-                lsrCall(motor)
+                lsrDone = 0
+                # lsrCall(motor)
             if GPIO.input(lsr) and lsrDone == 0:
                 logger.info('Retraction limit switch detected')
                 lsrCall(motor)
