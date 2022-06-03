@@ -37,6 +37,7 @@ def start_pigpio_daemon():
     if s_out == '' and s_err == '':
         return 0  # started OK
     elif "pigpio.pid" in s_err:
+        print('Error 1')
         return 1  # already started
     else:
         print('Error!')
