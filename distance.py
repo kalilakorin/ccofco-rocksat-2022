@@ -14,6 +14,7 @@ i2c = board.I2C()
 
 vl53 = adafruit_vl53l1x.VL53L1X(i2c, address=0x41)
 
+
 # OPTIONAL: can set non-default values
 vl53.distance_mode = 1
 vl53.timing_budget = 100
