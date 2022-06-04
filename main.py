@@ -104,9 +104,9 @@ def main():
 
         # Normal flight functionality
         te1 = 27  # TE-1
-        lse = 22  # Limit Switch Extension
+        lse = 24  # Limit Switch Extension
         te2 = 23  # TE-2
-        lsr = 24  # Limit Switch Retraction
+        lsr = 22  # Limit Switch Retraction
         ter = 17  # gopro activation
 
         # inhibits for testing
@@ -170,6 +170,7 @@ def main():
                 # lseDone = 0
                 time.sleep(motor_dwell_time)
                 lseDone = 0
+                logger.info('End of dwell, lseDone = 0')
                 # lseCall(motor)
             if GPIO.input(lse) and lseDone == 0:
                 logger.info('Extension limit switch detected')
@@ -182,6 +183,7 @@ def main():
                 # lsrDone = 0
                 time.sleep(motor_dwell_time + 2)
                 lsrDone = 0
+                logger.info('End of dwell, lsrDone = 0')
                 # lsrCall(motor)
             if GPIO.input(lsr) and lsrDone == 0:
                 logger.info('Retraction limit switch detected')
