@@ -150,7 +150,7 @@ def main():
             te2Done = 0
             lsrDone = 1  # limit switch retraction
 
-        motor_dwell_time = 25.5
+        motor_dwell_time = 15
 
         while True:
             # attempt test 2 - may need to be used in conjunction with the above as well
