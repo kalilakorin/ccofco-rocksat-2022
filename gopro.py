@@ -46,7 +46,7 @@ def main():
     GPIO.output(gppower, GPIO.HIGH)
 
     # wait 15 seconds and turn off the pin
-    time.sleep(15)
+    time.sleep(5)
     GPIO.output(gppower, GPIO.LOW)
 
     # start the gopro
