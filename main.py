@@ -191,8 +191,8 @@ def main():
                 lsrDone = 1
                 break
         #set motor throttles backto zero clean up
-        motor.motor4.throttle = 0
-        motor.motor1.throttle = 0
+        # motor.motor4.throttle = 0
+        # motor.motor1.throttle = 0
         logger.info('All time events have been detected: ' + str(int(time.time() * 1000)) + '\n')
         GPIO.cleanup()
     except KeyboardInterrupt:
