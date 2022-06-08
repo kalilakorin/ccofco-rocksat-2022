@@ -21,8 +21,8 @@ def main():
     logging.info('Initializing GoPro')
 
     while True:
-        # wait 15 seconds and turn off the pin
-        time.sleep(15)
+        # wait 5 seconds and turn off the pin
+        time.sleep(5)
         # start the gopro
         subprocess.call(f'python3 gopromain.py --verbose -a "DF:C9:00:93:B7:8D" -c "preset maxvideo" -c "record start"', shell=True)
         logger.info('GoPro record started: ' + str(int(time.time() * 1000)) + '\n')
