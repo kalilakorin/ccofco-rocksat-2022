@@ -240,8 +240,8 @@ def rfCall(motor):
     logger.info('GoPro motor test off...\n')
 
 if __name__ == '__main__':
-    multiprocessing.set_start_method('fork')
-    processQueue = multiprocessing.Queue()
+    # multiprocessing.set_start_method('fork')
+    # processQueue = multiprocessing.Queue()
     # main()
     try:
         multiprocessing.set_start_method('fork')
