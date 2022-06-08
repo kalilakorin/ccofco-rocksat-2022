@@ -145,9 +145,9 @@ def main():
             # normal flight functionality
             logger.info('Flight mode enabled: ' + str(int(time.time() * 1000)) + '\n')
             terDone = 0
-            te1Done = 0
+            te1Done = 1
             lseDone = 1  # limit switch extension
-            te2Done = 0
+            te2Done = 1
             lsrDone = 1  # limit switch retraction
 
         motor_dwell_time = 15
@@ -163,36 +163,34 @@ def main():
                 logger.info('TE-R detected')
                 goproCall(motor)
                 terDone = 1
+                te1Done = 0
             if GPIO.input(te1) and te1Done == 0:
                 logger.info('TE-1 detected')
                 te1Call(motor)
                 te1Done = 1
-                # lseDone = 0
                 time.sleep(motor_dwell_time)
                 lseDone = 0
                 logger.info('End of dwell, lseDone = 0')
-                # lseCall(motor)
             if GPIO.input(lse) and lseDone == 0:
                 logger.info('Extension limit switch detected')
                 lseCall(motor)
                 lseDone = 1
+                te2Done = 0
             if GPIO.input(te2) and te2Done == 0:
                 logger.info('TE-2 detected')
                 te2Call(motor)
                 te2Done = 1
-                # lsrDone = 0
                 time.sleep(motor_dwell_time + 2)
                 lsrDone = 0
                 logger.info('End of dwell, lsrDone = 0')
-                # lsrCall(motor)
             if GPIO.input(lsr) and lsrDone == 0:
                 logger.info('Retraction limit switch detected')
                 lsrCall(motor)
                 lsrDone = 1
                 break
         #set motor throttles backto zero clean up
-        # motor.motor4.throttle = 0
-        # motor.motor1.throttle = 0
+        motor.motor4.throttle = 0
+        motor.motor1.throttle = 0
         logger.info('All time events have been detected: ' + str(int(time.time() * 1000)) + '\n')
         GPIO.cleanup()
     except KeyboardInterrupt:
