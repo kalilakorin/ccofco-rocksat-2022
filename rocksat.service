@@ -8,7 +8,7 @@ Wants=network-pre.target
 WorkingDirectory=/home/pi/ccofco-rocksat-2022
 Type=simple
 User=pi
-ExecStart=/usr/bin/python3 /home/pi/ccofco-rocksat-2022/main.py
+ExecStart=sudo /usr/bin/python3 /home/pi/ccofco-rocksat-2022/main.py
 Restart=on-failure
 
 [Install]
