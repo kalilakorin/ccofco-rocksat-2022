@@ -1,0 +1,15 @@
+[Unit]
+Description=CC of CO Payload Control Script
+Documentation=https://github.com/kzaremski/ccofco-rocksat-2022
+Before=network-pre.target
+Wants=network-pre.target
+
+[Service]
+WorkingDirectory=/home/pi/ccofco-rocksat-2022
+Type=simple
+User=pi
+ExecStart=sudo /usr/bin/python3 /home/pi/ccofco-rocksat-2022/main.py
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

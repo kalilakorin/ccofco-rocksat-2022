@@ -34,5 +34,7 @@ sudo pip3 install adafruit-circuitpython-tca9548a
 sudo pip3 install adafruit-circuitpython-vl53l1x
 sudo pip3 install adafruit-circuitpython-adxl34x
 sudo pip3 install adafruit-extended-bus
+#for the alternate camera
+sudo pip3 install adafruit-circuitpython-vc0706
 
 echo "   *** DONE ***   "

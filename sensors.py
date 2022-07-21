@@ -18,7 +18,6 @@ import board
 import busio
 
 # Import sensor modules
-import adafruit_mpl115a2
 from adafruit_bme280 import basic as adafruit_bme280
 import adafruit_vl53l1x
 import adafruit_adxl34x
@@ -51,17 +50,10 @@ def main () :
     # Begin i2c
     try :
         i2c = busio.I2C (board.SCL, board.SDA)
-        logging.info ('I2C interface ... OK')
+        logging.info ('I2C interface of sensors... OK')
     except :
         logging.critical ('Failed to enable i2c interface, the sensor thread will now crash')
         return
-    # Init mpl sensor
-    try :
-        mpl115a2 = adafruit_mpl115a2.MPL115A2 (i2c)
-        logging.info ('MPL115A2 (temperature, pressure) ... OK')
-    except :
-        mpl115a2 = None
-        logging.error ('Failed to enable MPL115A2 sensor')
     # Init bme280 Outside
     try :
         bme280a = adafruit_bme280.Adafruit_BME280_I2C (i2c)  # address 0x77 DEFAULT (outside)
@@ -76,8 +68,8 @@ def main () :
         logging.error ('Failed to enable BME280 (temperature, pressure, humidity) sensor')
     # Init vl53l1x distance sensor
     try :
-        vl53l1x = adafruit_vl53l1x.VL53L1X (i2c)
-        vl53l1x.start_ranging ()
+        vl53l1x = adafruit_vl53l1x.VL53L1X(i2c)
+        vl53l1x.start_ranging()
     except :
         vl53l1x = None
         logging.error ('Failed to enable VL53L1X (distance) sensor')
@@ -99,7 +91,6 @@ def main () :
 
     # CSV header line
     csvheader = 'Time'
-    if mpl115a2 != None : csvheader += ',MPL115A2 Temperature, MPL115A2 Pressure'
     if vl53l1x != None : csvheader += ',vl53l1x Distance'
     if bme280a != None : csvheader += ',Outside BME280 Temperature, Outside BME280 Pressure, Outside BME280 Humidity'
     if bme280b != None : csvheader += ',Inside BME280 Temperature, Inside BME280 Pressure, Inside BME280 Humidity'
@@ -115,11 +106,11 @@ def main () :
 
     count = 0
     while True :
+
         # Time axis
         csvline = str (int (time.time () * 1000))
 
         # Add entries to the CSV line based on the presence of those particular sensors
-        if mpl115a2 != None : csvline += f',{mpl115a2.temperature},{mpl115a2.pressure}'
         if vl53l1x != None : csvline += f',{vl53l1x.distance}'
         if bme280a != None : csvline += f',{bme280a.temperature},{bme280a.pressure},{bme280a.relative_humidity}'
         if bme280b != None : csvline += f',{bme280b.temperature},{bme280b.pressure},{bme280b.relative_humidity}'
@@ -135,7 +126,6 @@ def main () :
         if count % 1000 == 0:
             serial_string = csvline
             # serial_string = str (int (time.time () * 1000))
-            # if mpl115a2 != None :  serial_string += f',{mpl115a2.temperature},{mpl115a2.pressure}'
             # if vl53l1x != None : serial_string += f',{vl53l1x.distance}'
             # if bme280a != None : serial_string += f',{bme280a.temperature},{bme280a.pressure},{bme280a.relative_humidity}'
             # if bme280b != None : serial_string += f',{bme280b.temperature},{bme280b.pressure},{bme280b.relative_humidity}'
